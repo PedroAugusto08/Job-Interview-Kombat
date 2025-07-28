@@ -17,7 +17,20 @@ header {
 .logo {
     width: 14rem;
     z-index: 10;
+    animation: pulseLogo 4s ease-in-out infinite;
 }
+
+@keyframes pulseLogo {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0px #fdd201);
+    }
+    50% {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 10px #fdd201);
+    }
+}
+
 
 .title {
     z-index: 10;
@@ -26,7 +39,20 @@ header {
     font-size: 5rem;
     color: #fdd201;
     text-shadow: 3px 3px 1px #c93ed8;
+    animation: pulseTitle 3s ease-in-out infinite;
 }
+
+@keyframes pulseTitle {
+    0%, 100% {
+        transform: scale(1);
+        text-shadow: 3px 3px 1px #c93ed8;
+    }
+    50% {
+        transform: scale(1.05);
+        text-shadow: 4px 4px 4px #ff6cfb;
+    }
+}
+
 
 .bg-dec {
     z-index: 3;
@@ -73,7 +99,19 @@ header {
     bottom: 0;
     pointer-events: none;
     background-size: cover;
+    background-repeat: repeat-x;
+    animation: moveClouds 60s linear infinite;
 }
+
+@keyframes moveClouds {
+    from {
+        background-position-x: 0;
+    }
+    to {
+        background-position-x: -1000px;
+    }
+}
+
 
 .menu-options {
     display: flex;
