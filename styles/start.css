@@ -30,7 +30,7 @@ header {
 
 .bg-dec {
     z-index: 3;
-    background-image: url("../assets/bg-dec.png");
+    background-image: url("../assets/images/bg-dec.png");
     position: absolute;
     top: 0;
     left: 0;
@@ -53,7 +53,7 @@ header {
 
 .mountain {
     z-index: 2;
-    background-image: url("../assets/mountain.png");
+    background-image: url("../assets/images/mountain.png");
     position: absolute;
     top: 0;
     left: 0;
@@ -65,7 +65,7 @@ header {
 
 .clouds {
     z-index: 5;
-    background-image: url("../assets/clouds.png");
+    background-image: url("../assets/images/clouds.png");
     position: absolute;
     top: 0;
     left: 0;
@@ -94,6 +94,7 @@ header {
     position: relative;
     font-size: 2.5rem;
     border: 0;
+    transition: .1s ease;
     width: 100%;
 }
 
@@ -114,8 +115,15 @@ header {
     left:6rem;
 }
 
+.menu-options .option:hover {
+    color: #fdd201;
+    transform: scale(1.1);
+}
+
 .menu-options .option:hover .star-hover {
     opacity: 1;
+    
+
 }
 
 footer {
