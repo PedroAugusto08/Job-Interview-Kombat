@@ -1,0 +1,83 @@
+body{
+    height: 100vh;
+    font-family: MortalKombat1Font;
+    background: #13002d;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 4rem;
+}
+
+.logo {
+    width: 6rem;
+}
+
+.title {
+    letter-spacing: .25rem;
+    text-align: center;
+    font-size: 4.5rem;
+    color: #fdd201;
+    text-shadow: 3px 3px 1px #c93ed8;
+}
+
+.menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 500px;
+    margin-top: 4rem;
+}
+
+.menu-options .option {
+    color: white;
+    letter-spacing: .25rem;
+    background: transparent;
+    cursor: pointer;
+    font-family: MortalKombat1Font;
+    text-shadow: 2px 2px 1px #d87add;
+    position: relative;
+    font-size: 2.5rem;
+    border: 0;
+    width: 100%;
+}
+
+.menu-options .option .star-hover {
+    width: 4rem;
+    opacity: 0;
+    position: absolute;
+    top: -1rem;
+    left: 8.5rem;
+    transition: .1s ease;
+}
+
+.menu-options .option:nth-child(2) .star-hover {
+    left:7.5rem;
+}
+
+.menu-options .option:nth-child(3) .star-hover, .menu-options .option:nth-child(4) .star-hover {
+    left:6rem;
+}
+
+.menu-options .option:hover .star-hover {
+    opacity: 1;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-bottom: 1rem;
+    padding-right: 1rem;
+}
+
+footer span {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: rgb(196, 158, 227);
+}
