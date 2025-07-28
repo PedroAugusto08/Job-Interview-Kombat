@@ -15,15 +15,64 @@ header {
 }
 
 .logo {
-    width: 6rem;
+    width: 14rem;
+    z-index: 10;
 }
 
 .title {
-    letter-spacing: .25rem;
+    z-index: 10;
+    letter-spacing: .35rem;
     text-align: center;
-    font-size: 4.5rem;
+    font-size: 5rem;
     color: #fdd201;
     text-shadow: 3px 3px 1px #c93ed8;
+}
+
+.bg-dec {
+    z-index: 3;
+    background-image: url("../assets/bg-dec.png");
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background-size: contain;
+    animation: twinkle .25s infinite normal;
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: .7;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.mountain {
+    z-index: 2;
+    background-image: url("../assets/mountain.png");
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background-size: contain;
+}
+
+.clouds {
+    z-index: 5;
+    background-image: url("../assets/clouds.png");
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background-size: cover;
 }
 
 .menu-options {
@@ -32,6 +81,7 @@ header {
     gap: 1.5rem;
     width: 500px;
     margin-top: 4rem;
+    z-index: 4;
 }
 
 .menu-options .option {
