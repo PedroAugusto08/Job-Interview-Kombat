@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Interview Kombat</title>
-    
+
     <script type="module" defer src="../lib/howler.min.js"></script>
     <script defer type="module" src="../scripts/start.js"></script>
 
@@ -12,11 +13,54 @@
     <link rel="stylesheet" href="../styles/fonts.css">
     <link rel="stylesheet" href="../styles/start.css">
 </head>
+
 <body>
     <header>
         <img class="logo" src="../assets/images/logo.png" alt="Logo Pixelada do CEFET-MG no estilo do jogo">
         <h1 class="title">JOB INTERVIEW<br>KOMBAT</h1>
     </header>
+
+    <div class="dialog-overlay">
+        <div class="dialog-box">
+            <button class="dialog-close">
+                <img src="../assets/images/arrow-back.png" alt="Fechar menu">
+            </button>
+
+            <div class="rules">
+                <section class="rules-game">
+                    <span class="dialog-section-title">GAME</span>
+                    <div class="game-specs">
+                        <p>2 JUDGES</p>
+                        <p>2 TEAMS OF 3</p>
+                        <p>9 ROUNDS</p>
+                    </div>
+                </section>
+
+                <section class="rules-rounds">
+                    <span class="dialog-section-title">ROUNDS</span>
+                    <div class="rounds-specs">
+                        <p>EACH ROUND IS A BATTLE 1 VS 1</p>
+                        <p>PLAYERS HAVE 1 MINUTE TO THINK AND 1 MINUTE TO ANSWER</p>
+                        <p>JUDGES WILL SCORE ON CRITERIA AS CLARITY, RELEVANCE, CONFIDENCE AND <span
+                                class="highlight">ORIGINALITY</span></p>
+                    </div>
+                </section>
+
+                <section class="rules-tournament">
+                    <span class="dialog-section-title">TOURNAMENT</span>
+                    <p class="tournament-specs">THE TEAM WITH MOST BATTLE WINS AT THE END IS THE WINNER!</p>
+                </section>
+            </div>
+
+            <div class="options">
+                <span class="dialog-section-title">OPTIONS</span>
+            </div>
+
+            <div class="credits">
+                <span class="dialog-section-title">CREDITS</span>
+            </div>
+        </div>
+    </div>
 
     <div class="bg-dec"></div>
     <div class="mountain"></div>
@@ -27,12 +71,12 @@
             <img src="../assets/images/star-hover.png" alt="Icone de estrela" class="star-hover">
             <span>PLAY</span>
         </button>
-        
+
         <button class="option" id="menu-rules">
             <img src="../assets/images/star-hover.png" alt="Icone de estrela" class="star-hover">
             <span>RULES</span>
         </button>
-        
+
         <button class="option" id="menu-options">
             <img src="../assets/images/star-hover.png" alt="Icone de estrela" class="star-hover">
             <span>OPTIONS</span>
@@ -48,4 +92,5 @@
         <span>@CEFET-MG</span>
     </footer>
 </body>
+
 </html>

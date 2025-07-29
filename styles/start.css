@@ -160,8 +160,6 @@ header {
 
 .menu-options .option:hover .star-hover {
     opacity: 1;
-    
-
 }
 
 footer {
@@ -176,4 +174,96 @@ footer span {
     font-size: 1.5rem;
     font-weight: 500;
     color: rgb(196, 158, 227);
+}
+
+.dialog-overlay {
+    z-index: 999;
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    pointer-events: none;
+    transition: .25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dialog-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+    background-color: rgba(24, 5, 50, 0.674);
+}
+
+.dialog-box {
+    position: relative;
+    padding: 1.5rem 8rem;
+    background: #2e1a5a;
+}
+
+.rules {
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+}
+
+.rules:not(.active), .credits:not(.active), .options:not(.active) {
+    opacity: 0;
+    display: none;
+}
+
+.dialog-close {
+    position: absolute;
+    top: 1.5rem;
+    left: 2rem;
+    cursor: pointer;
+    background: none;
+    border: 0;
+    transition: .2s ease;
+}
+
+.dialog-close:hover {
+    transform: scale(1.1);
+}
+
+.dialog-section-title {
+    color: #d0e8ff;
+    text-shadow: 2px 2px 1px #b14dd0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+    font-size: 2.5rem;
+}
+
+.dialog-box p {
+    color: #feedfe;
+    text-shadow: 2px 2px 1px #b246c9;
+    font-size: 1.8rem;
+}
+
+.dialog-box .highlight {
+    color: #c9edfe;
+}
+
+.game-specs {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.rounds-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    align-items: center;
+}
+
+.rounds-specs p {
+    width: 700px;
 }
