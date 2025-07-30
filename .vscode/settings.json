@@ -1,0 +1,10 @@
+{
+    "liveServer.settings.root": "/",
+    "liveServer.settings.file": "/pages/start.html",
+    "liveServer.settings.ignoreFiles": [
+        ".vscode/**",
+        "**/*.scss",
+        "**/*.sass"
+    ],
+    "liveServer.settings.wait": 500
+}
