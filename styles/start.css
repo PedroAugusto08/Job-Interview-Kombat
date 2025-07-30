@@ -1,6 +1,14 @@
 .options .dialog-section-title {
     align-items: center;
     gap: 1.5rem;
+    position: relative;
+    background: url('../assets/images/options/background.png') center center no-repeat;
+    background-size: contain;
+    min-height: 60px;
+    min-width: 320px;
+    padding: 0.5rem 2.5rem;
+    z-index: 1;
+    border-radius: 0.7rem;
 }
 
 .options .dialog-section-title img {
@@ -233,28 +241,45 @@ footer span {
 
 .options {
     display: flex;
-    gap: 2rem;
     flex-direction: column;
+    gap: 1.2rem;
+    align-items: center;
+    background: #2e1a5a url('../assets/images/options/background2.png') repeat-x bottom;
+    background-size: cover;
+    background-clip: border-box;
+    border-radius: 1.5rem;
+    box-shadow: 0 0 1.5rem #b14dd0;
+    padding: 2.5rem 0;
+    max-width: 950px;
+    min-width: 800px;
+    margin: 1.5rem auto 0 auto;
+    border: 3px solid #b14dd0;
 }
+
 
 .options-music, .options-rounds, .options-fullscreen {
     background: none;
     border-radius: 0;
     padding: 0;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
     box-shadow: none;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 0.2rem;
 }
 
 .options-music-controls, .options-fullscreen-controls {
     display: flex;
+    flex-direction: row;
     gap: 2.5rem;
-    margin-top: 0.5rem;
+    margin-top: 0;
     font-size: 1.5rem;
     align-items: center;
     justify-content: center;
+    margin-left: 0;
 }
 
 .options-music-controls label, .options-fullscreen-controls label {
@@ -267,19 +292,23 @@ footer span {
 }
 
 .options-rounds-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
+    display: column;
+    grid-template-columns: auto auto auto;
+    gap: 0.2rem 2.5rem;
+    margin-top: 0;
     font-size: 1.5rem;
     color: #feedfe;
     align-items: center;
+    justify-items: center;
+    justify-content: center;
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .options-rounds-controls label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    width: 100%;
 }
 
 .options input[type="number"] {
