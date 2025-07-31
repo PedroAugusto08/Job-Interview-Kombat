@@ -1,3 +1,133 @@
+/* LOADING SCREEN */
+#loading-screen {
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #13002d;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.loading-bg {
+    z-index: 3;
+    background-image: url("../assets/images/bg-dec.png");
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background-size: contain;
+}
+
+.loading-clouds {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url('../assets/images/clouds.png') repeat-x;
+    background-size: cover;
+    opacity: 0.8;
+    animation: loading-moveClouds 60s linear infinite;
+    z-index: 2;
+}
+.loading-clouds.clouds2 {
+    top: 40px;
+    opacity: 0.5;
+    animation-duration: 90s;
+}
+
+@keyframes loading-moveClouds {
+    from { background-position-x: 0; }
+    to { background-position-x: -1000px; }
+}
+
+.loading-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.loading-logo {
+    width: 16rem;
+    margin-bottom: 2.5rem;
+    filter: drop-shadow(0 0 16px #fdd201);
+}
+
+.loading-title {
+    font-family: MortalKombat1Font, Arial, sans-serif;
+    color: #fdd201;
+    font-size: 5rem;
+    letter-spacing: .18em;
+    text-align: center;
+    text-shadow: 3px 3px 1px #c93ed8;
+    margin-bottom: 2.5rem;
+}
+
+.loading-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2.5rem;
+}
+
+.loading-text {
+    color: #d0e8ff;
+    font-size: 2.1rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.15em;
+    font-family: MortalKombat1Font, Arial, sans-serif;
+    text-shadow: 2px 2px 1px #b14dd0;
+}
+
+.loading-bar-blocks {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3rem;
+    width: auto;
+    height: 28px;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+    margin-top: 0.2rem;
+}
+
+.loading-block {
+    width: 24px;
+    height: 24px;
+    border-radius: 3px;
+    background: #ffb6c1;
+    box-shadow: 0 2px 0 #1a0030, 0 0 0 2px #1a0030;
+    display: inline-block;
+}
+.loading-block-pink {
+    background: linear-gradient(180deg, #ffb6c1 60%, #ff6cfb 100%);
+}
+.loading-block-blue {
+    background: linear-gradient(180deg, #7ecbff 0%, #3e8ed8 100%);
+}
+
+.loading-footer {
+    position: absolute;
+    right: 2.5rem;
+    bottom: 1.5rem;
+    color: #d0e8ff;
+    font-size: 1.3rem;
+    font-family: Arial, sans-serif;
+    opacity: 0.8;
+    z-index: 20;
+}
 body{
     height: 100vh;
     font-family: MortalKombat1Font;
