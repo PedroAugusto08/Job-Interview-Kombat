@@ -218,7 +218,7 @@ footer span {
     background-size: cover;
     background-position: center;
     z-index: 1000;
-    height: 500px;
+    height: 550px;
 }
 
 .quadradinhos-2 {
@@ -232,7 +232,7 @@ footer span {
     background-size: cover;
     background-position: center;
     z-index: 1000;
-    height: 500px;
+    height: 550px;
 }
 
 .gatinho {
@@ -254,10 +254,113 @@ footer span {
     flex-direction: column;
 }
 
-
 .rules:not(.active), .credits:not(.active), .options:not(.active) {
     opacity: 0;
     display: none;
+}
+
+.credits {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    border-radius: 1.5rem;
+    max-width: 950px;
+    min-width: 800px;
+}
+
+.credits .dialog-section-title {
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    background: url('../assets/images/options/background.png') center center no-repeat;
+    background-size: contain;
+    min-height: 60px;
+    min-width: 450px;
+    padding: 0.5rem 2.5rem;
+    z-index: 1;
+    border-radius: 0.7rem;
+    color: #d0e8ff;
+    text-shadow: 2px 2px 1px #b14dd0;
+    text-align: center;
+    display: flex;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.credits .dialog-section-title img {
+    height: 4.5rem;
+    width: 4.5rem;
+    min-width: 4.5rem;
+    min-height: 4.5rem;
+    object-fit: contain;
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+    filter: drop-shadow(1px 2px 0 #b14dd0);
+}
+
+.credits-devs-list {
+    display: flex;
+    flex-direction: row;
+    gap: 3.5rem;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+.credits-devs-list .dev {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #feedfe;
+    text-shadow: 2px 2px 1px #b246c9;
+    font-size: 2rem;
+}
+
+.credits-devs-list .dev-name {
+    font-size: 2.1rem;
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+    color: #fdd201;
+    text-shadow: 2px 2px 1px #b14dd0;
+}
+
+.credits-devs-list .dev-surname {
+    font-size: 1.5rem;
+    color: #feedfe;
+    margin-top: 0.2rem;
+    letter-spacing: 0.08rem;
+}
+
+.credits-advisor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.advisor-name {
+    color: #feedfe;
+    font-size: 2.3rem;
+    text-shadow: 2px 2px 1px #b246c9;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.credits-special-thanks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.special-thanks-text {
+    color: #feedfe;
+    font-size: 2rem;
+    text-shadow: 2px 2px 1px #b246c9;
+    margin-top: 0.5rem;
+    text-align: center;
+    max-width: 700px;
 }
 
 .rules .dialog-section-title {
