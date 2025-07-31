@@ -698,6 +698,10 @@ footer span {
     transition: .2s ease;
 }
 
+.dialog-close img {
+    width: 70%;
+}
+
 .dialog-close:hover {
     transform: scale(1.1);
 }
