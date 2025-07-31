@@ -262,11 +262,11 @@ footer span {
 .credits {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
     align-items: center;
     border-radius: 1.5rem;
     max-width: 950px;
-    min-width: 800px;
+    min-width: 600px;
 }
 
 .credits .dialog-section-title {
@@ -276,8 +276,9 @@ footer span {
     background: url('../assets/images/options/background.png') center center no-repeat;
     background-size: contain;
     min-height: 60px;
-    min-width: 450px;
-    padding: 0.5rem 2.5rem;
+    width: 450px;
+    max-width: 100%;
+    padding: 0.5rem 0;
     z-index: 1;
     border-radius: 0.7rem;
     color: #d0e8ff;
@@ -285,14 +286,15 @@ footer span {
     text-align: center;
     display: flex;
     font-size: 2.5rem;
-    margin-bottom: 1rem;
+    margin: 0 auto 1rem auto;
+    justify-content: center;
 }
 
 .credits .dialog-section-title img {
-    height: 4.5rem;
-    width: 4.5rem;
-    min-width: 4.5rem;
-    min-height: 4.5rem;
+    height: 5rem;
+    width: 5rem;
+    min-width: 5rem;
+    min-height: 5rem;
     object-fit: contain;
     margin: 0;
     display: inline-block;
@@ -322,7 +324,7 @@ footer span {
     font-size: 2.1rem;
     font-weight: bold;
     letter-spacing: 0.1rem;
-    color: #fdd201;
+    color: #feedfe;
     text-shadow: 2px 2px 1px #b14dd0;
 }
 
