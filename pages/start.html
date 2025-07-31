@@ -22,13 +22,21 @@
 
     <div class="dialog-overlay">
         <div class="dialog-box">
+            <div class="quadradinhos-1"></div>
+            <div class="quadradinhos-2"></div>
+
             <button class="dialog-close">
                 <img src="../assets/images/arrow-back.png" alt="Fechar menu">
             </button>
 
             <div class="rules">
+                <div class="gatinho"></div>
+
                 <section class="rules-game">
-                    <span class="dialog-section-title">GAME</span>
+                    <span class="dialog-section-title">
+                        <img style="height:4rem;vertical-align:middle;" src="../assets/images/controle.png"
+                            alt="Controle de video game">
+                        GAME</span>
                     <div class="game-specs">
                         <p>2 JUDGES</p>
                         <p>2 TEAMS OF 3</p>
@@ -37,7 +45,9 @@
                 </section>
 
                 <section class="rules-rounds">
-                    <span class="dialog-section-title">ROUNDS</span>
+                    <span class="dialog-section-title">
+                        <img style="height:4rem;vertical-align:middle;" src="../assets/images/lua.png"
+                            alt="Lua">ROUNDS</span>
                     <div class="rounds-specs">
                         <p>EACH ROUND IS A BATTLE 1 VS 1</p>
                         <p>PLAYERS HAVE 1 MINUTE TO THINK AND 1 MINUTE TO ANSWER</p>
@@ -47,7 +57,9 @@
                 </section>
 
                 <section class="rules-tournament">
-                    <span class="dialog-section-title">TOURNAMENT</span>
+                    <span class="dialog-section-title">
+                        <img style="height: 5rem;vertical-align:middle;" src="../assets/images/trofeu.png"
+                            alt="Trofeu">TOURNAMENT</span>
                     <p class="tournament-specs">THE TEAM WITH MOST BATTLE WINS AT THE END IS THE WINNER!</p>
                 </section>
             </div>
@@ -56,36 +68,59 @@
             <div class="options">
                 <section class="options-music">
                     <span class="dialog-section-title">
-                        <img src="../assets/images/options/emoji.png" alt="Music Icon" style="height:2.5rem;vertical-align:middle;">
+                        <img src="../assets/images/options/emoji.png" alt="Music Icon"
+                            style="height:2rem;vertical-align:middle;width: 7.5rem;">
                         MUSIC
                     </span>
                     <div class="options-music-controls">
-                        <label><input type="checkbox" checked> ON</label>
-                        <label><input type="checkbox"> OFF</label>
+                        <div class="checkbox-custom">
+                            <label>ON
+                                <input name="music-active" type="radio" checked>
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-custom off">
+                            <label>OFF
+                                <input name="music-active" type="radio">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
                     </div>
                 </section>
 
                 <section class="options-rounds">
                     <span class="dialog-section-title">
-                        <img src="../assets/images/options/keyboard.png" alt="Keyboard Icon" style="height:2.5rem;vertical-align:middle;">
+                        <img src="../assets/images/options/keyboard.png" alt="Keyboard Icon"
+                            style="height:4rem;vertical-align:middle;width: 7.5rem;">
                         ROUNDS
                     </span>
                     <div class="options-rounds-controls">
-                        <label>TIME TO THINK <input type="number" min="1" max="10" value="2"> MINUTES</label><br>
-                        <label>TIME TO JUDGE <input type="number" min="1" max="10" value="2"> MINUTES</label><br>
-                        <label>ROUND DURATION <input type="number" min="1" max="10" value="2"> MINUTES</label><br>
+                        <label>TIME TO THINK <input type="number" min="1" max="10" value="2"> MINUTES</label>
+                        <label>TIME TO JUDGE <input type="number" min="1" max="10" value="2"> MINUTES</label>
+                        <label>ROUND DURATION <input type="number" min="1" max="10" value="2"> MINUTES</label>
                         <label>NUMBER OF ROUNDS <input type="number" min="1" max="20" value="9"></label>
                     </div>
                 </section>
 
                 <section class="options-fullscreen">
                     <span class="dialog-section-title">
-                        <img src="../assets/images/options/monitor.png" alt="Fullscreen Icon" style="height:2.5rem;vertical-align:middle;">
+                        <img src="../assets/images/options/monitor.png" alt="Fullscreen Icon"
+                            style="height:4rem;vertical-align:middle;width: 7.5rem; ">
                         FULLSCREEN
                     </span>
                     <div class="options-fullscreen-controls">
-                        <label><input type="checkbox"> ON</label>
-                        <label><input type="checkbox" checked> OFF</label>
+                        <div class="checkbox-custom">
+                            <label>ON
+                                <input name="fullscreen" type="radio">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-custom off">
+                            <label>OFF
+                                <input name="fullscreen" type="radio" checked>
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
                     </div>
                 </section>
             </div>
