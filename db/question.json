@@ -1,0 +1,12 @@
+{
+    "general": [
+        {
+            "question": "Pergunta 1"
+        }
+    ],
+    "developer": [
+        {
+            "question": "Essa é uma pergunta modelo de desenvolvedor..."
+        }
+    ]
+}
