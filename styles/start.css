@@ -1,3 +1,251 @@
+.choose-job-grid-custom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  gap: 2.5rem;
+  align-self: center;
+}
+
+.choose-job-row-top {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2.5rem;
+  width: 60%;
+  margin: 0 auto;
+  justify-content: center;
+}
+.choose-job-row-bottom {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+  width: 60%;
+  margin: 0 auto;
+  justify-content: center;
+}
+.choose-job-row-top .choose-job-card,
+.choose-job-row-bottom .choose-job-card {
+  width: 180px;
+  height: 220px;
+  background: linear-gradient(180deg, #1a1027 70%, #2a1747 100%);
+  border-radius: 24px;
+  border: 3px solid #ff2b7c;
+  box-shadow: 0 0 0 4px #7c2fff, 0 8px 32px #000a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.choose-job-row-top .choose-job-card:hover,
+.choose-job-row-bottom .choose-job-card:hover {
+  border-color: #ffe12b;
+  box-shadow: 0 0 0 6px #ffe12b, 0 8px 32px #000a;
+  cursor: pointer;
+}
+.choose-job-row-top .choose-job-card:empty {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+.choose-job-icon-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 180px;
+  height: 220px;
+}
+
+.choose-job-icon-img {
+  width: 180px;
+  height: 180px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 12px #ff2b7c);
+}
+
+/* ===== CHOOSE YOUR JOB SCREEN ===== */
+.choose-job-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  background: #2a1747 url('../assets/images/jobs/bg 2.png') center center no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: 'MortalKombat1Font', 'Press Start 2P', monospace;
+}
+
+.choose-job-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Triângulos BG laterais */
+.choose-job-bg-triangle-left {
+  position: absolute;
+  top: 50%;
+  left: -10%;
+  width: 32vw;
+  height: 40vh;
+  background: url('../assets/images/jobs/bg triangulo.png') no-repeat left center;
+  background-size: contain;
+  z-index: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+.choose-job-bg-triangle-right {
+  position: absolute;
+  top: 50%;
+  right: -10%;
+  width: 32vw;
+  height: 40vh;
+  background: url('../assets/images/jobs/bg triangulo.png') no-repeat right center;
+  background-size: contain;
+  z-index: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+/* Naipes nos cantos da tela de escolha de job */
+.choose-job-bg-copas {
+  position: absolute;
+  top: 3.5rem;
+  left: 3.5rem;
+  width: 150px;
+  height: 150px;
+  background: url('../assets/images/jobs/copas.png') no-repeat center center;
+  background-size: contain;
+  z-index: 1;
+  pointer-events: none;
+}
+.choose-job-bg-espadas {
+  position: absolute;
+  bottom: 3.5rem;
+  left: 3.5rem;
+  width: 150px;
+  height: 150px;
+  background: url('../assets/images/jobs/espadas.png') no-repeat center center;
+  background-size: contain;
+  z-index: 1;
+  pointer-events: none;
+}
+.choose-job-bg-ouros {
+  position: absolute;
+  top: 3.5rem;
+  right: 3.5rem;
+  width: 150px;
+  height: 150px;
+  background: url('../assets/images/jobs/ouros.png') no-repeat center center;
+  background-size: contain;
+  z-index: 1;
+  pointer-events: none;
+}
+.choose-job-bg-paus {
+  position: absolute;
+  bottom: 3.5rem;
+  right: 3.5rem;
+  width: 150px;
+  height: 150px;
+  background: url('../assets/images/jobs/paus.png') no-repeat center center;
+  background-size: contain;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.choose-job-content {
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+}
+
+.choose-job-title {
+  font-family: 'MortalKombat1Font', 'Press Start 2P', monospace;
+  font-size: 3rem;
+  color: #ffe12b;
+  text-shadow: 2px 2px 0 #7c2fff, 4px 4px 0 #ff2b7c;
+  margin-bottom: 2.5rem;
+  margin-top: 3rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.choose-job-title::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%, -55%);
+  width: 180px;
+  height: 180px;
+  background: url('../assets/images/jobs/estrela.png') no-repeat center center;
+  background-size: contain;
+  z-index: -1;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.choose-job-card {
+  width: 180px;
+  height: 220px;
+  background: linear-gradient(180deg, #1a1027 70%, #2a1747 100%);
+  border-radius: 24px;
+  border: 3px solid #ff2b7c;
+  box-shadow: 0 0 0 4px #7c2fff, 0 8px 32px #000a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.choose-job-card:hover {
+  border-color: #ffe12b;
+  box-shadow: 0 0 0 6px #ffe12b, 0 8px 32px #000a;
+  cursor: pointer;
+}
+
+.choose-job-img {
+  width: 120px;
+  height: 120px;
+  image-rendering: pixelated;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  display: block;
+  object-fit: contain;
+}
+
+.choose-job-name {
+  font-family: 'MortalKombat1Font', 'Press Start 2P', monospace;
+  font-size: 1.3rem;
+  color: #ffe12b;
+  text-shadow: 2px 2px 0 #7c2fff;
+  letter-spacing: 0.08em;
+  margin-top: 0.5rem;
+  text-align: center;
+}
 /* LOADING SCREEN */
 #loading-screen {
     position: fixed;
