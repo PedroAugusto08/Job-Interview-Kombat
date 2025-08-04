@@ -46,11 +46,29 @@
   border-color: #ffe12b;
   box-shadow: 0 0 0 6px #ffe12b, 0 8px 32px #000a;
   cursor: pointer;
+  
 }
+.choose-job-row-top,
+.choose-job-row-bottom {
+  animation: fadeInSlideUp 0.8s ease both;
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .choose-job-row-top .choose-job-card:empty {
   background: none;
   border: none;
   box-shadow: none;
+  
 }
 .choose-job-icon-center {
   display: flex;
@@ -65,6 +83,16 @@
   height: 180px;
   image-rendering: pixelated;
   filter: drop-shadow(0 0 12px #ff2b7c);
+  animation: floatY 2.5s ease-in-out infinite;
+}
+
+@keyframes floatY {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
 /* ===== CHOOSE YOUR JOB SCREEN ===== */
@@ -341,6 +369,34 @@
   text-align: center;
   position: relative;
   z-index: 2;
+  animation: slideDownFade 0.7s ease-out both;
+  animation: pulseTitle 2s ease-in-out infinite;
+}
+
+@keyframes pulseTitle {
+  0%, 100% {
+    text-shadow:
+      2px 2px 0 #7c2fff,
+      4px 4px 0 #ff2b7c;
+    transform: scale(1);
+  }
+  50% {
+    text-shadow:
+      3px 3px 0 #ffe12b,
+      5px 5px 0 #ff2b7c;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes slideDownFade {
+  from {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .choose-job-title::before {
@@ -356,7 +412,21 @@
   z-index: -1;
   opacity: 0.85;
   pointer-events: none;
+  animation: pulseStar 2s ease-in-out infinite;
 }
+
+@keyframes pulseStar {
+  0%, 100% {
+    transform: translate(-50%, -55%) scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(-50%, -55%) scale(1.1);
+    opacity: 1;
+  }
+}
+
+
 
 .choose-job-card {
   width: 180px;
@@ -371,11 +441,23 @@
   justify-content: center;
   position: relative;
   transition: border-color 0.2s, box-shadow 0.2s;
+  animation: fadeInZoom 0.6s ease forwards;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+@keyframes fadeInZoom {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 .choose-job-card:hover {
   border-color: #ffe12b;
   box-shadow: 0 0 0 6px #ffe12b, 0 8px 32px #000a;
   cursor: pointer;
+  transform: translateY(-8px) scale(1.03);
+  transition: transform 0.3s ease;
 }
 
 .choose-job-img {
