@@ -1,3 +1,242 @@
+.choose-job-grid-custom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  gap: 2.5rem;
+}
+
+.choose-job-row-top {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2.5rem;
+  width: 100%;
+}
+.choose-job-row-bottom {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+  width: 60%;
+  margin: 0 auto;
+  justify-content: center;
+}
+.choose-job-row-top .choose-job-card,
+.choose-job-row-bottom .choose-job-card {
+  width: 180px;
+  height: 220px;
+  background: linear-gradient(180deg, #1a1027 70%, #2a1747 100%);
+  border-radius: 24px;
+  border: 3px solid #ff2b7c;
+  box-shadow: 0 0 0 4px #7c2fff, 0 8px 32px #000a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.choose-job-row-top .choose-job-card:hover,
+.choose-job-row-bottom .choose-job-card:hover {
+  border-color: #ffe12b;
+  box-shadow: 0 0 0 6px #ffe12b, 0 8px 32px #000a;
+  cursor: pointer;
+}
+.choose-job-row-top .choose-job-card:empty {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+.choose-job-icon-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 180px;
+  height: 220px;
+}
+.choose-job-icon-img {
+  width: 110px;
+  height: 110px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 12px #ff2b7c);
+}
+.choose-job-grid-2x3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2.5rem 2.5rem;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.choose-job-grid-2x3 > .choose-job-card {
+  width: 180px;
+  height: 220px;
+  background: linear-gradient(180deg, #1a1027 70%, #2a1747 100%);
+  border-radius: 24px;
+  border: 3px solid #ff2b7c;
+  box-shadow: 0 0 0 4px #7c2fff, 0 8px 32px #000a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.choose-job-grid-2x3 > .choose-job-card:hover {
+  border-color: #ffe12b;
+  box-shadow: 0 0 0 6px #ffe12b, 0 8px 32px #000a;
+  cursor: pointer;
+}
+
+.choose-job-grid-2x3 > .choose-job-icon-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 180px;
+  height: 220px;
+}
+.choose-job-icon-img {
+  width: 110px;
+  height: 110px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 12px #ff2b7c);
+}
+.choose-job-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+}
+
+.choose-job-row {
+  display: flex;
+  flex-direction: row;
+  gap: 2.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.choose-job-row-top {
+  margin-bottom: 1.5rem;
+}
+.choose-job-row-bottom {
+  margin-top: 1.5rem;
+}
+
+.choose-job-icon-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem 0 0.5rem 0;
+}
+.choose-job-icon-img {
+  width: 110px;
+  height: 110px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 12px #ff2b7c);
+}
+/* ===== CHOOSE YOUR JOB SCREEN ===== */
+.choose-job-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  background: #2a1747; /* cor base, depois adiciona bg */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: 'MortalKombat1Font', 'Press Start 2P', monospace;
+}
+
+.choose-job-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.choose-job-content {
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.choose-job-title {
+  font-family: 'MortalKombat1Font', 'Press Start 2P', monospace;
+  font-size: 3rem;
+  color: #ffe12b;
+  text-shadow: 2px 2px 0 #7c2fff, 4px 4px 0 #ff2b7c;
+  margin-bottom: 2rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+}
+
+.choose-job-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2.5rem;
+  justify-items: center;
+  align-items: center;
+}
+
+.choose-job-card {
+  width: 180px;
+  height: 220px;
+  background: linear-gradient(180deg, #1a1027 70%, #2a1747 100%);
+  border-radius: 24px;
+  border: 3px solid #ff2b7c;
+  box-shadow: 0 0 0 4px #7c2fff, 0 8px 32px #000a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.choose-job-card:hover {
+  border-color: #ffe12b;
+  box-shadow: 0 0 0 6px #ffe12b, 0 8px 32px #000a;
+  cursor: pointer;
+}
+
+.choose-job-img {
+  width: 120px;
+  height: 120px;
+  image-rendering: pixelated;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  display: block;
+  object-fit: contain;
+}
+
+.choose-job-name {
+  font-family: 'MortalKombat1Font', 'Press Start 2P', monospace;
+  font-size: 1.3rem;
+  color: #ffe12b;
+  text-shadow: 2px 2px 0 #7c2fff;
+  letter-spacing: 0.08em;
+  margin-top: 0.5rem;
+  text-align: center;
+}
 /* LOADING SCREEN */
 #loading-screen {
     position: fixed;

@@ -66,6 +66,22 @@ hoverSound.on('end', () => {
 const dialogOverlay = document.querySelector(".dialog-overlay")
 const dialogClose = document.querySelector(".dialog-close")
 
+// Exibe a tela de escolha de job ao clicar em PLAY
+document.addEventListener('DOMContentLoaded', function() {
+    const playBtn = document.getElementById('menu-play');
+    const chooseJobScreen = document.querySelector('.choose-job-screen');
+    const menuOptions = document.querySelector('.menu-options');
+    const header = document.querySelector('header');
+    const footer = document.querySelector('footer');
+    if (playBtn && chooseJobScreen) {
+        playBtn.addEventListener('click', function() {
+            menuOptions.style.display = 'none';
+            header.style.display = 'none';
+            footer.style.display = 'none';
+            chooseJobScreen.style.display = 'block';
+        });
+    }
+});
 const menuRulesDialog = document.querySelector(".rules")
 const menuOptionsDialog = document.querySelector(".options")
 const menuCreditsDialog = document.querySelector(".credits")
