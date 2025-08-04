@@ -73,12 +73,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuOptions = document.querySelector('.menu-options');
     const header = document.querySelector('header');
     const footer = document.querySelector('footer');
+    const backBtn = document.querySelector('.choose-job-back');
     if (playBtn && chooseJobScreen) {
         playBtn.addEventListener('click', function() {
             menuOptions.style.display = 'none';
             header.style.display = 'none';
             footer.style.display = 'none';
             chooseJobScreen.style.display = 'block';
+        });
+    }
+    // Garante que só o botão de voltar da tela de job execute esse código
+    if (backBtn && chooseJobScreen) {
+        backBtn.addEventListener('click', function() {
+            if (chooseJobScreen.style.display === 'block') {
+                chooseJobScreen.style.display = 'none';
+                menuOptions.style.display = 'flex';
+                header.style.display = 'flex';
+                footer.style.display = 'block';
+            }
         });
     }
 });
