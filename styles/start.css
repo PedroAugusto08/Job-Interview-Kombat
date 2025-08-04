@@ -7,13 +7,16 @@
   max-width: 900px;
   margin: 0 auto;
   gap: 2.5rem;
+  align-self: center;
 }
 
 .choose-job-row-top {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 2.5rem;
-  width: 100%;
+  width: 60%;
+  margin: 0 auto;
+  justify-content: center;
 }
 .choose-job-row-bottom {
   display: grid;
@@ -56,92 +59,14 @@
   width: 180px;
   height: 220px;
 }
-.choose-job-icon-img {
-  width: 110px;
-  height: 110px;
-  image-rendering: pixelated;
-  filter: drop-shadow(0 0 12px #ff2b7c);
-}
-.choose-job-grid-2x3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 2.5rem 2.5rem;
-  justify-items: center;
-  align-items: center;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-}
 
-.choose-job-grid-2x3 > .choose-job-card {
+.choose-job-icon-img {
   width: 180px;
-  height: 220px;
-  background: linear-gradient(180deg, #1a1027 70%, #2a1747 100%);
-  border-radius: 24px;
-  border: 3px solid #ff2b7c;
-  box-shadow: 0 0 0 4px #7c2fff, 0 8px 32px #000a;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.choose-job-grid-2x3 > .choose-job-card:hover {
-  border-color: #ffe12b;
-  box-shadow: 0 0 0 6px #ffe12b, 0 8px 32px #000a;
-  cursor: pointer;
-}
-
-.choose-job-grid-2x3 > .choose-job-icon-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 180px;
-  height: 220px;
-}
-.choose-job-icon-img {
-  width: 110px;
-  height: 110px;
+  height: 180px;
   image-rendering: pixelated;
   filter: drop-shadow(0 0 12px #ff2b7c);
 }
-.choose-job-grid {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2.5rem;
-}
 
-.choose-job-row {
-  display: flex;
-  flex-direction: row;
-  gap: 2.5rem;
-  justify-content: center;
-  align-items: center;
-}
-
-.choose-job-row-top {
-  margin-bottom: 1.5rem;
-}
-.choose-job-row-bottom {
-  margin-top: 1.5rem;
-}
-
-.choose-job-icon-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0.5rem 0 0.5rem 0;
-}
-.choose-job-icon-img {
-  width: 110px;
-  height: 110px;
-  image-rendering: pixelated;
-  filter: drop-shadow(0 0 12px #ff2b7c);
-}
 /* ===== CHOOSE YOUR JOB SCREEN ===== */
 .choose-job-screen {
   position: fixed;
@@ -150,7 +75,8 @@
   width: 100vw;
   height: 100vh;
   z-index: 100;
-  background: #2a1747; /* cor base, depois adiciona bg */
+  background: #2a1747 url('../assets/images/jobs/bg 2.png') center center no-repeat;
+  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,6 +94,78 @@
   pointer-events: none;
 }
 
+/* Triângulos BG laterais */
+.choose-job-bg-triangle-left {
+  position: absolute;
+  top: 50%;
+  left: -10%;
+  width: 32vw;
+  height: 40vh;
+  background: url('../assets/images/jobs/bg triangulo.png') no-repeat left center;
+  background-size: contain;
+  z-index: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+.choose-job-bg-triangle-right {
+  position: absolute;
+  top: 50%;
+  right: -10%;
+  width: 32vw;
+  height: 40vh;
+  background: url('../assets/images/jobs/bg triangulo.png') no-repeat right center;
+  background-size: contain;
+  z-index: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+/* Naipes nos cantos da tela de escolha de job */
+.choose-job-bg-copas {
+  position: absolute;
+  top: 3.5rem;
+  left: 3.5rem;
+  width: 150px;
+  height: 150px;
+  background: url('../assets/images/jobs/copas.png') no-repeat center center;
+  background-size: contain;
+  z-index: 1;
+  pointer-events: none;
+}
+.choose-job-bg-espadas {
+  position: absolute;
+  bottom: 3.5rem;
+  left: 3.5rem;
+  width: 150px;
+  height: 150px;
+  background: url('../assets/images/jobs/espadas.png') no-repeat center center;
+  background-size: contain;
+  z-index: 1;
+  pointer-events: none;
+}
+.choose-job-bg-ouros {
+  position: absolute;
+  top: 3.5rem;
+  right: 3.5rem;
+  width: 150px;
+  height: 150px;
+  background: url('../assets/images/jobs/ouros.png') no-repeat center center;
+  background-size: contain;
+  z-index: 1;
+  pointer-events: none;
+}
+.choose-job-bg-paus {
+  position: absolute;
+  bottom: 3.5rem;
+  right: 3.5rem;
+  width: 150px;
+  height: 150px;
+  background: url('../assets/images/jobs/paus.png') no-repeat center center;
+  background-size: contain;
+  z-index: 1;
+  pointer-events: none;
+}
+
 .choose-job-content {
   position: relative;
   z-index: 1;
@@ -177,6 +175,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
 }
 
 .choose-job-title {
@@ -184,18 +184,27 @@
   font-size: 3rem;
   color: #ffe12b;
   text-shadow: 2px 2px 0 #7c2fff, 4px 4px 0 #ff2b7c;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  margin-top: 3rem;
   letter-spacing: 0.1em;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
-.choose-job-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 2.5rem;
-  justify-items: center;
-  align-items: center;
+.choose-job-title::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%, -55%);
+  width: 180px;
+  height: 180px;
+  background: url('../assets/images/jobs/estrela.png') no-repeat center center;
+  background-size: contain;
+  z-index: -1;
+  opacity: 0.85;
+  pointer-events: none;
 }
 
 .choose-job-card {
