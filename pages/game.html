@@ -1,59 +1,62 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Início do Jogo</title>
-    <script defer type="module" src="../scripts/loading.js"></script>
-    <script defer type="module" src="../scripts/game.js"></script>
-    <link rel="stylesheet" href="../styles/global.css">
-    <link rel="stylesheet" href="../styles/fonts.css">
-    <link rel="stylesheet" href="../styles/start.css">
-    <link rel="stylesheet" href="../styles/game.css">
+  <meta charset="UTF-8">
+  <title>Início do Jogo</title>
+  <script defer type="module" src="../scripts/loading.js"></script>
+  <script defer type="module" src="../scripts/game.js"></script>
+  <link rel="stylesheet" href="../styles/global.css">
+  <link rel="stylesheet" href="../styles/fonts.css">
+  <link rel="stylesheet" href="../styles/start.css">
+  <link rel="stylesheet" href="../styles/game.css">
 </head>
+
 <body>
-    <div id="loading-screen">
-        <div class="loading-bg">
-            <div class="loading-clouds"></div>
-        </div>
-        <div class="loading-content">
-            <img class="loading-logo" src="../assets/images/icon.png" alt="Logo Mortal Kombat" />
-            <h1 class="loading-title">JOB INTERVIEW KOMBAT</h1>
-            <div class="loading-bar-container">
-                <span class="loading-text">LOADING...</span>
-                <div class="loading-bar loading-bar-blocks">
-                    <div class="loading-block loading-block-pink"></div>
-                    <div class="loading-block loading-block-pink"></div>
-                    <div class="loading-block loading-block-pink"></div>
-                    <div class="loading-block loading-block-pink"></div>
-                    <div class="loading-block loading-block-pink"></div>
-                    <div class="loading-block loading-block-pink"></div>
-                    <div class="loading-block loading-block-pink"></div>
-                    <div class="loading-block loading-block-pink"></div>
-                    <div class="loading-block loading-block-pink"></div>
-                    <div class="loading-block loading-block-pink"></div>
-                    <div class="loading-block loading-block-pink"></div>
-                    <div class="loading-block loading-block-pink"></div>
-                    <div class="loading-block loading-block-pink"></div>
-                    <div class="loading-block loading-block-blue"></div>
-                    <div class="loading-block loading-block-blue"></div>
-                    <div class="loading-block loading-block-blue"></div>
-                    <div class="loading-block loading-block-blue"></div>
-                    <div class="loading-block loading-block-blue"></div>
-                    <div class="loading-block loading-block-blue"></div>
-                    <div class="loading-block loading-block-blue"></div>
-                </div>
-            </div>
-        </div>
-        <span class="loading-footer">@CEFET-MG</span>
+  <div id="loading-screen">
+    <div class="loading-bg">
+      <div class="loading-clouds"></div>
     </div>
+    <div class="loading-content">
+      <img class="loading-logo" src="../assets/images/icon.png" alt="Logo Mortal Kombat" />
+      <h1 class="loading-title">JOB INTERVIEW KOMBAT</h1>
+      <div class="loading-bar-container">
+        <span class="loading-text">LOADING...</span>
+        <div class="loading-bar loading-bar-blocks">
+          <div class="loading-block loading-block-pink"></div>
+          <div class="loading-block loading-block-pink"></div>
+          <div class="loading-block loading-block-pink"></div>
+          <div class="loading-block loading-block-pink"></div>
+          <div class="loading-block loading-block-pink"></div>
+          <div class="loading-block loading-block-pink"></div>
+          <div class="loading-block loading-block-pink"></div>
+          <div class="loading-block loading-block-pink"></div>
+          <div class="loading-block loading-block-pink"></div>
+          <div class="loading-block loading-block-pink"></div>
+          <div class="loading-block loading-block-pink"></div>
+          <div class="loading-block loading-block-pink"></div>
+          <div class="loading-block loading-block-pink"></div>
+          <div class="loading-block loading-block-blue"></div>
+          <div class="loading-block loading-block-blue"></div>
+          <div class="loading-block loading-block-blue"></div>
+          <div class="loading-block loading-block-blue"></div>
+          <div class="loading-block loading-block-blue"></div>
+          <div class="loading-block loading-block-blue"></div>
+          <div class="loading-block loading-block-blue"></div>
+        </div>
+      </div>
+    </div>
+    <span class="loading-footer">@CEFET-MG</span>
+  </div>
+  
   <div id="anticipation-sequence" class="anticipation hidden">
     <img src="/assets/images/7-antecipation 1.png" alt="Antecipação">
-</div>
+  </div>
 
   <!-- TELA DE CONTAGEM REGRESSIVA -->
   <div id="countdown-screen" class="anticipation hidden">
     <img id="countdown-image" src="" alt="Contagem">
-    </div>
+  </div>
 
   <!-- CONTEÚDO DO JOGO -->
   <div id="game-container" style="display:none;">
@@ -61,4 +64,5 @@
     <div id="questions-container"></div>
   </div>
 </body>
+
 </html>
