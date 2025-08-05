@@ -83,5 +83,6 @@ jobModalBack.addEventListener('click', closeJobModalSidebar);
 // Botão de jogar (aqui só fecha o modal, mas vai iniciar o jogo depois)
 jobModalPlay.addEventListener('click', function () {
     closeJobModalSidebar();
-    // Aqui adiciona a lógica para iniciar o jogo
+    const job = jobModalTitle.textContent.trim().toLowerCase(); // ex: 'designer'
+    window.location.href = `/pages/game.html?job=${job}`;
 });
