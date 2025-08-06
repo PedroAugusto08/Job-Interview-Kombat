@@ -69,22 +69,29 @@ class Game {
     }
 
     async showCurrentQuestion() {
-        const questionsContainer = document.getElementById('questions-container');
-        questionsContainer.innerHTML = '';
+    const questionsContainer = document.getElementById('questions-container');
+    questionsContainer.innerHTML = '';
 
-        const p = document.createElement('p');
-        p.textContent = `${this.currentQuestion + 1}. ${this.selectedQuestions[this.currentQuestion]}`;
-        questionsContainer.appendChild(p);
+    const p = document.createElement('p');
+    p.textContent = `${this.currentQuestion + 1}. ${this.selectedQuestions[this.currentQuestion]}`;
+    questionsContainer.appendChild(p);
 
-        this.visualTimer.reset();
-        this.visualTimer.start();
+    this.visualTimer.reset();
+    this.visualTimer.start();
 
-        // Espera o tempo da pergunta
-        await new Promise(res => setTimeout(res, 10000));
+    // Espera o tempo da pergunta
+    await new Promise(res => setTimeout(res, 10000));
+    this.visualTimer.reset();
 
-        await this.showJudgingScreen();
-        this.nextQuestion();
-    }
+    // Aqui você define os pontos dinâmicos das equipes
+    // Substitua pelos pontos reais do seu jogo se estiver integrando com lógica de pontuação
+    const pontosEquipe1 = Math.floor(Math.random() * 5); // Exemplo aleatório
+    const pontosEquipe2 = Math.floor(Math.random() * 5);
+
+    await JudgingScreen.show(pontosEquipe1, pontosEquipe2);
+    await this.nextQuestion();
+}
+
 
     async showJudgingScreen() {
         this.visualTimer.reset();
@@ -160,13 +167,55 @@ class VisualTimer {
 }
 
 class JudgingScreen {
-    static async show(duration = 3000) {
-        const screen = document.getElementById('judging-screen');
-        screen.style.display = 'block';
-        await new Promise(res => setTimeout(res, duration));
-        screen.style.display = 'none';
+    static async show(pontosEquipe1, pontosEquipe2) {
+        return new Promise(resolve => {
+            const overlay = document.getElementById("judgmentOverlay");
+            const screen = document.querySelector(".judgment-screen");
+            const resultScreen = document.getElementById("resultScreen");
+            const winnerText = document.getElementById("winnerText");
+            const team1bar = document.getElementById("team1bar");
+            const team2bar = document.getElementById("team2bar");
+
+            // Mostrar overlay
+            overlay.classList.remove("hidden");
+            screen.classList.remove("hidden");
+            resultScreen.classList.add("hidden");
+
+            // Função chamada ao clicar no primeiro botão ("CONTINUE")
+            window.mostrarResultado = () => {
+                screen.classList.add("hidden");
+                resultScreen.classList.remove("hidden");
+
+                // Lógica de vencedor
+                let vencedor = '';
+                if (pontosEquipe1 > pontosEquipe2) {
+                    vencedor = 'TEAM 1';
+                    team1bar.style.width = '100%';
+                    team2bar.style.width = '30%';
+                } else if (pontosEquipe2 > pontosEquipe1) {
+                    vencedor = 'TEAM 2';
+                    team2bar.style.width = '100%';
+                    team1bar.style.width = '30%';
+                } else {
+                    vencedor = 'DRAW';
+                    team1bar.style.width = '60%';
+                    team2bar.style.width = '60%';
+                }
+
+                winnerText.textContent = vencedor === 'DRAW'
+                    ? "IT'S A DRAW!"
+                    : `${vencedor} RECEIVES THE POINT!`;
+            };
+
+            // Função chamada ao clicar no segundo botão ("CONTINUE")
+            window.fecharJulgamento = () => {
+                overlay.classList.add("hidden");
+                resolve(); // <- volta para o fluxo normal do jogo
+            };
+        });
     }
 }
+
 
 
 // ============== UI COMPONENTS ==============
@@ -317,3 +366,46 @@ class GameFlow {
 window.addEventListener('DOMContentLoaded', () => {
     GameFlow.start();
 });
+
+// SIMULA DADOS — você pode conectar com suas variáveis reais
+let pontosEquipe1 = 2; // <- substitua por valor real
+let pontosEquipe2 = 3; // <- substitua por valor real
+
+// CHAMAR ISSO AO FINAL DO TEMPO
+function iniciarJulgamento() {
+  document.getElementById("judgmentOverlay").classList.remove("hidden");
+}
+
+// PRIMEIRO BOTÃO
+function mostrarResultado() {
+  document.querySelector(".judgment-screen").classList.add("hidden");
+  document.getElementById("resultScreen").classList.remove("hidden");
+
+  // Cálculo do vencedor baseado nos pontos
+  let vencedor = '';
+  if (pontosEquipe1 > pontosEquipe2) {
+    vencedor = 'TEAM 1';
+    document.getElementById('team1bar').style.width = '100%';
+    document.getElementById('team2bar').style.width = '30%';
+  } else if (pontosEquipe2 > pontosEquipe1) {
+    vencedor = 'TEAM 2';
+    document.getElementById('team2bar').style.width = '100%';
+    document.getElementById('team1bar').style.width = '30%';
+  } else {
+    vencedor = 'DRAW';
+    document.getElementById('team1bar').style.width = '60%';
+    document.getElementById('team2bar').style.width = '60%';
+  }
+
+  document.getElementById("winnerText").textContent = vencedor === 'DRAW'
+    ? "IT'S A DRAW!"
+    : `${vencedor} RECEIVES THE POINT!`;
+}
+
+// SEGUNDO BOTÃO
+function fecharJulgamento() {
+  document.getElementById("judgmentOverlay").classList.add("hidden");
+
+  // Zerar ou reiniciar variáveis, passar à próxima pergunta, etc
+  proximaPergunta(); // <- substitua pela sua função real
+}

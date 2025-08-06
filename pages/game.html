@@ -65,9 +65,31 @@
       <div id="questions-container"></div>
   </div>
 
-  <div id="judging-screen" style="display:none;">
-      <h1>Os juízes estão julgando...</h1>
+  <!-- TELA DE JULGAMENTO: OVERLAY -->
+<div id="judgmentOverlay" class="hidden">
+  <div class="judgment-screen">
+    <div class="announcement">IT’S... TIME TO JUDGE!</div>
+    <button class="continue-btn" onclick="mostrarResultado()">CONTINUE</button>
   </div>
+
+  <div class="result-screen hidden" id="resultScreen">
+    <div class="teams">
+      <div class="team" id="team1">
+        <div class="team-label">TEAM 1</div>
+        <div class="health-bar pink" id="team1bar"></div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="team" id="team2">
+        <div class="team-label">TEAM 2</div>
+        <div class="health-bar blue" id="team2bar"></div>
+      </div>
+    </div>
+
+    <div class="winner" id="winnerText"></div>
+    <button class="continue-btn" onclick="fecharJulgamento()">CONTINUE</button>
+  </div>
+</div>
+
 </body>
 
 </html>
