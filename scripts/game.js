@@ -50,9 +50,7 @@ class Game {
     job = "";
     currentQuestion = 0;
     questionInterval = null;
-    timeLeft = 10; // Tempo por pergunta (segundos)
-    timerInterval = null;
-    timerElement = null;
+    visualTimer = null;
 
     async initialize() {
         const { general, jobSpecific } = await QuestionLoader.loadQuestions(this.job);
@@ -66,93 +64,46 @@ class Game {
     }
 
     startQuestionsDisplay() {
-        this.createTimerElement();
+        this.createVisualTimer();
         this.showCurrentQuestion();
-        this.startTimer();
-
-        this.questionInterval = setInterval(() => {
-            this.nextQuestion();
-        }, 10000); // 10 segundos por pergunta
     }
 
-    createTimerElement() {
-        this.timerElement = document.createElement('div');
-        this.timerElement.id = 'question-timer';
-        Object.assign(this.timerElement.style, {
-            position: 'fixed',
-            top: '20px',
-            right: '20px',
-            fontSize: '2rem',
-            color: 'white',
-            backgroundColor: 'rgba(0,0,0,0.7)',
-            padding: '10px 20px',
-            borderRadius: '10px',
-            zIndex: '1000'
-        });
-        document.body.appendChild(this.timerElement);
-    }
-
-    showCurrentQuestion() {
+    async showCurrentQuestion() {
         const questionsContainer = document.getElementById('questions-container');
         questionsContainer.innerHTML = '';
-        
+
         const p = document.createElement('p');
         p.textContent = `${this.currentQuestion + 1}. ${this.selectedQuestions[this.currentQuestion]}`;
         questionsContainer.appendChild(p);
-        
-        this.timeLeft = 10;
-        this.updateTimerDisplay();
+
+        this.visualTimer.reset();
+        this.visualTimer.start();
+
+        // Espera o tempo da pergunta
+        await new Promise(res => setTimeout(res, 10000));
+
+        await this.showJudgingScreen();
+        this.nextQuestion();
     }
 
-    startTimer() {
-        clearInterval(this.timerInterval); // Limpa timer anterior
-        this.timerInterval = setInterval(() => {
-            this.timeLeft--;
-            this.updateTimerDisplay();
-            
-            if (this.timeLeft <= 0) {
-                clearInterval(this.timerInterval);
-            }
-        }, 1000);
+    async showJudgingScreen() {
+        this.visualTimer.reset();
+        await JudgingScreen.show();
     }
 
-    updateTimerDisplay() {
-        if (!this.timerElement) return;
-        
-        this.timerElement.textContent = `⏱️ ${this.timeLeft}s`;
-        
-        if (this.timeLeft <= 3) {
-            this.timerElement.style.color = '#ff5555';
-            this.timerElement.style.animation = 'pulse 0.5s infinite alternate';
-        } else {
-            this.timerElement.style.color = 'white';
-            this.timerElement.style.animation = 'none';
-        }
-    }
-
-    nextQuestion() {
-        clearInterval(this.timerInterval);
+    async nextQuestion() {
         this.currentQuestion++;
         
         if (this.currentQuestion >= this.selectedQuestions.length) {
             this.stopQuestionsDisplay();
             return;
         }
-        
-        this.showCurrentQuestion();
-        this.startTimer();
+
+        await this.showCurrentQuestion();
     }
 
     stopQuestionsDisplay() {
-        clearInterval(this.questionInterval);
-        clearInterval(this.timerInterval);
-        
-        if (this.timerElement) {
-            this.timerElement.remove();
-        }
-        
-        // Lógica quando o jogo termina
-        console.log('Fim das perguntas!');
+        this.visualTimer.reset();
         this.showGameOver();
     }
 
@@ -161,10 +112,62 @@ class Game {
         questionsContainer.innerHTML = '<h2>Fim do jogo!</h2><p>Todas as perguntas foram respondidas.</p>';
     }
 
+    createVisualTimer() {
+        const container = document.createElement('div');
+        container.id = 'visual-timer';
+        container.className = 'timer-circle';
+        document.getElementById('game-container').prepend(container);
+
+        this.visualTimer = new VisualTimer('visual-timer', 10);
+    }
+
     constructor(job) {
         this.job = job;
     }
 }
+
+class VisualTimer {
+    constructor(containerId, duration) {
+        this.container = document.getElementById(containerId);
+        this.duration = duration;
+        this.startTime = null;
+        this.interval = null;
+    }
+
+    start() {
+        this.startTime = Date.now();
+        this.update();
+
+        this.interval = setInterval(() => this.update(), 100);
+    }
+
+    update() {
+        const elapsed = (Date.now() - this.startTime) / 1000;
+        const percentage = (elapsed / this.duration) * 100;
+        const deg = (percentage / 100) * 360;
+
+        this.container.style.background = `conic-gradient(#a5dfff ${deg}deg, #f69ac1 0deg)`;
+
+        if (elapsed >= this.duration) {
+            clearInterval(this.interval);
+        }
+    }
+
+    reset() {
+        clearInterval(this.interval);
+        this.container.style.background = `conic-gradient(#a5dfff 0deg, #f69ac1 0deg)`;
+    }
+}
+
+class JudgingScreen {
+    static async show(duration = 3000) {
+        const screen = document.getElementById('judging-screen');
+        screen.style.display = 'block';
+        await new Promise(res => setTimeout(res, duration));
+        screen.style.display = 'none';
+    }
+}
+
 
 // ============== UI COMPONENTS ==============
 class LoadingScreen {
