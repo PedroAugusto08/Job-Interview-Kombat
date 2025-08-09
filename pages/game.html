@@ -59,36 +59,40 @@
   </div>
 
   <!-- CONTEÚDO DO JOGO -->
-  
-  <div id="game-container">
-      <h2 id="job-title"></h2>
-      <div id="questions-container"></div>
-  </div>
-
-  <!-- TELA DE JULGAMENTO: OVERLAY -->
-<div id="judgmentOverlay" class="hidden">
-  <div class="judgment-screen">
-    <div class="announcement">IT’S... TIME TO JUDGE!</div>
-    <button class="continue-btn" onclick="mostrarResultado()">CONTINUE</button>
-  </div>
-
-  <div class="result-screen hidden" id="resultScreen">
-    <div class="teams">
-      <div class="team" id="team1">
-        <div class="team-label">TEAM 1</div>
-        <div class="health-bar pink" id="team1bar"></div>
+  <h1 id="job-title"></h1>
+  <div id="game-container" style="display:none;">
+    <div id="scoreboard">
+      <div class="team-score" id="team1-score">
+        TEAM 1
+        <div class="score-bar"><div id="team1bar" class="score-fill"></div></div>
+        <span id="team1points">0</span>
       </div>
-      <div class="vs">VS</div>
-      <div class="team" id="team2">
-        <div class="team-label">TEAM 2</div>
-        <div class="health-bar blue" id="team2bar"></div>
+      <div class="team-score" id="team2-score">
+        TEAM 2
+        <div class="score-bar"><div id="team2bar" class="score-fill"></div></div>
+        <span id="team2points">0</span>
       </div>
     </div>
 
-    <div class="winner" id="winnerText"></div>
-    <button class="continue-btn" onclick="fecharJulgamento()">CONTINUE</button>
+    <div id="visual-timer" class="timer-circle"></div>
+
+    <div id="questions-container"></div>
   </div>
-</div>
+
+  <!-- Overlay julgamento -->
+  <div id="judgmentOverlay" class="hidden">
+    <div class="judgment-screen">
+      <h2>JUDGING TIME!</h2>
+      <p>Vote for the team that did better:</p>
+      <button class="vote-btn" id="voteTeam1">Vote TEAM 1</button>
+      <button class="vote-btn" id="voteTeam2">Vote TEAM 2</button>
+    </div>
+
+    <div id="resultScreen" class="result-screen hidden">
+      <h2 id="winnerText"></h2>
+      <button id="continueBtn" class="continue-btn">Continue</button>
+    </div>
+  </div>
 
 </body>
 

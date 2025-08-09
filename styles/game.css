@@ -124,15 +124,43 @@ body {
 }
 
 /* Timer circular */
+/* Timer circular igual para equipes */
 .timer-circle {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 5px solid #f69ac1;
-    position: relative;
-    margin: 0 auto 30px auto;
-    background: conic-gradient(#a5dfff 0deg, #f69ac1 0deg);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: conic-gradient(#a5dfff 0deg, #f69ac1 0deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #333;
+  margin: 20px auto;
+  position: relative;
 }
+
+.timer-circle span {
+  position: absolute;
+  font-weight: bold;
+}
+
+/* Barras de pontuação */
+.score-bar {
+  width: 0%;
+  height: 20px;
+  border-radius: 10px;
+  transition: width 0.5s ease;
+  margin: 10px 0;
+}
+
+#team1bar {
+  background-color: #3a87ad; /* Azul */
+}
+
+#team2bar {
+  background-color: #e37ea3; /* Rosa */
+}
+
 
 .timer-circle::before {
     content: '';
@@ -246,3 +274,81 @@ body {
   margin: 0.3rem;
 }
 
+
+
+#scoreboard {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px 0;
+}
+
+.team-score {
+    text-align: center;
+    width: 40%;
+}
+
+.team-name {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.score-bar {
+    width: 100%;
+    height: 20px;
+    background: #333;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 5px 0;
+}
+
+.score-fill {
+    height: 100%;
+    width: 0%;
+    background: #4caf50;
+    transition: width 0.5s ease;
+}
+
+#questions-container {
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+
+.team-timer {
+    font-size: 22px;
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+#judgmentOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.judgment-screen, .result-screen {
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.vote-btn, .continue-btn {
+    background: #f69ac1;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.vote-btn:hover, .continue-btn:hover {
+    background: #a5dfff;
+}
