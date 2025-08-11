@@ -1,3 +1,199 @@
+/* FIGHT sobreposto aos turnos */
+.fight-overlay {
+  position: relative;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1;
+  pointer-events: none;
+  margin: 0 auto 0 auto;
+  margin-top: 0;
+  margin-bottom: 32px;
+}
+/* Turnos fixos no topo estilo pixel art */
+.turns-top-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 32px;
+  margin-top: 32px;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 2;
+}
+.turn-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 2.1rem;
+  color: #2a1747;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-width: unset !important;
+  text-align: center;
+  letter-spacing: 0.04em;
+  position: relative;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  outline: none !important;
+  width: 650px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Banner rosa para TEAM 1 */
+#turn-team1.turn-label {
+  background-image: url('../assets/images/game/marquise_rosa.png');
+}
+#turn-team2.turn-label {
+  background-image: url('../assets/images/game/marquise_azul.png');
+}
+.turn-label:last-child {
+  text-align: right;
+  padding-left: 48px;
+  padding-right: 80px;
+}
+.inactive-turn-label {
+  filter: grayscale(1) brightness(0.7);
+  opacity: 0.5;
+  box-shadow: none;
+  text-shadow: none;
+  outline: 4px solid #888;
+}
+.active-turn-label {
+  filter: none;
+  opacity: 1;
+  box-shadow: 0 0 24px 4px #fff, 0 0 8px 2px #ff2b7c;
+  z-index: 2;
+}
+.timer-center-only {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  margin: 0 0 0 0;
+  transform: translateY(-65px);
+}
+/* Destaque de turno no placar do topo */
+.team-score.active-turn {
+  filter: none;
+  opacity: 1;
+  box-shadow: 0 0 16px 2px #fff, 0 0 8px 2px #ff2b7c;
+  z-index: 2;
+  transition: filter 0.3s, opacity 0.3s, box-shadow 0.3s;
+}
+.team-score.inactive-turn {
+  filter: grayscale(1) brightness(0.7);
+  opacity: 0.5;
+  box-shadow: none;
+  z-index: 1;
+  transition: filter 0.3s, opacity 0.3s, box-shadow 0.3s;
+}
+
+.timer-center-only {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  margin: 48px 0 32px 0;
+}
+/* TURN BANNERS */
+.turns-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+.team-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 260px;
+  padding: 0 12px;
+  border-radius: 12px;
+  transition: filter 0.3s, opacity 0.3s;
+}
+.team-banner.active {
+  filter: none;
+  opacity: 1;
+}
+.team-banner.inactive {
+  filter: grayscale(1) brightness(0.7);
+  opacity: 0.5;
+}
+.team-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.2rem;
+  color: #fff;
+  background: linear-gradient(90deg, #ffb6ff 60%, #fff 100%);
+  border-radius: 8px;
+  padding: 8px 18px;
+  margin-bottom: 8px;
+  margin-top: 0;
+  box-shadow: 2px 2px 0 #ff2b7c;
+  border: 2px solid #fff;
+  text-shadow: 2px 2px 0 #2a1747;
+}
+.team-banner.inactive .team-label {
+  background: #888;
+  color: #ccc;
+  box-shadow: none;
+  border: 2px solid #888;
+  text-shadow: none;
+}
+.team-icon {
+  width: 48px;
+  height: 48px;
+  margin-top: 4px;
+  image-rendering: pixelated;
+}
+.timer-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+}
+/* FIGHT SCREEN */
+.fight-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  min-height: 300px;
+  width: 100vw;
+  position: relative;
+  z-index: 10;
+}
+
+.fight-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('../assets/images/game/faixa.png') center center no-repeat;
+  background-size: contain;
+  width: 800px;
+  max-width: 95vw;
+  height: 180px;
+  position: relative;
+}
+
+.fight-img {
+  max-width: 90%;
+  max-height: 140px;
+  image-rendering: pixelated;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
 
 body {
   margin: 0;

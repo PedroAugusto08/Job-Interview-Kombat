@@ -183,44 +183,118 @@ class Game {
     const scoreboard = document.getElementById('scoreboard');
     if (scoreboard) scoreboard.style.display = 'none';
 
+    // Mostra o cronômetro global (visual-timer) só na tela da pergunta
+    const visualTimer = document.getElementById('visual-timer');
+    if (visualTimer) visualTimer.style.display = '';
+
     const container = document.getElementById('questions-container');
     container.innerHTML = '';
 
+    // Mostra a pergunta
     const p = document.createElement('p');
     p.textContent = `${this.currentQuestion + 1}. ${this.selectedQuestions[this.currentQuestion]}`;
     container.appendChild(p);
 
     this.visualTimer.reset();
     this.visualTimer.start();
-
-    // Tempo para ler a pergunta
     await this.delay(10000);
     this.visualTimer.reset();
+
+    // Esconde o visual-timer antes dos turnos
+    if (visualTimer) visualTimer.style.display = 'none';
 
     // Mostra o placar antes do fight
     if (scoreboard) scoreboard.style.display = '';
 
-    // Prelúdio de luta para equipe 1
-    await this.showFightPrelude("team1");
+    // Unifica FIGHT + tela de turnos (mas não esconde o FIGHT ainda)
+    await this.showFightAndTurns();
 
-    // Equipe 1 pensa
-    await this.showTeamTimer("team1", 5);
+    // Turno equipe 1
+    await this.runTeamTurn('team1', 5);
+    // Turno equipe 2
+    await this.runTeamTurn('team2', 5);
 
-    // Prelúdio de luta para equipe 2
-    await this.showFightPrelude("team2");
+    // Esconde o FIGHT só agora, antes do julgamento
+    const fightOverlay = document.getElementById('fight-overlay');
+    if (fightOverlay) fightOverlay.style.display = 'none';
 
-    // Equipe 2 pensa
-    await this.showTeamTimer("team2", 5);
-
-    // Votação dos juízes
+    // Após os dois turnos, julgamento
     const vencedor = await JudgingScreen.show();
-
     if (vencedor) {
       this.teamScores[vencedor]++;
       this.updateScoreboard();
     }
-
     await this.nextQuestion();
+  }
+
+  async showFightAndTurns() {
+    const container = document.getElementById('questions-container');
+    // Linha dos turnos e cronômetro
+    container.innerHTML = `
+      <div class="turns-top-row">
+        <span id="turn-team1" class="turn-label">TEAM 1'S TURN</span>
+        <div class="timer-center-only">
+          <div id="team-timer" class="timer-circle"><span></span></div>
+        </div>
+        <span id="turn-team2" class="turn-label">TEAM 2'S TURN</span>
+      </div>
+      <div id="fight-overlay" class="fight-overlay">
+        <div class="fight-banner">
+          <img src="/assets/images/game/fight.png" alt="FIGHT!" class="fight-img" />
+        </div>
+      </div>
+    `;
+  }
+
+  showTurnsScreen() {
+    const container = document.getElementById('questions-container');
+    container.innerHTML = `
+      <div class="turns-top-row">
+        <span id="turn-team1" class="turn-label">TEAM 1'S TURN</span>
+        <div class="timer-center-only">
+          <div id="team-timer" class="timer-circle"><span></span></div>
+        </div>
+        <span id="turn-team2" class="turn-label">TEAM 2'S TURN</span>
+      </div>
+    `;
+  }
+
+  async runTeamTurn(team, seconds) {
+    const team1Label = document.getElementById('turn-team1');
+    const team2Label = document.getElementById('turn-team2');
+    if (team1Label && team2Label) {
+      if (team === 'team1') {
+        team1Label.classList.add('active-turn-label');
+        team2Label.classList.remove('active-turn-label');
+        team1Label.classList.remove('inactive-turn-label');
+        team2Label.classList.add('inactive-turn-label');
+      } else {
+        team2Label.classList.add('active-turn-label');
+        team1Label.classList.remove('active-turn-label');
+        team2Label.classList.remove('inactive-turn-label');
+        team1Label.classList.add('inactive-turn-label');
+      }
+    }
+    // Timer
+    const timerElement = document.getElementById('team-timer');
+    const timerSpan = timerElement.querySelector('span');
+    let startTime = Date.now();
+    return new Promise(res => {
+      const isTeam1 = team === 'team1';
+      timerSpan.textContent = seconds;
+      const interval = setInterval(() => {
+        const elapsed = (Date.now() - startTime) / 1000;
+        const remaining = Math.max(seconds - elapsed, 0);
+        const percentage = (remaining / seconds) * 100;
+        const deg = (percentage / 100) * 360;
+        timerElement.style.background = `conic-gradient(${isTeam1 ? '#3a87ad' : '#e37ea3'} ${deg}deg, #eee 0deg)`;
+        timerSpan.textContent = Math.ceil(remaining);
+        if (remaining <= 0) {
+          clearInterval(interval);
+          res();
+        }
+      }, 100);
+    });
   }
   constructor(job) {
     this.job = job;
@@ -263,8 +337,10 @@ class Game {
     return new Promise(res => {
       const container = document.getElementById('questions-container');
       container.innerHTML = `
-        <div class="fight-screen ${team}">
-          <h1>FIGHT!</h1>
+        <div class="fight-screen">
+          <div class="fight-banner">
+            <img src="/assets/images/game/fight.png" alt="FIGHT!" class="fight-img" />
+          </div>
         </div>
       `;
       setTimeout(res, 2000);
@@ -272,38 +348,59 @@ class Game {
   }
 
   async showTeamTimer(team, seconds) {
-        return new Promise(res => {
-            const container = document.getElementById('questions-container');
-            container.innerHTML = `
-                <div class="team-timer ${team}">
-                    <h2>${team.toUpperCase()}'S TURN!</h2>
-                    <div id="team-timer" class="timer-circle"><span>${seconds}</span></div>
-                </div>
-            `;
+    return new Promise(res => {
+      // Destaca o placar do topo
+      const team1Score = document.querySelector('.team-score.team1');
+      const team2Score = document.querySelector('.team-score.team2');
+      if (team1Score && team2Score) {
+        if (team === 'team1') {
+          team1Score.classList.add('active-turn');
+          team2Score.classList.remove('active-turn');
+          team1Score.classList.remove('inactive-turn');
+          team2Score.classList.add('inactive-turn');
+        } else {
+          team2Score.classList.add('active-turn');
+          team1Score.classList.remove('active-turn');
+          team2Score.classList.remove('inactive-turn');
+          team1Score.classList.add('inactive-turn');
+        }
+      }
 
-            const timerElement = document.getElementById('team-timer');
-            const timerSpan = timerElement.querySelector('span');
+      // Mostra apenas o timer centralizado
+      const container = document.getElementById('questions-container');
+      container.innerHTML = `
+        <div class="timer-center-only">
+          <div id="team-timer" class="timer-circle"><span>${seconds}</span></div>
+        </div>
+      `;
 
-            let startTime = Date.now();
-            let timeLeft = seconds;
+      const timerElement = document.getElementById('team-timer');
+      const timerSpan = timerElement.querySelector('span');
 
-            // Atualiza o fundo conic-gradient para animar o timer
-            const interval = setInterval(() => {
-                const elapsed = (Date.now() - startTime) / 1000;
-                const remaining = Math.max(seconds - elapsed, 0);
-                const percentage = (remaining / seconds) * 100;
-                const deg = (percentage / 100) * 360;
+      let startTime = Date.now();
 
-                timerElement.style.background = `conic-gradient(${team === 'team1' ? '#3a87ad' : '#e37ea3'} ${deg}deg, #eee 0deg)`;
-                timerSpan.textContent = Math.ceil(remaining);
+      const isTeam1 = team === 'team1';
+      const interval = setInterval(() => {
+        const elapsed = (Date.now() - startTime) / 1000;
+        const remaining = Math.max(seconds - elapsed, 0);
+        const percentage = (remaining / seconds) * 100;
+        const deg = (percentage / 100) * 360;
 
-                if (remaining <= 0) {
-                    clearInterval(interval);
-                    res();
-                }
-            }, 100);
-        });
-    }
+        timerElement.style.background = `conic-gradient(${isTeam1 ? '#3a87ad' : '#e37ea3'} ${deg}deg, #eee 0deg)`;
+        timerSpan.textContent = Math.ceil(remaining);
+
+        if (remaining <= 0) {
+          clearInterval(interval);
+          // Remove destaque após o turno
+          if (team1Score && team2Score) {
+            team1Score.classList.remove('active-turn', 'inactive-turn');
+            team2Score.classList.remove('active-turn', 'inactive-turn');
+          }
+          res();
+        }
+      }, 100);
+    });
+  }
 
 
 
