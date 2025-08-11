@@ -1,3 +1,44 @@
+// ============== LOADING SCREEN ==============
+class LoadingScreen {
+  constructor(loadingScreenId, blockSelector) {
+    this.loadingScreen = document.getElementById(loadingScreenId);
+    this.blocks = document.querySelectorAll(blockSelector);
+    this.currentBlock = 0;
+    this.interval = 45;
+  }
+
+  initialize() {
+    this.blocks.forEach(b => {
+      b.classList.remove('loading-block-pink');
+      b.classList.add('loading-block-blue');
+      b.style.opacity = '0.25';
+    });
+  }
+
+  fillNext() {
+    if (this.currentBlock < this.blocks.length) {
+      const block = this.blocks[this.currentBlock];
+      block.classList.remove('loading-block-blue');
+      block.classList.add('loading-block-pink');
+      block.style.opacity = '1';
+
+      this.currentBlock++;
+      setTimeout(() => this.fillNext(), this.interval);
+    } else {
+      setTimeout(() => {
+        this.loadingScreen.style.opacity = '0';
+        setTimeout(() => {
+          this.loadingScreen.style.display = 'none';
+        }, 400);
+      }, 400);
+    }
+  }
+
+  start() {
+    this.initialize();
+    this.fillNext();
+  }
+}
 // ============== UTILITIES ==============
 class URLHelper {
   static getJobFromURL() {
@@ -126,6 +167,61 @@ class JudgingScreen {
 }
 
 class Game {
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  startQuestionsDisplay() {
+    // Inicia a exibição das perguntas
+    this.currentQuestion = 0;
+    this.createVisualTimer();
+    if (typeof this.showCurrentQuestion === 'function') {
+      this.showCurrentQuestion();
+    }
+  }
+  async showCurrentQuestion() {
+    // Esconde o placar
+    const scoreboard = document.getElementById('scoreboard');
+    if (scoreboard) scoreboard.style.display = 'none';
+
+    const container = document.getElementById('questions-container');
+    container.innerHTML = '';
+
+    const p = document.createElement('p');
+    p.textContent = `${this.currentQuestion + 1}. ${this.selectedQuestions[this.currentQuestion]}`;
+    container.appendChild(p);
+
+    this.visualTimer.reset();
+    this.visualTimer.start();
+
+    // Tempo para ler a pergunta
+    await this.delay(10000);
+    this.visualTimer.reset();
+
+    // Mostra o placar antes do fight
+    if (scoreboard) scoreboard.style.display = '';
+
+    // Prelúdio de luta para equipe 1
+    await this.showFightPrelude("team1");
+
+    // Equipe 1 pensa
+    await this.showTeamTimer("team1", 5);
+
+    // Prelúdio de luta para equipe 2
+    await this.showFightPrelude("team2");
+
+    // Equipe 2 pensa
+    await this.showTeamTimer("team2", 5);
+
+    // Votação dos juízes
+    const vencedor = await JudgingScreen.show();
+
+    if (vencedor) {
+      this.teamScores[vencedor]++;
+      this.updateScoreboard();
+    }
+
+    await this.nextQuestion();
+  }
   constructor(job) {
     this.job = job;
     this.selectedQuestions = [];
@@ -210,43 +306,6 @@ class Game {
     }
 
 
-  async showCurrentQuestion() {
-    const container = document.getElementById('questions-container');
-    container.innerHTML = '';
-
-    const p = document.createElement('p');
-    p.textContent = `${this.currentQuestion + 1}. ${this.selectedQuestions[this.currentQuestion]}`;
-    container.appendChild(p);
-
-    this.visualTimer.reset();
-    this.visualTimer.start();
-
-    // Tempo para ler a pergunta
-    await this.delay(10000);
-    this.visualTimer.reset();
-
-    // Prelúdio de luta para equipe 1
-    await this.showFightPrelude("team1");
-
-    // Equipe 1 pensa
-    await this.showTeamTimer("team1", 5);
-
-    // Prelúdio de luta para equipe 2
-    await this.showFightPrelude("team2");
-
-    // Equipe 2 pensa
-    await this.showTeamTimer("team2", 5);
-
-    // Votação dos juízes
-    const vencedor = await JudgingScreen.show();
-
-    if (vencedor) {
-      this.teamScores[vencedor]++;
-      this.updateScoreboard();
-    }
-
-    await this.nextQuestion();
-  }
 
   async nextQuestion() {
     this.currentQuestion++;
@@ -254,78 +313,12 @@ class Game {
       this.stopQuestionsDisplay();
       return;
     }
-    await this.showCurrentQuestion();
-  }
-
-  stopQuestionsDisplay() {
-    this.visualTimer.reset();
-    this.showGameOver();
-  }
-
-  showGameOver() {
-    const container = document.getElementById('questions-container');
-    let winnerText = '';
-    if (this.teamScores.team1 > this.teamScores.team2) {
-      winnerText = "TEAM 1 WINS!";
-    } else if (this.teamScores.team2 > this.teamScores.team1) {
-      winnerText = "TEAM 2 WINS!";
-    } else {
-      winnerText = "IT'S A DRAW!";
-    }
-    container.innerHTML = `<h2>Fim do jogo!</h2><p>${winnerText}</p>`;
-  }
-
-  delay(ms) {
-    return new Promise(res => setTimeout(res, ms));
-  }
-
-  startQuestionsDisplay() {
-    this.createVisualTimer();
-    this.updateScoreboard();
-    this.showCurrentQuestion();
-  }
-}
-
-// ============== UI COMPONENTS ==============
-class LoadingScreen {
-  constructor(loadingScreenId, blockSelector) {
-    this.loadingScreen = document.getElementById(loadingScreenId);
-    this.blocks = document.querySelectorAll(blockSelector);
-    this.currentBlock = 0;
-    this.interval = 45;
-  }
-
-  initialize() {
-    this.blocks.forEach(b => {
-      b.classList.remove('loading-block-pink');
-      b.classList.add('loading-block-blue');
-      b.style.opacity = '0.25';
-    });
-  }
-
-  fillNext() {
-    if (this.currentBlock < this.blocks.length) {
-      const block = this.blocks[this.currentBlock];
-      block.classList.remove('loading-block-blue');
-      block.classList.add('loading-block-pink');
-      block.style.opacity = '1';
-
-      this.currentBlock++;
-      setTimeout(() => this.fillNext(), this.interval);
-    } else {
-      setTimeout(() => {
-        this.loadingScreen.style.opacity = '0';
-        setTimeout(() => {
-          this.loadingScreen.style.display = 'none';
-        }, 400);
-      }, 400);
+    // Chama o método showCurrentQuestion corretamente
+    if (typeof this.showCurrentQuestion === 'function') {
+      await this.showCurrentQuestion();
     }
   }
 
-  start() {
-    this.initialize();
-    this.fillNext();
-  }
 }
 
 class AnticipationSequence {
