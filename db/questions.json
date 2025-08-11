@@ -1,12 +1,12 @@
 {
     "general": [
         {
-            "question": "Pergunta 1"
+            "question": "PERGUNTA 1"
         }
     ],
     "developer": [
         {
-            "question": "Essa é uma pergunta modelo de desenvolvedor..."
+            "question": "ESSA É UMA PERGUNTA MODELO DE DESENVOLVEDOR"
         }
     ]
 }

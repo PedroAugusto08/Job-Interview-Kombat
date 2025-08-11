@@ -385,10 +385,10 @@ class GameFlow {
       const loadingScreen = new LoadingScreen('loading-screen', '.loading-block');
       const anticipation = new AnticipationSequence('anticipation-sequence');
       const countdown = new Countdown('countdown-screen', 'countdown-image', [
-        '/assets/images/8-countdown 3.png',
-        '/assets/images/9-countdown 2.png',
-        '/assets/images/10-countdown 1.png',
-        '/assets/images/ready.png'
+        '/assets/images/game/8-countdown 3.png',
+        '/assets/images/game/9-countdown 2.png',
+        '/assets/images/game/10-countdown 1.png',
+        '/assets/images/game/ready.png'
       ]);
 
       loadingScreen.start();
