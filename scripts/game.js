@@ -119,51 +119,199 @@ class VisualTimer {
 }
 
 class JudgingScreen {
-  static show() {
+  static show(teamLives = {team1: 5, team2: 5}) {
     return new Promise(resolve => {
-      const overlay = document.getElementById("judgmentOverlay");
-      const screen = overlay.querySelector(".judgment-screen");
-      const resultScreen = document.getElementById("resultScreen");
-      const winnerText = document.getElementById("winnerText");
-      const voteTeam1Btn = document.getElementById("voteTeam1");
-      const voteTeam2Btn = document.getElementById("voteTeam2");
-      const continueBtn = document.getElementById("continueBtn");
+      // Remove overlay antigo se existir
+      const old = document.getElementById('judging-time-overlay');
+      if (old) old.remove();
 
+      // Cria overlay
+      const overlay = document.createElement('div');
+      overlay.id = 'judging-time-overlay';
+      overlay.className = 'judging-time-overlay';
+      overlay.style.opacity = '0';
+
+      // Estrutura do conteúdo central
+      overlay.innerHTML = `
+        <div class="judging-content diagonal-layout">
+          <div class="judging-team judging-team1 diagonal-team1">
+            <div class="judging-banner team1">
+              <span class="judging-banner-label team1">TEAM 1</span>
+            </div>
+            <div class="judging-life-bar-wrapper team1">
+              <img src="/assets/images/game/life_bar_rosa.png" alt="Coração Rosa" class="judging-life-heart" />
+              <div class="judging-life-bar team1"><div class="judging-life-bar-fill team1" style="width:${(teamLives.team1/5)*100}%"></div></div>
+            </div>
+          </div>
+          <div class="judging-vs diagonal-vs">VS</div>
+          <div class="judging-team judging-team2 diagonal-team2">
+            <div class="judging-banner team2">
+              <span class="judging-banner-label team2">TEAM 2</span>
+            </div>
+            <div class="judging-life-bar-wrapper team2">
+              <div class="judging-life-bar team2"><div class="judging-life-bar-fill team2" style="width:${(teamLives.team2/5)*100}%"></div></div>
+              <img src="/assets/images/game/life_bar_azul.png" alt="Coração Azul" class="judging-life-heart" />
+            </div>
+          </div>
+          <div class="judging-strike-row diagonal-strike-row">
+            <button class="judging-strike-btn team1" id="voteTeam1">STRIKE!</button>
+            <img src="/assets/images/game/joystick.png" alt="Joystick" class="judging-joystick" />
+            <button class="judging-strike-btn team2" id="voteTeam2">STRIKE!</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+
+      // Fade-in
+      setTimeout(() => { overlay.style.opacity = '1'; }, 10);
+
+      // Lógica de voto
       let votedTeam = null;
-
-      // Reset UI
-      overlay.classList.remove("hidden");
-      screen.classList.remove("hidden");
-      resultScreen.classList.add("hidden");
-      winnerText.textContent = '';
-      votedTeam = null;
-
-      // Ativar botões de voto
-      voteTeam1Btn.disabled = false;
-      voteTeam2Btn.disabled = false;
-      continueBtn.disabled = true;
+      const voteTeam1Btn = overlay.querySelector('#voteTeam1');
+      const voteTeam2Btn = overlay.querySelector('#voteTeam2');
 
       function onVote(team) {
         votedTeam = team;
         voteTeam1Btn.disabled = true;
         voteTeam2Btn.disabled = true;
-
-        screen.classList.add("hidden");
-        resultScreen.classList.remove("hidden");
-
-        winnerText.textContent = `${team.toUpperCase()} GETS THE POINT!`;
-        continueBtn.disabled = false;
+        // Visual feedback: botão perdedor fica "apagado"
+        if (team === 'team1') {
+          voteTeam2Btn.classList.add('inactive');
+        } else {
+          voteTeam1Btn.classList.add('inactive');
+        }
+        setTimeout(() => {
+          overlay.style.opacity = '0';
+          setTimeout(() => {
+            overlay.remove();
+            resolve(votedTeam);
+          }, 500);
+        }, 1000);
       }
-
       voteTeam1Btn.onclick = () => onVote('team1');
       voteTeam2Btn.onclick = () => onVote('team2');
-
-      continueBtn.onclick = () => {
-        overlay.classList.add("hidden");
-        resolve(votedTeam);
-      };
     });
   }
+    static show(teamLives = {team1: 5, team2: 5}, gameInstance = null) {
+      return new Promise(resolve => {
+        // Remove overlay antigo se existir
+        const old = document.getElementById('judging-time-overlay');
+        if (old) old.remove();
+
+        // Cria overlay
+        const overlay = document.createElement('div');
+        overlay.id = 'judging-time-overlay';
+        overlay.className = 'judging-time-overlay';
+        overlay.style.opacity = '0';
+
+        // Estrutura do conteúdo central
+        overlay.innerHTML = `
+          <div class="choose-job-bg">
+            <div class="choose-job-bg-triangle-left"></div>
+            <div class="choose-job-bg-triangle-right"></div>
+            <div class="choose-job-bg-copas"></div>
+            <div class="choose-job-bg-espadas"></div>
+            <div class="choose-job-bg-ouros"></div>
+            <div class="choose-job-bg-paus"></div>
+          </div>
+          <div class="judging-content diagonal-layout">
+            <div class="judging-team judging-team1 diagonal-team1">
+              <div class="judging-banner team1">
+                <img src="/assets/images/game/team1.png" alt="Team 1" class="judging-banner-img team1" />
+              </div>
+              <div class="judging-life-bar-wrapper team1">
+                <img src="/assets/images/game/life_bar_rosa.png" alt="Coração Rosa" class="judging-life-heart" />
+                <div class="judging-life-bar team1"><div id="judging-life-team1" class="judging-life-bar-fill team1"></div></div>
+              </div>
+            </div>
+            <div class="judging-vs diagonal-vs">VS</div>
+            <div class="judging-team judging-team2 diagonal-team2">
+              <div class="judging-banner team2">
+                <img src="/assets/images/game/team2.png" alt="Team 2" class="judging-banner-img team2" />
+              </div>
+              <div class="judging-life-bar-wrapper team2">
+                <div class="judging-life-bar team2"><div id="judging-life-team2" class="judging-life-bar-fill team2"></div></div>
+                <img src="/assets/images/game/life_bar_azul.png" alt="Coração Azul" class="judging-life-heart" />
+              </div>
+            </div>
+            <div class="judging-strike-row diagonal-strike-row">
+              <button class="judging-strike-btn team1" id="voteTeam1">STRIKE!</button>
+              <img src="/assets/images/game/joystick.png" alt="Joystick" class="judging-joystick" />
+              <button class="judging-strike-btn team2" id="voteTeam2">STRIKE!</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(overlay);
+
+        // Fade-in
+        setTimeout(() => { overlay.style.opacity = '1'; }, 10);
+
+        // Atualização em tempo real das barras de vida da tela de julgamento
+        let rafId;
+        function updateJudgingLifeBars() {
+          if (gameInstance && gameInstance.teamLives) {
+            const l1 = document.getElementById('judging-life-team1');
+            const l2 = document.getElementById('judging-life-team2');
+            if (l1) l1.style.width = `${(gameInstance.teamLives.team1 / gameInstance.maxLives) * 100}%`;
+            if (l2) l2.style.width = `${(gameInstance.teamLives.team2 / gameInstance.maxLives) * 100}%`;
+          }
+          rafId = requestAnimationFrame(updateJudgingLifeBars);
+        }
+        if (gameInstance) updateJudgingLifeBars();
+
+        // Lógica de voto
+        let votedTeam = null;
+        const voteTeam1Btn = overlay.querySelector('#voteTeam1');
+        const voteTeam2Btn = overlay.querySelector('#voteTeam2');
+
+        function animateLifeBar(team, from, to, duration = 500) {
+          const bar = document.getElementById(`judging-life-${team}`);
+          if (!bar) return;
+          const start = performance.now();
+          function animate(now) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const value = from + (to - from) * progress;
+            bar.style.width = `${value * 100}%`;
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            }
+          }
+          requestAnimationFrame(animate);
+        }
+
+        function onVote(team) {
+          votedTeam = team;
+          voteTeam1Btn.disabled = true;
+          voteTeam2Btn.disabled = true;
+          // Visual feedback: botão perdedor fica "apagado"
+          if (team === 'team1') {
+            voteTeam2Btn.classList.add('inactive');
+          } else {
+            voteTeam1Btn.classList.add('inactive');
+          }
+          if (rafId) cancelAnimationFrame(rafId);
+
+          // Anima a barra de vida do time que tomou dano
+          if (gameInstance && gameInstance.teamLives) {
+            const max = gameInstance.maxLives || 5;
+            const current = gameInstance.teamLives[team] / max;
+            const after = Math.max((gameInstance.teamLives[team] - 1) / max, 0);
+            animateLifeBar(team, current, after);
+          }
+
+          setTimeout(() => {
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+              overlay.remove();
+              resolve(votedTeam);
+            }, 500);
+          }, 1300);
+        }
+        voteTeam1Btn.onclick = () => onVote('team1');
+        voteTeam2Btn.onclick = () => onVote('team2');
+      });
+    }
 }
 
 class Game {
@@ -233,7 +381,7 @@ class Game {
 
     this.visualTimer.reset();
     this.visualTimer.start();
-    await this.delay(2000);
+    await this.delay(10000);
     this.visualTimer.reset();
 
     // Esconde o visual-timer antes dos turnos
@@ -242,33 +390,42 @@ class Game {
     // Mostra o placar antes do fight
     if (scoreboard) scoreboard.style.display = '';
 
-    // Unifica FIGHT + tela de turnos (mas não esconde o FIGHT ainda)
+    // Agora sim, inicia os turnos
     await this.showFightAndTurns();
-
-    // Turno equipe 1
     await this.runTeamTurn('team1', 5);
-    // Turno equipe 2
     await this.runTeamTurn('team2', 5);
 
-    // Esconde o FIGHT só agora, antes do julgamento
+    // Esconde o FIGHT antes do julgamento
     const fightOverlay = document.getElementById('fight-overlay');
+    if (fightOverlay) fightOverlay.style.display = 'none';
+
+    // Esconde o FIGHT e a linha dos turnos antes do julgamento
+    const turnsRow = document.querySelector('.turns-top-row');
+    if (turnsRow) turnsRow.style.display = 'none';
     if (fightOverlay) fightOverlay.style.display = 'none';
 
     // Mostra tela "judges will decide" antes da votação
     await this.showJudgesWillDecide();
 
+    // Garante que a linha dos turnos continue escondida antes de avançar
+    const turnsRow2 = document.querySelector('.turns-top-row');
+    if (turnsRow2) turnsRow2.style.display = 'none';
+
     // Após a transição, julgamento
-    const vencedor = await JudgingScreen.show();
-    if (vencedor) {
-      this.teamScores[vencedor]++;
-      // Define perdedor e reduz vida
-      const perdedor = vencedor === 'team1' ? 'team2' : 'team1';
+    const perdedor = await JudgingScreen.show(this.teamLives, this);
+    if (perdedor) {
+      // O time clicado é o que PERDE vida
       if (this.teamLives[perdedor] > 0) {
         this.teamLives[perdedor]--;
       }
+      // O outro time ganha ponto
+      const vencedor = perdedor === 'team1' ? 'team2' : 'team1';
+      this.teamScores[vencedor]++;
       this.updateLifeBars();
       this.updateScoreboard();
     }
+
+    // Avança para a próxima pergunta
     await this.nextQuestion();
   }
 
@@ -511,10 +668,11 @@ class Game {
 
   async nextQuestion() {
     this.currentQuestion++;
-    // Chama o método showCurrentQuestion corretamente
-    if (typeof this.showCurrentQuestion === 'function') {
+    // Só chama showCurrentQuestion se ainda houver perguntas
+    if (this.currentQuestion < this.selectedQuestions.length) {
       await this.showCurrentQuestion();
     }
+    // Se acabou, pode exibir tela de fim de jogo aqui se quiser
   }
 
 }

@@ -1,3 +1,356 @@
+/* Layout diagonal para tela de julgamento */
+.diagonal-layout {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  pointer-events: none;
+}
+.diagonal-team1 {
+  position: absolute;
+  top: 20vh;
+  left: 4vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 2;
+  pointer-events: auto;
+}
+.diagonal-team2 {
+  position: absolute;
+  bottom: 25vh;
+  right: 4vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 2;
+  pointer-events: auto;
+}
+.diagonal-team1 .judging-banner {
+  margin-bottom: 8px;
+}
+.diagonal-team2 .judging-banner {
+  margin-bottom: 8px;
+}
+.diagonal-team1 .judging-life-bar-wrapper {
+  margin-left: 12px;
+}
+.diagonal-team2 .judging-life-bar-wrapper {
+  margin-right: 12px;
+}
+.diagonal-vs {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3.2rem;
+  z-index: 3;
+  pointer-events: none;
+  text-align: center;
+  text-shadow: 2px 2px 0 #ff2b7c, 0 0 8px #fff;
+}
+.diagonal-strike-row {
+  position: absolute;
+  left: 50%;
+  bottom: 4vh;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 32px;
+  z-index: 10;
+  pointer-events: auto;
+}
+.judging-joystick {
+  width: 160px;
+  height: 90px;
+  object-fit: contain;
+  margin: 0 8px 12px 8px;
+  image-rendering: pixelated;
+  z-index: 11;
+}
+.diagonal-strike-row .judging-strike-btn.team1 {
+  margin-right: 0;
+}
+.diagonal-strike-row .judging-strike-btn.team2 {
+  margin-left: 0;
+}
+.diagonal-strike-row .judging-strike-btn {
+  min-width: 260px;
+  min-height: 70px;
+  font-size: 2.1rem;
+  box-shadow: 6px 6px 0 #000;
+  border-radius: 8px;
+  border-width: 4px;
+  pointer-events: auto;
+}
+.diagonal-team1 .judging-life-bar-wrapper {
+  margin-top: 0;
+}
+.diagonal-team2 .judging-life-bar-wrapper {
+  margin-top: 0;
+}
+.judging-banner.team1 {
+  justify-content: flex-start;
+}
+.judging-banner.team2 {
+  justify-content: flex-end;
+}
+.judging-banner-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 2.1rem;
+  color: #2a1747;
+  letter-spacing: 0.04em;
+  margin-left: 48px;
+  margin-right: 48px;
+  text-shadow: 2px 2px 0 #ff2b7c;
+}
+.judging-banner-label.team2 {
+  margin-left: 48px;
+  margin-right: 80px;
+}
+.judging-banner-label.team1 {
+  margin-left: 80px;
+  margin-right: 48px;
+}
+.judging-time-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #1a0933 url('../assets/images/jobs/bg 2.png') center center no-repeat;
+  background-size: cover;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s;
+  pointer-events: auto;
+}
+.judging-content {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.judging-banners-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  margin-bottom: 0;
+  gap: 0;
+}
+.judging-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 420px;
+  max-width: 480px;
+  margin: 0 0.5vw;
+}
+.judging-banner {
+  width: 600px;
+  height: 100px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5vw;
+  margin-top: 0;
+  position: relative;
+}
+.judging-banner-img {
+  max-width: 320px;
+  max-height: 80px;
+  width: auto;
+  height: 50px;
+  display: block;
+  margin: 0 auto;
+  image-rendering: pixelated;
+}
+.judging-banner.team1 {
+  background-image: url('../assets/images/game/faixa_diagnonal_esquerda.png');
+}
+.judging-banner.team2 {
+  background-image: url('../assets/images/game/faixa_diagnonal_direita.png');
+  justify-content: flex-end;
+}
+.judging-banner-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 2.1rem;
+  color: #2a1747;
+  letter-spacing: 0.04em;
+  margin-left: 48px;
+  margin-right: 48px;
+  text-shadow: 2px 2px 0 #ff2b7c;
+}
+.judging-banner-label.team2 {
+  margin-left: 48px;
+  margin-right: 80px;
+}
+.judging-banner-label.team1 {
+  margin-left: 80px;
+  margin-right: 48px;
+}
+.judging-life-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 160px;
+  margin-top: -18px;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 10;
+}
+.judging-life-bar-wrapper.team1 {
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.judging-life-bar-wrapper.team2 {
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.judging-life-bar.team1 {
+  width: 200px;
+  height: 33px;
+  background: #fff;
+  border: 4px solid #000;
+  border-radius: 12px;
+  overflow: hidden;
+  image-rendering: pixelated;
+  position: relative;
+  z-index: 11;
+  direction: ltr;
+  display: block;
+}
+.judging-life-bar.team2 {
+  width: 200px;
+  height: 33px;
+  background: #fff;
+  border: 4px solid #000;
+  border-radius: 12px;
+  overflow: hidden;
+  image-rendering: pixelated;
+  position: relative;
+  z-index: 11;
+  direction: rtl;
+  display: block;
+}
+.judging-life-heart {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  margin-bottom: -4px;
+  margin-right: -8px;
+  margin-left: -8px;
+}
+.judging-life-bar-fill.team1 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  transition: width 0.5s steps(8);
+  background: linear-gradient(90deg,#ff9bd8,#ff2b7c 60%,#ff9bd8);
+  border-radius: 12px 0 0 12px;
+  z-index: 1;
+}
+.judging-life-bar-fill.team2 {
+  position: absolute;
+  right: 0;
+  left: auto;
+  direction: rtl;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  transition: width 0.5s steps(8);
+  background: linear-gradient(90deg,#9bd9ff,#3a87ad 60%,#9bd9ff);
+  border-radius: 12px 0 0 12px;
+  z-index: 1;
+}
+.judging-vs {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 2.6rem;
+  color: #fff;
+  text-shadow: 2px 2px 0 #ff2b7c;
+  margin: 0 2vw;
+  margin-top: 32px;
+}
+.judging-timer-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 32px 0 32px 0;
+}
+.judging-timer-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #2a1747;
+  border: 6px solid #ff9bd8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #fff;
+  font-family: 'Press Start 2P', monospace;
+  text-align: center;
+  box-shadow: 0 0 0 6px #3a87ad;
+  text-shadow: 2px 2px 0 #ff2b7c;
+}
+.judging-strike-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 64px;
+  margin-top: 32px;
+}
+.judging-strike-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 2rem;
+  padding: 18px 48px;
+  border: 4px solid #000;
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 #000;
+  cursor: pointer;
+  image-rendering: pixelated;
+  transition: filter 0.2s, opacity 0.2s, transform 0.15s cubic-bezier(.4,2,.6,.8);
+  outline: none;
+}
+
+.judging-strike-btn:hover:not(:disabled):not(.inactive) {
+  transform: translateY(-8px) scale(1.07) rotate(-3deg);
+  box-shadow: 8px 12px 0 #000;
+  filter: brightness(1.1) drop-shadow(0 0 8px #fff6);
+}
+.judging-strike-btn.team1 {
+  background: #ff9bd8;
+  color: #2a1747;
+  text-shadow: 2px 2px 0 #fff;
+}
+.judging-strike-btn.team2 {
+  background: #9bd9ff;
+  color: #2a1747;
+  text-shadow: 2px 2px 0 #fff;
+}
+.judging-strike-btn.inactive {
+  filter: grayscale(1) brightness(0.7);
+  opacity: 0.5;
+  pointer-events: none;
+}
 /* Overlay para a tela dos juízes */
 .judges-will-decide-overlay {
   position: fixed;
