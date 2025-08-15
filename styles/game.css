@@ -1,3 +1,10 @@
+.life-bar-wrapper.inactive,
+.life-bar.inactive,
+.life-heart.inactive {
+  filter: grayscale(1) brightness(0.7);
+  opacity: 0.5;
+  transition: filter 0.3s, opacity 0.3s;
+}
 /* FIGHT sobreposto aos turnos */
 .fight-overlay {
   position: relative;
@@ -21,6 +28,95 @@
   margin-bottom: 0;
   position: relative;
   z-index: 2;
+}
+/* Bloco de turno contendo banner + barra de vida */
+.turn-block {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 6px;
+}
+/* Barra de vida */
+.life-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 160px;
+  margin-top: -50px;
+  margin-left: 24px; /* Added margin-left for team1 */
+  position: relative;
+  z-index: 10;
+}
+.life-bar-wrapper.team1 {
+  margin-left: 24px;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.life-bar-wrapper.team2 {
+  margin-right: 24px;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.life-bar.team1 {
+  width: 200px;
+  height: 33px;
+  background: #ffffff;
+  border: 4px solid #000000;
+  box-shadow: none;
+  position: relative;
+  overflow: hidden;
+  image-rendering: pixelated;
+  border-radius: 12px;
+  z-index: 11;
+  direction: ltr;
+  display: block;
+}
+.life-bar.team2 {
+  width: 200px;
+  height: 33px;
+  background: #ffffff;
+  border: 4px solid #000000;
+  box-shadow: none;
+  position: relative;
+  overflow: hidden;
+  image-rendering: pixelated;
+  border-radius: 12px;
+  z-index: 11;
+  direction: rtl;
+  display: block;
+}
+.life-heart {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  margin-bottom: -4px;
+  margin-right: -8px;
+  margin-left: -8px;
+}
+.life-bar-fill.team1 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  transition: width 0.5s steps(8);
+  background: linear-gradient(90deg,#ff9bd8,#ff2b7c 60%,#ff9bd8);
+  border-radius: 12px 0 0 12px;
+  z-index: 1;
+}
+.life-bar-fill.team2 {
+  position: absolute;
+  right: 0;
+  left: auto;
+  direction: rtl;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  transition: width 0.5s steps(8);
+  background: linear-gradient(90deg,#9bd9ff,#3a87ad 60%,#9bd9ff);
+  border-radius: 12px 0 0 12px;
+  z-index: 1;
 }
 .turn-label {
   font-family: 'Press Start 2P', monospace;
@@ -431,20 +527,23 @@ body {
 }
 
 /* Barras de pontuação */
+
 .score-bar {
   width: 0%;
   height: 20px;
-  border-radius: 10px;
+  border-radius: 12px;
   transition: width 0.5s ease;
   margin: 10px 0;
 }
 
 #team1bar {
   background-color: #3a87ad; /* Azul */
+  border-radius: 12px 0 0 12px;
 }
 
 #team2bar {
   background-color: #e37ea3; /* Rosa */
+  border-radius: 12px 0 0 12px;
 }
 
 

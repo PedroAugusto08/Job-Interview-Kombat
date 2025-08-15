@@ -167,6 +167,9 @@ class JudgingScreen {
 }
 
 class Game {
+  stopQuestionsDisplay() {
+    // Lógica para finalizar a exibiçao das perguntas pode ser adicionada aqui
+  }
   delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -197,7 +200,7 @@ class Game {
 
     this.visualTimer.reset();
     this.visualTimer.start();
-    await this.delay(10000);
+    await this.delay(2000);
     this.visualTimer.reset();
 
     // Esconde o visual-timer antes dos turnos
@@ -222,6 +225,12 @@ class Game {
     const vencedor = await JudgingScreen.show();
     if (vencedor) {
       this.teamScores[vencedor]++;
+      // Define perdedor e reduz vida
+      const perdedor = vencedor === 'team1' ? 'team2' : 'team1';
+      if (this.teamLives[perdedor] > 0) {
+        this.teamLives[perdedor]--;
+      }
+      this.updateLifeBars();
       this.updateScoreboard();
     }
     await this.nextQuestion();
@@ -232,11 +241,23 @@ class Game {
     // Linha dos turnos e cronômetro
     container.innerHTML = `
       <div class="turns-top-row">
-        <span id="turn-team1" class="turn-label">TEAM 1'S TURN</span>
+        <div class="turn-block" data-team="team1">
+          <span id="turn-team1" class="turn-label">TEAM 1'S TURN!</span>
+          <div class="life-bar-wrapper team1">
+            <img src="/assets/images/game/life_bar_rosa.png" alt="Coração Rosa" class="life-heart" />
+            <div class="life-bar team1"><div id="life-team1" class="life-bar-fill team1"></div></div>
+          </div>
+        </div>
         <div class="timer-center-only">
           <div id="team-timer" class="timer-circle"><span></span></div>
         </div>
-        <span id="turn-team2" class="turn-label">TEAM 2'S TURN</span>
+        <div class="turn-block" data-team="team2">
+          <span id="turn-team2" class="turn-label">TEAM 2'S TURN!</span>
+          <div class="life-bar-wrapper team2">
+            <div class="life-bar team2"><div id="life-team2" class="life-bar-fill team2"></div></div>
+            <img src="/assets/images/game/life_bar_azul.png" alt="Coração Azul" class="life-heart" />
+          </div>
+        </div>
       </div>
       <div id="fight-overlay" class="fight-overlay">
         <div class="fight-banner">
@@ -244,6 +265,7 @@ class Game {
         </div>
       </div>
     `;
+    this.updateLifeBars();
   }
 
   showTurnsScreen() {
@@ -260,19 +282,52 @@ class Game {
   }
 
   async runTeamTurn(team, seconds) {
-    const team1Label = document.getElementById('turn-team1');
-    const team2Label = document.getElementById('turn-team2');
+  const team1Label = document.getElementById('turn-team1');
+  const team2Label = document.getElementById('turn-team2');
+  const team1BarWrap = document.querySelector('.life-bar-wrapper.team1');
+  const team2BarWrap = document.querySelector('.life-bar-wrapper.team2');
+
     if (team1Label && team2Label) {
       if (team === 'team1') {
         team1Label.classList.add('active-turn-label');
         team2Label.classList.remove('active-turn-label');
         team1Label.classList.remove('inactive-turn-label');
         team2Label.classList.add('inactive-turn-label');
+        // Ativa barra/heart do time 1, desativa do time 2
+        if (team1BarWrap) {
+          team1BarWrap.classList.remove('inactive');
+          const bar = team1BarWrap.querySelector('.life-bar');
+          const heart = team1BarWrap.querySelector('.life-heart');
+          if (bar) bar.classList.remove('inactive');
+          if (heart) heart.classList.remove('inactive');
+        }
+        if (team2BarWrap) {
+          team2BarWrap.classList.add('inactive');
+          const bar = team2BarWrap.querySelector('.life-bar');
+          const heart = team2BarWrap.querySelector('.life-heart');
+          if (bar) bar.classList.add('inactive');
+          if (heart) heart.classList.add('inactive');
+        }
       } else {
         team2Label.classList.add('active-turn-label');
         team1Label.classList.remove('active-turn-label');
         team2Label.classList.remove('inactive-turn-label');
         team1Label.classList.add('inactive-turn-label');
+        // Ativa barra/heart do time 2, desativa do time 1
+        if (team2BarWrap) {
+          team2BarWrap.classList.remove('inactive');
+          const bar = team2BarWrap.querySelector('.life-bar');
+          const heart = team2BarWrap.querySelector('.life-heart');
+          if (bar) bar.classList.remove('inactive');
+          if (heart) heart.classList.remove('inactive');
+        }
+        if (team1BarWrap) {
+          team1BarWrap.classList.add('inactive');
+          const bar = team1BarWrap.querySelector('.life-bar');
+          const heart = team1BarWrap.querySelector('.life-heart');
+          if (bar) bar.classList.add('inactive');
+          if (heart) heart.classList.add('inactive');
+        }
       }
     }
     // Timer
@@ -304,6 +359,8 @@ class Game {
 
     this.teamScores = { team1: 0, team2: 0 };
     this.maxPoints = 10; // para escala da barra de pontos
+  this.maxLives = 5;
+  this.teamLives = { team1: this.maxLives, team2: this.maxLives };
   }
 
   async initialize() {
@@ -323,14 +380,26 @@ class Game {
   }
 
   updateScoreboard() {
-    document.getElementById('team1points').textContent = this.teamScores.team1;
-    document.getElementById('team2points').textContent = this.teamScores.team2;
+    const team1points = document.getElementById('team1points');
+    const team2points = document.getElementById('team2points');
+    const team1bar = document.getElementById('team1bar');
+    const team2bar = document.getElementById('team2bar');
+
+    if (team1points) team1points.textContent = this.teamScores.team1;
+    if (team2points) team2points.textContent = this.teamScores.team2;
 
     const t1Percent = Math.min((this.teamScores.team1 / this.maxPoints) * 100, 100);
     const t2Percent = Math.min((this.teamScores.team2 / this.maxPoints) * 100, 100);
 
-    document.getElementById('team1bar').style.width = `${t1Percent}%`;
-    document.getElementById('team2bar').style.width = `${t2Percent}%`;
+    if (team1bar) team1bar.style.width = `${t1Percent}%`;
+    if (team2bar) team2bar.style.width = `${t2Percent}%`;
+  }
+
+  updateLifeBars() {
+    const l1 = document.getElementById('life-team1');
+    const l2 = document.getElementById('life-team2');
+    if (l1) l1.style.width = `${(this.teamLives.team1 / this.maxLives) * 100}%`;
+    if (l2) l2.style.width = `${(this.teamLives.team2 / this.maxLives) * 100}%`;
   }
 
   async showFightPrelude(team) {
@@ -406,10 +475,6 @@ class Game {
 
   async nextQuestion() {
     this.currentQuestion++;
-    if (this.currentQuestion >= this.selectedQuestions.length) {
-      this.stopQuestionsDisplay();
-      return;
-    }
     // Chama o método showCurrentQuestion corretamente
     if (typeof this.showCurrentQuestion === 'function') {
       await this.showCurrentQuestion();

@@ -6,7 +6,13 @@
     ],
     "developer": [
         {
-            "question": "ESSA É UMA PERGUNTA MODELO DE DESENVOLVEDOR"
+            "question": "O QUE É UMA LINGUAGEM DE PROGRAMAÇÃO?"
+        },
+        {
+            "question": "O QUE É UMA API?"
+        },
+        {
+            "question": "O QUE É UM DESENVOLVEDOR?"
         }
     ]
 }
