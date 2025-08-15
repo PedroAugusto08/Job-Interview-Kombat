@@ -167,6 +167,39 @@ class JudgingScreen {
 }
 
 class Game {
+  async showJudgesWillDecide() {
+    return new Promise(resolve => {
+      const container = document.getElementById('questions-container');
+      const prevDisplay = container.style.display;
+      // Esconde tudo
+      container.style.display = 'none';
+      // Cria elemento para centralizar o PNG
+      const judgesDiv = document.createElement('div');
+      judgesDiv.id = 'judges-will-decide-overlay';
+      judgesDiv.className = 'judges-will-decide-overlay';
+      // Imagem central
+      const img = document.createElement('img');
+      img.src = '/assets/images/game/judges_will_decide.png';
+      img.alt = 'Judges Will Decide';
+      img.className = 'judges-will-decide-img';
+      judgesDiv.appendChild(img);
+      document.body.appendChild(judgesDiv);
+      // Fade-in
+      setTimeout(() => {
+        judgesDiv.style.opacity = '1';
+        // Após 1.5s, fade-out e remove
+        setTimeout(() => {
+          judgesDiv.style.opacity = '0';
+          setTimeout(() => {
+            judgesDiv.remove();
+            // Restaura conteúdo
+            container.style.display = prevDisplay;
+            resolve();
+          }, 500);
+        }, 1500);
+      }, 10);
+    });
+  }
   stopQuestionsDisplay() {
     // Lógica para finalizar a exibiçao das perguntas pode ser adicionada aqui
   }
@@ -221,7 +254,10 @@ class Game {
     const fightOverlay = document.getElementById('fight-overlay');
     if (fightOverlay) fightOverlay.style.display = 'none';
 
-    // Após os dois turnos, julgamento
+    // Mostra tela "judges will decide" antes da votação
+    await this.showJudgesWillDecide();
+
+    // Após a transição, julgamento
     const vencedor = await JudgingScreen.show();
     if (vencedor) {
       this.teamScores[vencedor]++;

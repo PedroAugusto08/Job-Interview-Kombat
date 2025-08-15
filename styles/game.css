@@ -1,3 +1,23 @@
+/* Overlay para a tela dos juízes */
+.judges-will-decide-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.judges-will-decide-img {
+  max-width: 60vw;
+  max-height: 60vh;
+  image-rendering: pixelated;
+}
 .life-bar-wrapper.inactive,
 .life-bar.inactive,
 .life-heart.inactive {
