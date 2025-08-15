@@ -1,0 +1,274 @@
+.exit-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999999999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.exit-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+.bgs-exit {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.exit-overlay .bg-fundo {
+    position: absolute;
+    width: 1100px;
+    height: 500px;
+    background-color: #2a1747;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.exit-overlay .bg-frente {
+    position: absolute;
+    width: 1100px;
+    height: 500px;
+    background-color: rgb(56, 11, 37);
+    top: 51%;
+    left: 50.5%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+
+.exit-overlay .faixa {
+    background-image: url('../assets/images/exit/faixa\ cinza1.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    position: absolute;
+    top:18%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px; 
+    height: 100px; 
+    z-index: 3; 
+}
+
+.bgs-exit {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    
+}
+
+.exit .bg-frente {
+    width: 1100px;
+    height: 500px;
+    background-color: rgb(56, 11, 37);
+    position: absolute;
+    top: 51%;
+    left: 50.5%; 
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.exit .bg-fundo {
+    width: 1100px;
+    height: 500px;
+    background-color: #2a1747;
+    position: absolute;
+    z-index: 2; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.exit-overlay .bg-pixel {
+    width: 1100px;
+    height: 500px;
+    background-image: url('../assets/images/exit/bg-pixel.png');
+    position: absolute;
+    top: 50%;
+    left: 47%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+
+}
+.exit-overlay .q1 {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 14rem;
+    background-image: url('../assets/images/quadradinhos.png');
+    width: 10px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    z-index: 1000;
+    height: 450px;
+}
+
+
+.exit-overlay .q2 {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 14rem;
+    background-image: url('../assets/images/quadradinhos.png');
+    width: 10px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    z-index: 1000;
+    height: 450px;
+}
+.exit .faixa {
+    background-image: url('../assets/images/exit/faixa\ cinza1.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    position: absolute;
+    top:18%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px; 
+    height: 100px; 
+    z-index: 3; 
+}
+.faixa-texto {
+    position: absolute;
+    top: 48.5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    font-family: 'MortalKombat1Font', 'Press Start 2P', monospace;
+    z-index: 4;
+    width: 100%;
+    text-align: center;
+    font-size: 2.1rem;
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+    color: #feedfe;
+    text-shadow: 2px 2px 1px #b14dd0;
+
+}
+.exit-overlay .danger {
+    position: absolute;
+    background-image: url('../assets/images/exit/danger.png');
+    background-size: contain;
+    z-index: 4;
+    width: 100px;
+    height: 100px;
+    top: 5%;
+    left: 15%;
+    background-repeat: no-repeat;
+}
+
+.exit-options {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.exit-btn {
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+    overflow: hidden;
+    background-color: transparent !important;
+    position: fixed; 
+    bottom: 50px;   
+    width: 200px;
+    height: 80px;
+    border: none;
+    cursor: pointer;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1000; 
+}
+
+.exit-btn-yes {
+    background: url('../assets/images/exit/botao yes.png') no-repeat center center;
+    width: 300px; 
+    height: 150px;
+    left: 23.5%; 
+
+    }
+
+.exit-btn-no {
+    background: url('../assets/images/exit/botao\ nooo1.png') no-repeat center center;
+    width: 300px; 
+    height: 150px;
+    right: 23.5%; 
+}
+
+.exit-btn-yes:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 10px rgba(198, 18, 174, 0.7));
+}
+.exit-btn-no:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 10px rgb(18, 123, 198));
+}
+
+.nice-emoji {
+    position: absolute;
+    right: 21em;
+    bottom: 0.2rem;
+    z-index: 10000000;
+    background-image: url('../assets/images/exit/emoji\ farmando\ aura\ cut.png');
+    width: 100px;
+    height: 100px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    animation: float 3s ease-in-out infinite;
+
+}
+.sad-emoji {
+    position: absolute;
+    left: 22rem;
+    bottom: 0.2rem;
+    z-index: 10000000;
+    background-image: url('../assets/images/exit/emoji\ kkkrying\ \(1\).png');
+    width: 80px;
+    height: 90px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    animation: float 3s ease-in-out infinite 0.5s;
+
+}
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+.txt-exit {
+    width: 800px;
+    color: #feedfe;
+    font-size: 4rem;
+    text-shadow: 4px 3px 1px #c12de2;
+    text-align: center;
+    position: absolute;
+    font-family: 'MortalKombat1Font', 'Press Start 2P', monospace;
+    left: 50%;
+    top: 48%; 
+    transform: translate(-50%, -50%); 
+    z-index: 5;
+}

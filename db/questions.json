@@ -1,18 +1,36 @@
 {
     "general": [
-        {
-            "question": "PERGUNTA 1"
-        }
+        {"question": "How would you describe yourself?"},
+        {"question": "Why do you want to work for this company?"},
+        {"question": "What is your greatest weakness?"},
+        {"question": "How do you cope with pressure?"},
+        {"question": "Why are you leaving your job?"},
+        {"question": "What are your goals for the future?"},
+        {"question": "What can you offer our company?"},
+        {"question": "What are your salary requirements?"},
+        {"question": "What do you do when you make a mistake at work?"},
+        {"question": "What are your salary requirements?"},
+        {"question": "What are your strengths?"},
+        {"question": "What motivates you?"},
+        {"question": "What is your biggest career dream?"},
+        {"question": "Where do you see yourself in 5 years?"},
+        {"question": "Have you ever had conflicts with coworkers or bosses? How did you handle it?"},
+        {"question": "Why do you think you're the right person for this job?"},
+        {"question": "What do you expect from this position?"},
+        {"question": "How would you handle an impossible deadline?"},
+        {"question": "What would you do if you disagreed with your manager?"}
     ],
     "developer": [
-        {
-            "question": "O QUE É UMA LINGUAGEM DE PROGRAMAÇÃO?"
-        },
-        {
-            "question": "O QUE É UMA API?"
-        },
-        {
-            "question": "O QUE É UM DESENVOLVEDOR?"
-        }
+        {"question": "Which programming language are you most proficient in? Can you explain a project where you used it?"},
+        {"question": "How do you structure your code to ensure maintainability and scalability?"},
+        {"question": "Describe a complex bug you solved. How did you approach the problem?"},
+        {"question": "Have you ever optimized a slow-performing system? What techniques did you use?"},
+        {"question": "How do you handle feedback in code reviews?"},
+        {"question": "Do you contribute to open-source projects or have a GitHub portfolio?"},
+        {"question": "How do you handle technical debt in a project? Can you give an example?"},
+        {"question": "What’s your approach to debugging a problem you’ve never seen before?"},
+        {"question": "What’s your process for reviewing someone else’s code? What do you look for?"},
+        {"question": "Have you ever missed a deadline? What happened, and how did you handle it?"},
+        {"question": "Describe a recent technical concept you learned. How did you apply it (or plan to)?"}
     ]
-}
+}   
