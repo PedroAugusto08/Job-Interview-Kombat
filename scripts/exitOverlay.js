@@ -79,8 +79,11 @@ function setupExitOverlayEvents() {
     
     if (exitYesBtn) {
         exitYesBtn.addEventListener('click', () => {
-            window.close();  //por algum motivo nãoo ta funcionando quando ta in game
-            
+            if (window.location.pathname.endsWith('start.html')) { //p contornar a restrição
+                window.close();
+            }
+            window.location.href = '/start.html';  
+          
         });
     }
 
@@ -88,5 +91,4 @@ function setupExitOverlayEvents() {
         exitNoBtn.addEventListener('click', () => toggleOverlay(false));
     }
 }
-
 document.addEventListener('DOMContentLoaded', createExitOverlay);

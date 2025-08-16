@@ -1,0 +1,227 @@
+.victory {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999999;
+    opacity: 1;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bgs-victory {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.bgs-victory .bg-golden {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/images/winner/bg\ 3.png');
+    z-index: 2;
+    bottom: 0rem;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.bgs-elements {
+    z-index: 0;
+}
+.logo-opaca {
+    background-image: url('../assets/images/winner/cefet\ icon\ opaco.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 30%;
+    left: 51%;
+    width: 800px; 
+    height: 600px; 
+
+}
+.naipes {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    z-index: 10;
+    column-gap: 60vw;
+    row-gap: 20vw;
+}
+.copasGolden { 
+    background-image: url('../assets/images/winner/copas\ dourado.png');
+    grid-area: 1 / 1; 
+    width: 200px; 
+    height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;}   
+    
+.espadasGolden { 
+    grid-area: 2 / 1; 
+    background-image: url('../assets/images/winner/espadas\ dourado.png');
+    width: 200px; 
+    height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+} 
+.ourosGolden { 
+    grid-area: 1 / 2; 
+    background-image: url('../assets/images/winner/ouros\ dourado.png');
+    width: 200px;
+    height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+}   
+.pausGolden{ 
+    grid-area: 2 / 2; 
+    background-image: url('../assets/images/winner/paus\ dourado.png');
+    width: 200px; 
+    height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}   
+
+.triangulo-direita {
+    background-image: url('../assets/images/winner/bg\ triangulo\ \ vermelho.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 800px; 
+    height: 600px; 
+}
+.triangulo-esquerda {
+    background-image: url('../assets/images/winner/bg\ triangulo\ \ vermelho.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    position: absolute;
+    transform: translate(-242%, -50%);
+    width: 800px; 
+    height: 600px; 
+}
+
+.faixa {
+    background-image: url('../assets/images/winner/faixa\ branca\ large.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    position: absolute;
+    left: 50%;
+    bottom: 10%;
+    transform: translate(-50%, -50%);
+    width: 900px; 
+    height:200px; 
+    z-index: 3; 
+}
+.elements .coroa {
+    background-image: url('../assets/images/winner/coroa.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    position: absolute;
+    left: 50%;
+    bottom: 16%;
+    transform: translate(-50%, -50%);
+    width: 800px; 
+    height: 400px; 
+
+}
+.elements .brilho {
+    background-image: url('../assets/images/winner/brilho.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    position: absolute;
+    left: 51%;
+    top: 10%;
+    width: 400px; 
+    height: 300px; 
+    z-index: 5;
+}
+.estrelas {
+    position: absolute;
+    left: 50%;
+    bottom: 25%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 320px; 
+    width: 100%;
+    z-index: 4;
+}
+
+.estrela-direita {
+    width: 300px;
+    height: 300px;
+    background-image: url('../assets/images/winner/estrela\ direita.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.estrela-esquerda  {
+    width: 300px;
+    height: 300px;
+    background-image: url('../assets/images/winner/estrela\ esquerda.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
+.figures {
+    position: absolute;
+    left: 50%;
+    top: 5%; 
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 480px; 
+    width: 100%;
+    z-index: 4;
+    
+}
+
+.diamante {
+    width: 200px;
+    height: 200px;
+    background-image: url('../assets/images/winner/diamante.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: float 3s ease-in-out infinite 0.5s;
+
+}
+
+.coracao  {
+    width: 300px;
+    height: 300px;
+    background-image: url('../assets/images/winner/coracao.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: float 2s ease-in-out infinite 0.5s;
+
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
