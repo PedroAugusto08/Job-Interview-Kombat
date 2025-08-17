@@ -572,6 +572,67 @@
   min-width: 120px;
   margin: 48px 0 32px 0;
 }
+
+/* Labels de turno */
+.turn-label {
+  transition: 
+    filter 0.5s ease, 
+    opacity 0.5s ease, 
+    box-shadow 0.5s ease, 
+    transform 0.5s ease;
+}
+
+/* Inativo */
+.inactive-turn-label {
+  filter: grayscale(1) brightness(0.7);
+  opacity: 0.5;
+  box-shadow: none;
+  text-shadow: none;
+  outline: 4px solid #888;
+  transform: scale(0.95);
+}
+
+/* Ativo */
+.active-turn-label {
+  filter: none;
+  opacity: 1;
+  box-shadow: 0 0 24px 4px #fff, 0 0 8px 2px #ff2b7c;
+  z-index: 2;
+  transform: scale(1.1);
+  animation: pulseActive 1.2s ease-in-out infinite alternate;
+}
+
+/* Pulsar suave quando ativo */
+@keyframes pulseActive {
+  from { transform: scale(1.1); }
+  to   { transform: scale(1.05); }
+}
+
+/* Destaque no placar */
+.team-score {
+  transition: 
+    filter 0.4s ease, 
+    opacity 0.4s ease, 
+    box-shadow 0.4s ease, 
+    transform 0.4s ease;
+}
+
+.team-score.active-turn {
+  filter: none;
+  opacity: 1;
+  box-shadow: 0 0 16px 2px #fff, 0 0 8px 2px #ff2b7c;
+  z-index: 2;
+  transform: scale(1.1);
+}
+
+.team-score.inactive-turn {
+  filter: grayscale(1) brightness(0.7);
+  opacity: 0.5;
+  box-shadow: none;
+  z-index: 1;
+  transform: scale(0.95);
+}
+
 /* TURN BANNERS */
 .turns-row {
   display: flex;
@@ -863,24 +924,28 @@ body {
 }
 
 #questions-container p {
-    width: 700px;
-    height: 200px;
+    display: inline-flex;
+    padding: 30px 50px;
+    min-width: 400px;
+    max-width: 90vw;
+    min-height: 150px;
+    max-height: 300px;
+    overflow: hidden; /* evita texto estourar */
+    font-size: clamp(1.4rem, 2vw, 2.6rem);
+    line-height: 1.4;
+    text-align: center;
     background: url('../assets/images/game/small_question.png') center center no-repeat;
     background-size: 100% 100%;
     color: #2a1747;
-    font-size: 2.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 40px auto 0 auto;
     font-family: 'sans-serif';
-    font-size: 2.8rem;
-    letter-spacing: 0.08em;
     text-shadow: 2px 2px 0 #ff2b7c;
     image-rendering: pixelated;
-    position: relative;
-    z-index: 2;
+    margin: 40px auto;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
 }
+
 
 /* Timer circular igual para equipes */
 .timer-circle {
@@ -1111,3 +1176,4 @@ body {
 .vote-btn:hover, .continue-btn:hover {
     background: #a5dfff;
 }
+

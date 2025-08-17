@@ -729,6 +729,7 @@ class Countdown {
 class GameFlow {
   static async start() {
     const job = URLHelper.getJobFromURL();
+    console.log(`Iniciando jogo para o trabalho: ${job}`);
 
     try {
       const loadingScreen = new LoadingScreen('loading-screen', '.loading-block');

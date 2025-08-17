@@ -32,5 +32,51 @@
         {"question": "What’s your process for reviewing someone else’s code? What do you look for?"},
         {"question": "Have you ever missed a deadline? What happened, and how did you handle it?"},
         {"question": "Describe a recent technical concept you learned. How did you apply it (or plan to)?"}
+    ],"designer": [
+        {"question": "What is your approach to creating interfaces that are both functional and visually appealing?"},
+        {"question": "How do you handle feedback from users and stakeholders regarding design?"},
+        {"question": "Do you prefer working with wireframes or high-fidelity prototypes? Why?"},
+        {"question": "Tell me about a project where you had to balance aesthetics and usability."},
+        {"question": "Which design tools do you use most in your daily work?"},
+        {"question": "How do you ensure visual consistency in a digital product?"},
+        {"question": "Describe a situation where you had to defend your design choices."},
+        {"question": "What was the biggest design challenge you faced and how did you overcome it?"},
+        {"question": "How do you collaborate with developers to implement your design?"},
+        {"question": "Which design trends do you consider most relevant today?"}
+    ],"project manager": [
+        {"question": "How do you define priorities in a project with limited resources?"},
+        {"question": "Tell me about a situation where you had to deal with conflicts between stakeholders."},
+        {"question": "How do you measure the success of a project?"},
+        {"question": "Which agile methodologies have you used and which do you prefer?"},
+        {"question": "How do you keep the team motivated during long or challenging projects?"},
+        {"question": "Have you ever had to deal with a delayed project? How did you act to correct it?"},
+        {"question": "How do you balance business needs and the technical capabilities of the team?"},
+        {"question": "What was the most complex project you’ve ever managed?"},
+        {"question": "How do you ensure clear communication between different project areas?"},
+        {"question": "What do you do when you realize a project will not meet its objectives?"}
+    ],"quality assurance": [
+        {"question": "What is the difference between manual and automated testing? When would you use each?"},
+        {"question": "Which test automation tools have you used?"},
+        {"question": "How do you ensure product quality under tight deadlines?"},
+        {"question": "Describe a critical bug you found and how it was handled."},
+        {"question": "Have you worked with performance or load testing?"},
+        {"question": "How do you organize test cases to ensure proper coverage?"},
+        {"question": "Tell me about a time you found a problem that developers hadn’t noticed."},
+        {"question": "What is your strategy for testing a feature with unclear documentation?"},
+        {"question": "How do you deal with bugs that are not easily reproducible?"},
+        {"question": "Which metrics do you consider important for evaluating software quality?"}
+    ],"data analyst": [
+        {"question": "Which tools and languages do you use for data analysis?"},
+        {"question": "Tell me about a project where you used data to support a business decision."},
+        {"question": "How do you ensure the quality and reliability of the data you use?"},
+        {"question": "Have you ever had to deal with very large databases? How did you overcome the challenges?"},
+        {"question": "What is your experience with data visualization?"},
+        {"question": "Explain a machine learning model you have implemented."},
+        {"question": "How do you handle missing or inconsistent data?"},
+        {"question": "Tell me about a case where data analysis led to an unexpected insight."},
+        {"question": "Have you worked with real-time data pipelines?"},
+        {"question": "How do you communicate analysis results to non-technical people?"}
     ]
+
+
 }   
