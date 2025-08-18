@@ -1,3 +1,21 @@
+// Transição suave ao clicar em PLAY na escolha de job
+document.addEventListener('DOMContentLoaded', function() {
+    const playBtn = document.querySelector('.job-modal-play');
+    const fadeDiv = document.getElementById('job-fade-transition');
+    if (playBtn && fadeDiv) {
+        playBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            fadeDiv.classList.remove('hidden');
+            // Força reflow para garantir transição
+            setTimeout(() => {
+                fadeDiv.classList.add('active');
+            }, 10);
+            setTimeout(() => {
+                window.location.href = 'game.html';
+            }, 800);
+        });
+    }
+});
 /// SOUND
 let playingSoundsController = {
     hover: false

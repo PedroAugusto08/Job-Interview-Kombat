@@ -1,3 +1,5 @@
+</body>
+<div id="game-fade-in" class="game-fade-in"></div>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -64,13 +66,18 @@
     <div class="choose-job-bg-paus"></div>
   </div>
   
-  <div id="anticipation-sequence" class="anticipation hidden">
-    <img src="/assets/images/game/7-antecipation 1.png" alt="Antecipação">
-  </div>
 
-  <!-- TELA DE CONTAGEM REGRESSIVA -->
-  <div id="countdown-screen" class="anticipation hidden">
-    <img id="countdown-image" src="" alt="Contagem">
+
+
+  <!-- OVERLAY ÚNICO PARA ANTECIPAÇÃO E CONTAGEM -->
+  <div id="game-overlay" class="game-overlay hidden">
+    <div class="overlay-bg-triangle-left"></div>
+    <div class="overlay-bg-triangle-right"></div>
+    <div class="overlay-bg-copas"></div>
+    <div class="overlay-bg-espadas"></div>
+    <div class="overlay-bg-ouros"></div>
+    <div class="overlay-bg-paus"></div>
+    <div id="overlay-content"></div>
   </div>
 
   <!-- CONTEÚDO DO JOGO -->
@@ -80,21 +87,6 @@
     <div id="visual-timer" class="timer-circle"></div>
 
     <div id="questions-container"></div>
-  </div>
-
-  <!-- Overlay julgamento -->
-  <div id="judgmentOverlay" class="hidden">
-    <div class="judgment-screen">
-      <h2>JUDGING TIME!</h2>
-      <p>Vote for the team that did better:</p>
-      <button class="vote-btn" id="voteTeam1">Vote TEAM 1</button>
-      <button class="vote-btn" id="voteTeam2">Vote TEAM 2</button>
-    </div>
-
-    <div id="resultScreen" class="result-screen hidden">
-      <h2 id="winnerText"></h2>
-      <button id="continueBtn" class="continue-btn">Continue</button>
-    </div>
   </div>
 
 </body>

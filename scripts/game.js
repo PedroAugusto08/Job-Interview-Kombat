@@ -1,3 +1,13 @@
+// Fade-in suave ao entrar no game.html
+window.addEventListener('DOMContentLoaded', function() {
+  const fade = document.getElementById('game-fade-in');
+  if (fade) {
+    setTimeout(() => {
+      fade.classList.add('hide');
+      setTimeout(() => fade.remove(), 800);
+    }, 60); // delay para garantir efeito
+  }
+});
 // ============== LOADING SCREEN ==============
 class LoadingScreen {
   constructor(loadingScreenId, blockSelector) {
@@ -677,42 +687,93 @@ class Game {
 
 }
 
-class AnticipationSequence {
-  constructor(anticipationId) {
-    this.element = document.getElementById(anticipationId);
+
+// Overlay dinâmico unificado para antecipação e contagem
+class GameOverlay {
+  constructor() {
+    this.overlay = document.getElementById('game-overlay');
+    this.content = document.getElementById('overlay-content');
   }
 
-  show(duration = 2500) {
-    this.element.classList.remove('hidden');
-    return new Promise(resolve => {
-      setTimeout(() => {
-        this.element.classList.add('hidden');
-        resolve();
-      }, duration);
-    });
+  showBackground() {
+    if (!this.overlay) return;
+    this.overlay.classList.remove('hidden');
+  }
+
+  hide() {
+    if (!this.overlay) return;
+    this.overlay.classList.add('hidden');
+    if (this.content) this.content.innerHTML = '';
+  }
+
+  async showAnticipation(duration = 1800) {
+    if (!this.overlay || !this.content) return;
+    this.content.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = '/assets/images/game/antecipation.png';
+    img.alt = 'Antecipação';
+    img.className = 'anticipation-img';
+    this.content.appendChild(img);
+    this.showBackground();
+    void img.offsetWidth;
+    img.classList.add('show');
+  // Faz a animação durar o tempo total do overlay
+  img.style.animationDuration = (duration / 1000) + 's';
+  img.style.setProperty('--anticipation-in', (duration / 1000) + 's');
+  img.style.setProperty('--anticipation-exit', (duration / 1000) + 's');
+    // Remove a imagem só após o tempo total
+    await new Promise(res => setTimeout(res, duration));
+    this.hide();
+  }
+
+  async showCountdown(images, interval = 1100) {
+    if (!this.overlay || !this.content) return;
+    this.content.innerHTML = '';
+    const numberDiv = document.createElement('div');
+    numberDiv.className = 'countdown-number';
+    this.content.appendChild(numberDiv);
+    this.showBackground();
+    for (let i = 0; i < images.length; i++) {
+      numberDiv.innerHTML = '';
+      const img = document.createElement('img');
+      img.src = images[i];
+      img.alt = `Contagem ${images.length - i}`;
+      numberDiv.appendChild(img);
+      void img.offsetWidth;
+      img.classList.add('show');
+      await new Promise(res => setTimeout(res, interval));
+    }
+    this.hide();
   }
 }
 
 class Countdown {
-  constructor(countdownId, imageId, images) {
-    this.element = document.getElementById(countdownId);
-    this.image = document.getElementById(imageId);
+  constructor(images, interval = 1100) {
+    this.overlay = document.getElementById('countdown-overlay');
+    this.numberContainer = this.overlay.querySelector('.countdown-number');
     this.images = images;
     this.currentIndex = 0;
-    this.interval = 1500;
+    this.interval = interval;
   }
 
   showNext() {
+    // Remove imagem anterior
+    this.numberContainer.innerHTML = '';
     if (this.currentIndex >= this.images.length) {
-      this.element.classList.add('hidden');
+      this.overlay.classList.add('hidden');
       return Promise.resolve();
     }
 
     return new Promise(resolve => {
-      this.image.src = this.images[this.currentIndex];
-      this.image.classList.remove('show');
-      void this.image.offsetWidth;
-      this.image.classList.add('show');
+      const img = document.createElement('img');
+      img.src = this.images[this.currentIndex];
+      img.alt = `Contagem ${this.images.length - this.currentIndex}`;
+      img.className = '';
+      this.numberContainer.appendChild(img);
+
+      // Força reflow para garantir animação
+      void img.offsetWidth;
+      img.classList.add('show');
 
       this.currentIndex++;
       setTimeout(() => resolve(this.showNext()), this.interval);
@@ -720,8 +781,10 @@ class Countdown {
   }
 
   async start() {
-    this.element.classList.remove('hidden');
+    this.currentIndex = 0;
+    this.overlay.classList.remove('hidden');
     await this.showNext();
+    this.numberContainer.innerHTML = '';
   }
 }
 
@@ -733,21 +796,25 @@ class GameFlow {
 
     try {
       const loadingScreen = new LoadingScreen('loading-screen', '.loading-block');
-      const anticipation = new AnticipationSequence('anticipation-sequence');
-      const countdown = new Countdown('countdown-screen', 'countdown-image', [
-        '/assets/images/game/8-countdown 3.png',
-        '/assets/images/game/9-countdown 2.png',
-        '/assets/images/game/10-countdown 1.png',
+      const overlay = new GameOverlay();
+      const countdownImgs = [
+        '/assets/images/game/c3.png',
+        '/assets/images/game/c2.png',
+        '/assets/images/game/c1.png',
         '/assets/images/game/ready.png'
-      ]);
+      ];
 
       loadingScreen.start();
-      await anticipation.show();
-      await countdown.start();
+  await overlay.showAnticipation(4000); // 4 segundos para antecipation
+  await overlay.showCountdown(countdownImgs);
 
       const game = await new Game(job).initialize();
+      if (!game.selectedQuestions || game.selectedQuestions.length === 0) {
+        document.getElementById('job-title').textContent = 'Nenhuma pergunta disponível para este tema!';
+        return;
+      }
       GameUI.displayGame(job, game.selectedQuestions);
-
+      // Só inicia a exibição das perguntas, nunca pula direto para votação
       game.startQuestionsDisplay();
     } catch (error) {
       console.error("Erro no fluxo do jogo:", error);
