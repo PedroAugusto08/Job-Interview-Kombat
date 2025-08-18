@@ -559,11 +559,12 @@ class Game {
     this.selectedQuestions = [];
     this.currentQuestion = 0;
     this.visualTimer = null;
-
     this.teamScores = { team1: 0, team2: 0 };
-    this.maxPoints = 10; // para escala da barra de pontos
-  this.maxLives = 5;
-  this.teamLives = { team1: this.maxLives, team2: this.maxLives };
+    this.maxPoints = 10;
+    this.maxLives = 5;
+    this.teamLives = { team1: this.maxLives, team2: this.maxLives };
+    this.isGameOver = false;
+    this.gameOverHandler = new GameOverHandler(this);
   }
 
   async initialize() {
@@ -838,3 +839,102 @@ class GameUI {
 window.addEventListener('DOMContentLoaded', () => {
   GameFlow.start();
 });
+
+// ============== GAME OVER ==============
+
+class GameOverHandler {
+  constructor(gameInstance) {
+    this.game = gameInstance;
+    this.maxLives = gameInstance.maxLives || 5;
+    this.checkInterval = null;
+    this.victoryScreen = document.querySelector('.victory');
+  }
+
+  startMonitoring() {
+    // Esconde a tela de vitória inicialmente
+    if (this.victoryScreen) {
+      this.victoryScreen.style.opacity = '0';
+      this.victoryScreen.style.display = 'none';
+    }
+    
+    // Verifica a cada segundo se algum time perdeu todas as vidas
+    this.checkInterval = setInterval(() => this.checkGameOver(), 1000);
+  }
+
+  checkGameOver() {
+    if (this.game.teamLives.team1 <= 0) {
+      this.handleGameOver('team2');
+    } else if (this.game.teamLives.team2 <= 0) {
+      this.handleGameOver('team1');
+    }
+  }
+
+  async handleGameOver(winningTeam) {
+    // Para todas as animações e timers
+    clearInterval(this.checkInterval);
+    if (this.game.visualTimer) {
+      this.game.visualTimer.reset();
+    }
+
+    // Mostra tela de vitória personalizada
+    await this.showCustomVictoryScreen(winningTeam);
+    
+    // Redireciona após um delay
+    setTimeout(() => {
+      window.location.href = `victory.html?winner=${winningTeam}`;
+    }, 5000); // 5 segundos para apreciar a vitória
+  }
+
+  async showCustomVictoryScreen(winningTeam) {
+    return new Promise(resolve => {
+      if (!this.victoryScreen) return resolve();
+      
+      // Atualiza o conteúdo com o time vencedor
+      const winTeamElement = this.victoryScreen.querySelector('.winTeam');
+      if (winTeamElement) {
+        winTeamElement.innerHTML = `
+          <img src="../assets/images/winner/${winningTeam}_winner.png" 
+               alt="${winningTeam.toUpperCase()} WINS!" 
+               class="win-team-img" />
+        `;
+      }
+      
+      // Mostra a tela de vitória com animação
+      this.victoryScreen.style.display = 'flex';
+      setTimeout(() => {
+        this.victoryScreen.style.opacity = '1';
+        resolve();
+      }, 10);
+      
+      // Adiciona animações extras
+      this.addWinningAnimations(winningTeam);
+    });
+  }
+
+  addWinningAnimations(winningTeam) {
+    // Animação para os elementos da vitória
+    const elements = {
+      coroa: { element: this.victoryScreen.querySelector('.coroa'), delay: 0 },
+      brilho: { element: this.victoryScreen.querySelector('.brilho'), delay: 300 },
+      estrelas: { element: this.victoryScreen.querySelector('.estrelas'), delay: 600 },
+      figures: { element: this.victoryScreen.querySelector('.figures'), delay: 900 }
+    };
+    
+    // Aplica animações com delays diferentes
+    Object.values(elements).forEach(({element, delay}) => {
+      if (element) {
+        setTimeout(() => {
+          element.classList.add('animate-pop');
+        }, delay);
+      }
+    });
+    
+    // Efeito especial para o time vencedor
+    const teamColor = winningTeam === 'team1' ? '#e37ea3' : '#3a87ad';
+    document.documentElement.style.setProperty('--winning-team-color', teamColor);
+  }
+
+  stopMonitoring() {
+    clearInterval(this.checkInterval);
+  }
+}

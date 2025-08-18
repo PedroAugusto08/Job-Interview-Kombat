@@ -708,20 +708,19 @@ header {
         opacity: 1;
     }
 }
-
 .mountain {
     z-index: 2;
     background-image: url("../assets/images/mountain.png");
     position: absolute;
-    top: 0;
-    left: -150px;
+    top: -60px;
+    left: 0;
     right: 0;
     bottom: 0;
     pointer-events: none;
-    background-size: 110%;
-    background-repeat: repeat-x;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center bottom; /* ou uma posição específica */
 }
-
 .clouds {
     z-index: 5;
     background-image: url("../assets/images/clouds.png");

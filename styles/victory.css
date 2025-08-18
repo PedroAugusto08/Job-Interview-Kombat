@@ -225,3 +225,49 @@
     50% { transform: translateY(-15px); }
     100% { transform: translateY(0px); }
 }
+/* Animações personalizadas */
+.victory {
+  transition: opacity 1s ease-out;
+}
+
+.win-team-img {
+  max-width: 80%;
+  animation: pulse 2s infinite alternate;
+}
+
+.animate-pop {
+  animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  80% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Efeitos de cor do time vencedor */
+:root {
+  --winning-team-color: #ffffff;
+}
+
+.bg-golden {
+  animation: colorShift 3s infinite alternate;
+}
+
+@keyframes colorShift {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(10deg); }
+}
+
+.faixa {
+  background-blend-mode: overlay;
+  background-color: var(--winning-team-color);
+  opacity: 0.8;
+  transition: background-color 1s ease;
+}

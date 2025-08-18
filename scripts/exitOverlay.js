@@ -2,6 +2,8 @@ export function createExitOverlay() { //carregando o exit pra js p usar ele em t
 
     if (document.querySelector('.exit-overlay')) return;
     
+    if (window.location.pathname.endsWith('start.html')) return;
+
     const exitOverlay = document.createElement('div');
     exitOverlay.className = 'exit-overlay';
     
@@ -31,7 +33,7 @@ export function createExitOverlay() { //carregando o exit pra js p usar ele em t
         </div>
 
         <div class="txt-exit">
-            <p>ARE YOU SURE YOU WANT TO LEAVE THIS WONDERFULLY INCREDIBLE EXPERIENCE</p>
+            <p>ARE YOU SURE YOU WANT TO LEAVE THIS WONDERFULLY INCREDIBLE EXPERIENCE AND GO TO MAIN MENU</p>
         </div>
     `;
 
