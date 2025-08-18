@@ -1091,6 +1091,8 @@ body {
     padding: 30px 50px;
     min-width: 400px;
     max-width: 90vw;
+    font-family: MortalKombat1Font;
+    text-transform: uppercase;
     min-height: 150px;
     max-height: 300px;
     overflow: hidden; /* evita texto estourar */
@@ -1100,8 +1102,7 @@ body {
     background: url('../assets/images/game/small_question.png') center center no-repeat;
     background-size: 100% 100%;
     color: #2a1747;
-    font-family: 'sans-serif';
-    text-shadow: 2px 2px 0 #ff2b7c;
+    text-shadow: 2px 2px 0 #ca2bff89;
     image-rendering: pixelated;
     margin: 40px auto;
     justify-content: center;
