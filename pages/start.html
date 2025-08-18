@@ -7,8 +7,10 @@
     <title>Job Interview Kombat</title>
 
     <script type="module" defer src="../lib/howler.min.js"></script>
+    <script defer type="module" src="../scripts/global.js"></script>
     <script defer type="module" src="../scripts/start.js"></script>
     <script defer type="module" src="../scripts/loading.js"></script>
+    <script defer type="module" src="../scripts/options.js"></script>
     <script defer type="module" src="../scripts/jobSelection.js"></script>
     <script type="module" src="../scripts/exitOverlay.js"></script>
 
@@ -111,18 +113,18 @@
                     <span class="dialog-section-title">
                         <img src="../assets/images/options/emoji.png" alt="Music Icon"
                             style="height:2rem;vertical-align:middle;width: 7.5rem;">
-                        MUSIC
+                        SOUND
                     </span>
                     <div class="options-music-controls">
                         <div class="checkbox-custom">
                             <label>ON
-                                <input name="music-active" type="radio" checked>
+                                <input id="sound-on" name="music-active" type="radio" checked>
                                 <span class="checkmark"></span>
                             </label>
                         </div>
                         <div class="checkbox-custom off">
                             <label>OFF
-                                <input name="music-active" type="radio">
+                                <input id="sound-off" name="music-active" type="radio">
                                 <span class="checkmark"></span>
                             </label>
                         </div>

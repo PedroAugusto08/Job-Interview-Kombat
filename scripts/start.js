@@ -1,9 +1,11 @@
+import { global } from "./global.js";
+
 // Transição suave ao clicar em PLAY na escolha de job
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const playBtn = document.querySelector('.job-modal-play');
     const fadeDiv = document.getElementById('job-fade-transition');
     if (playBtn && fadeDiv) {
-        playBtn.addEventListener('click', function(e) {
+        playBtn.addEventListener('click', function (e) {
             e.preventDefault();
             fadeDiv.classList.remove('hidden');
             // Força reflow para garantir transição
@@ -32,9 +34,13 @@ const options = document.querySelectorAll(".option")
 
 options.forEach(opt => {
     opt.addEventListener("mouseover", () => {
-        if (playingSoundsController.hover == false) {
-            hoverSound.play();
-            playingSoundsController.hover = true
+        console.log(global.sound)
+        
+        if (global.sound == true) {
+            if (playingSoundsController.hover == false) {
+                hoverSound.play();
+                playingSoundsController.hover = true
+            }
         }
     })
 })
@@ -49,7 +55,7 @@ const dialogOverlay = document.querySelector(".dialog-overlay")
 const dialogClose = document.querySelector(".dialog-close")
 
 // Exibe a tela de escolha de job ao clicar em PLAY
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const playBtn = document.getElementById('menu-play');
     const chooseJobScreen = document.querySelector('.choose-job-screen');
     const menuOptions = document.querySelector('.menu-options');
@@ -57,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const footer = document.querySelector('footer');
     const backBtn = document.querySelector('.choose-job-back');
     if (playBtn && chooseJobScreen) {
-        playBtn.addEventListener('click', function() {
+        playBtn.addEventListener('click', function () {
             menuOptions.style.display = 'none';
             header.style.display = 'none';
             footer.style.display = 'none';
@@ -66,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     // Garante que só o botão de voltar da tela de job execute esse código
     if (backBtn && chooseJobScreen) {
-        backBtn.addEventListener('click', function() {
+        backBtn.addEventListener('click', function () {
             if (chooseJobScreen.style.display === 'block') {
                 chooseJobScreen.style.display = 'none';
                 menuOptions.style.display = 'flex';
@@ -112,4 +118,3 @@ const resetMenus = () => {
     menuCreditsDialog.classList.remove("active")
     menuOptionsDialog.classList.remove("active")
 }
-    

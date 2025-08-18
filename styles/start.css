@@ -714,11 +714,12 @@ header {
     background-image: url("../assets/images/mountain.png");
     position: absolute;
     top: 0;
-    left: 113px;
+    left: -150px;
     right: 0;
     bottom: 0;
     pointer-events: none;
-    background-size: contain;
+    background-size: 110%;
+    background-repeat: repeat-x;
 }
 
 .clouds {
