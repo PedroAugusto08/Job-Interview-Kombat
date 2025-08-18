@@ -751,6 +751,7 @@ body {
   background: #2a1747 url('../assets/images/jobs/bg 2.png') center center no-repeat;
   background-size: cover;
   min-height: 100vh;
+  overflow: hidden;
   position: relative;
 }
 
