@@ -1128,6 +1128,10 @@ body {
 .timer-circle span {
   position: absolute;
   font-weight: bold;
+  font-size: 24px;
+  color: #fff;
+  text-shadow: 2px 2px #000;
+  
 }
 
 /* Barras de pontuação */

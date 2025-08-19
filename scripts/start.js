@@ -1,4 +1,26 @@
-import { global } from "./global.js";
+import { global,loadOptions } from "./global.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+  const inputs = [
+    { id: "timeToThink", key: "timeToThink" },
+    { id: "timeToJudge", key: "timeToJudge" },
+    { id: "roundDuration", key: "roundDuration" },
+    { id: "roundsCount", key: "roundsCount" }
+  ];
+
+  inputs.forEach(({ id, key }) => {
+    const input = document.getElementById(id);
+    const saved = localStorage.getItem(key);
+    if (saved !== null) input.value = saved;
+    input.addEventListener("input", () => {
+      localStorage.setItem(key, input.value);
+      loadOptions(); 
+    });
+  });
+  loadOptions();
+});
+
+
 
 // Transição suave ao clicar em PLAY na escolha de job
 document.addEventListener('DOMContentLoaded', function () {
