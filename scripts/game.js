@@ -105,16 +105,22 @@ class VisualTimer {
     this.container = document.getElementById(containerId);
     this.duration = duration;
     this.startTime = null;
+    this.remainingTime = duration;
     this.interval = null;
+    this.isPaused = false;
   }
 
   start() {
     this.startTime = Date.now();
+    this.remainingTime = this.duration;
+    this.isPaused = false;
     this.update();
     this.interval = setInterval(() => this.update(), 100);
   }
 
   update() {
+    if (this.isPaused) return;
+    
     const elapsed = (Date.now() - this.startTime) / 1000;
     const percentage = Math.min((elapsed / this.duration) * 100, 100);
     const deg = (percentage / 100) * 360;
@@ -126,8 +132,28 @@ class VisualTimer {
     }
   }
 
+  pause() {
+    if (this.isPaused || !this.interval) return;
+    
+    this.isPaused = true;
+    this.remainingTime = this.duration - ((Date.now() - this.startTime) / 1000);
+    clearInterval(this.interval);
+    this.interval = null;
+  }
+
+  resume() {
+    if (!this.isPaused || this.remainingTime <= 0) return;
+    
+    this.isPaused = false;
+    this.duration = this.remainingTime;
+    this.startTime = Date.now() - ((this.duration - this.remainingTime) * 1000);
+    this.interval = setInterval(() => this.update(), 100);
+  }
+
   reset() {
     clearInterval(this.interval);
+    this.interval = null;
+    this.isPaused = false;
     this.container.style.background = `conic-gradient(#a5dfff 0deg, #f69ac1 0deg)`;
   }
 }
@@ -488,6 +514,8 @@ class Game {
     this.teamLives = { team1: this.maxLives, team2: this.maxLives };
     this.isGameOver = false;
     this.gameOverHandler = new GameOverHandler(this);
+    this.pauseSystem = new PauseSystem(this); 
+
   }
 
   async initialize() {
@@ -498,6 +526,10 @@ class Game {
     }
 
     this.selectedQuestions = QuestionSelector.selectQuestions(general, jobSpecific);
+
+    this.gameOverHandler.startMonitoring();
+
+    this.pauseSystem.initialize(); 
 
     return this;
   }
@@ -602,6 +634,8 @@ class Game {
 
   async nextQuestion() {
     this.currentQuestion++;
+    if (this.isGameOver) return;
+
     // Só chama showCurrentQuestion se ainda houver perguntas
     if (this.currentQuestion < this.selectedQuestions.length) {
       await this.showCurrentQuestion();
@@ -729,8 +763,8 @@ class GameFlow {
       ];
 
       loadingScreen.start();
-  await overlay.showAnticipation(4000); // 4 segundos para antecipation
-  await overlay.showCountdown(countdownImgs);
+      await overlay.showAnticipation(4000); // 4 segundos para antecipation
+      await overlay.showCountdown(countdownImgs);
 
       const game = await new Game(job).initialize();
       if (!game.selectedQuestions || game.selectedQuestions.length === 0) {
@@ -764,24 +798,17 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============== GAME OVER ==============
-
 class GameOverHandler {
   constructor(gameInstance) {
     this.game = gameInstance;
     this.maxLives = gameInstance.maxLives || 5;
     this.checkInterval = null;
-    this.victoryScreen = document.querySelector('.victory');
+    this.victoryScreen = null;
   }
 
   startMonitoring() {
-    // Esconde a tela de vitória inicialmente
-    if (this.victoryScreen) {
-      this.victoryScreen.style.opacity = '0';
-      this.victoryScreen.style.display = 'none';
-    }
-    
     // Verifica a cada segundo se algum time perdeu todas as vidas
-    this.checkInterval = setInterval(() => this.checkGameOver(), 1000);
+    this.checkInterval = setInterval(() => this.checkGameOver(), 500);
   }
 
   checkGameOver() {
@@ -799,65 +826,254 @@ class GameOverHandler {
       this.game.visualTimer.reset();
     }
 
-    // Mostra tela de vitória personalizada
-    await this.showCustomVictoryScreen(winningTeam);
+    await this.showVictoryScreen(winningTeam);
     
+    this.pauseSystem.pause();
+
+    // Mostra tela de vitória
     // Redireciona após um delay
-    setTimeout(() => {
       window.location.href = `victory.html?winner=${winningTeam}`;
-    }, 5000); // 5 segundos para apreciar a vitória
   }
 
-  async showCustomVictoryScreen(winningTeam) {
+  async showVictoryScreen(winningTeam) {
     return new Promise(resolve => {
-      if (!this.victoryScreen) return resolve();
+      // Cria a tela de vitória
+      this.victoryScreen = document.createElement('div');
+      this.victoryScreen.className = 'victory';
       
-      // Atualiza o conteúdo com o time vencedor
-      const winTeamElement = this.victoryScreen.querySelector('.winTeam');
-      if (winTeamElement) {
-        winTeamElement.innerHTML = `
-          <img src="../assets/images/winner/${winningTeam}_winner.png" 
-               alt="${winningTeam.toUpperCase()} WINS!" 
-               class="win-team-img" />
-        `;
-      }
-      
-      // Mostra a tela de vitória com animação
-      this.victoryScreen.style.display = 'flex';
-      setTimeout(() => {
-        this.victoryScreen.style.opacity = '1';
-        resolve();
-      }, 10);
-      
-      // Adiciona animações extras
-      this.addWinningAnimations(winningTeam);
-    });
-  }
+      this.victoryScreen.innerHTML = `
+        <div class="bgs-victory">
+            <div class="bg-default"></div>
+            <div class="bg-golden"></div>
+        </div>
+        <div class="bg-pixel"></div>
+        <div class="bgs-elements">
+            <div class="naipes">
+                <div class="copasGolden"></div>
+                <div class="pausGolden"></div>
+                <div class="ourosGolden"></div>
+                <div class="espadasGolden"></div>
+            </div>
+            <div class="logo-opaca"></div>
+            <div class="triangulosVermelhos">
+                <div class="triangulo-direita"></div>
+                <div class="triangulo-esquerda"></div>
+            </div>
+        </div>
+        
+        <div class="faixa">
+            <div class="winTeam">
+                <img src="../assets/images/winner/${winningTeam}_winner.png" 
+                     alt="${winningTeam.toUpperCase()} WINS!" 
+                     class="win-team-img" />
+            </div>
+        </div>
+            <div class="flying-text"></div>
 
-  addWinningAnimations(winningTeam) {
-    // Animação para os elementos da vitória
-    const elements = {
-      coroa: { element: this.victoryScreen.querySelector('.coroa'), delay: 0 },
-      brilho: { element: this.victoryScreen.querySelector('.brilho'), delay: 300 },
-      estrelas: { element: this.victoryScreen.querySelector('.estrelas'), delay: 600 },
-      figures: { element: this.victoryScreen.querySelector('.figures'), delay: 900 }
-    };
-    
-    // Aplica animações com delays diferentes
-    Object.values(elements).forEach(({element, delay}) => {
-      if (element) {
-        setTimeout(() => {
-          element.classList.add('animate-pop');
-        }, delay);
-      }
+        <div class="elements">
+            <div class="coroa"></div>
+            <div class="estrelas">
+                <div class="estrela-esquerda"></div>
+                <div class="estrela-direita"></div>
+            </div>
+            <div class="brilho"></div>
+            <div class="restart-btn"></div>
+
+            <div class="figures">
+                <div class="coracao"></div>
+                <div class="diamante"></div>
+            </div>
+        </div>
+      `;
+
+      document.body.appendChild(this.victoryScreen);
+      
+      // Carrega os estilos da vitória
+      this.loadVictoryStyles();
+      
+           const restartBtn = this.victoryScreen.querySelector('.restart-btn');
+        if (restartBtn) {
+            // Inicialmente desabilita o botão
+            restartBtn.style.pointerEvents = 'none';
+            restartBtn.style.cursor = 'default';
+            
+            restartBtn.addEventListener('click', () => {
+                window.location.href = 'start.html';
+            });
+        }
+      // Mostra a tela com animação
+          setTimeout(() => {
+            this.victoryScreen.style.opacity = '1';
+            
+            // Habilita o botão após a transição de opacidade
+            this.victoryScreen.addEventListener('transitionend', () => {
+                if (this.victoryScreen.style.opacity === '1' && restartBtn) {
+                    restartBtn.style.pointerEvents = 'auto';
+                    restartBtn.style.cursor = 'pointer';
+                }
+                resolve();
+            }, { once: true }); // O evento é removido após ser executado uma vez
+            
+        }, 10);
     });
+}
+  loadVictoryStyles() {
+    // Verificar se os estilos já foram carregados
+    if (document.getElementById('victory-styles')) return;
     
-    // Efeito especial para o time vencedor
-    const teamColor = winningTeam === 'team1' ? '#e37ea3' : '#3a87ad';
-    document.documentElement.style.setProperty('--winning-team-color', teamColor);
+    const link = document.createElement('link');
+    link.id = 'victory-styles';
+    link.rel = 'stylesheet';
+    link.href = '../styles/victory.css';
+    document.head.appendChild(link);
   }
 
   stopMonitoring() {
     clearInterval(this.checkInterval);
+  }
+}
+
+// ============== PAUSE SYSTEM ==============
+class PauseSystem {
+  constructor(gameInstance) {
+    this.game = gameInstance;
+    this.isPaused = false;
+    this.pauseOverlay = null;
+    this.pauseTimers = []; // Armazena referências aos timers pausados
+    this.pauseAnimations = []; // Armazena referências às animações pausadas
+  }
+  // Alterna entre pausado e despausado
+  togglePause() {
+    if (this.isPaused) {
+      this.resume();
+    } else {
+      this.pause();
+    }
+  }
+
+  // Pausa o jogo
+  pause() {
+    if (this.isPaused) return;
+    
+    this.isPaused = true;
+    
+    // Salva todos os timers ativos
+    this.saveActiveTimers();
+    
+    // Pausa o visual timer se existir
+    if (this.game.visualTimer) {
+      this.game.visualTimer.pause();
+    }
+    
+    // Pausa a contagem regressiva do julgamento se estiver ativa
+    this.pauseJudgementTimer();
+        
+    console.log("Jogo pausado");
+  }
+
+  // Retoma o jogo
+  resume() {
+    if (!this.isPaused) return;
+    
+    this.isPaused = false;
+    
+    // Retoma todos os timers
+    this.restoreTimers();
+    
+    // Retoma o visual timer se existir
+    if (this.game.visualTimer) {
+      this.game.visualTimer.resume();
+    }
+    
+    // Retoma a contagem regressiva do julgamento se estiver ativa
+    this.resumeJudgementTimer();
+        
+    console.log("Jogo retomado");
+  }
+
+  // Salva todos os timers ativos
+  saveActiveTimers() {
+    this.pauseTimers = [];
+    
+    // Itera por todos os intervalos e timeouts ativos
+    for (let i = 1; i < 10000; i++) {
+      const interval = window[i];
+      if (interval && typeof interval === 'object' && interval.intervalId) {
+        this.pauseTimers.push({
+          type: 'interval',
+          id: interval.intervalId,
+          func: interval.func,
+          delay: interval.delay,
+          remaining: interval.remaining
+        });
+      }
+    }
+    
+    // Também precisamos pausar os timers específicos do jogo
+    if (this.game.visualTimer && this.game.visualTimer.interval) {
+      this.pauseTimers.push({
+        type: 'visualTimer',
+        instance: this.game.visualTimer
+      });
+    }
+  }
+
+  // Restaura todos os timers pausados
+  restoreTimers() {
+    this.pauseTimers.forEach(timer => {
+      if (timer.type === 'interval') {
+        // Recria os intervalos
+        timer.id = setInterval(timer.func, timer.delay);
+      } else if (timer.type === 'visualTimer' && timer.instance) {
+        // Recria o visual timer
+        timer.instance.resume();
+      }
+    });
+    
+    this.pauseTimers = [];
+  }
+
+  // Pausa o timer de julgamento se estiver ativo
+  pauseJudgementTimer() {
+    const judgementTimer = document.getElementById('judging-timer');
+    if (judgementTimer && !isNaN(parseInt(judgementTimer.textContent))) {
+      judgementTimer.setAttribute('data-paused-time', judgementTimer.textContent);
+    }
+  }
+
+  // Retoma o timer de julgamento se estiver pausado
+  resumeJudgementTimer() {
+    const judgementTimer = document.getElementById('judging-timer');
+    if (judgementTimer && judgementTimer.hasAttribute('data-paused-time')) {
+      judgementTimer.textContent = judgementTimer.getAttribute('data-paused-time');
+      judgementTimer.removeAttribute('data-paused-time');
+    }
+  }
+
+  // Reinicia o jogo
+  restartGame() {
+    this.resume();
+    if (confirm("Tem certeza que deseja reiniciar o jogo?")) {
+      window.location.reload();
+    }
+  }
+
+  // Sai do jogo
+  quitGame() {
+    this.resume();
+    if (confirm("Tem certeza que deseja sair do jogo?")) {
+      window.location.href = "../index.html";
+    }
+  }
+
+  // Inicializa o sistema de pause
+  initialize() {
+    
+    // Adiciona listener para a tecla ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' || e.key === 'P' || e.key === 'p') {
+        this.togglePause();
+      }
+    });
   }
 }
