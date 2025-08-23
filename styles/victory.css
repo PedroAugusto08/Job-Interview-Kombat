@@ -264,8 +264,8 @@
     background-color: transparent;
     position: fixed; 
     bottom: 1%;
-    left: 50%; /* Adicionado para centralizar horizontalmente */
-    transform: translate(-50%, -50%); /* Centraliza perfeitamente */
+    left: 50%; 
+    transform: translate(-50%, -50%); 
     width: 300px; 
     height: 150px;
     background-image: url('../assets/images/winner/botao-main-menu.png');
@@ -294,4 +294,20 @@
     right: 12%;
     bottom: 20%; 
     transform: rotate(-27deg);
+}
+.winTeam {
+    position: absolute;
+    top: 53%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99999; 
+    width: 140%;
+    text-align: center;
+}
+
+.win-team-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
 }

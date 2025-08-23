@@ -804,18 +804,24 @@ class GameOverHandler {
     this.maxLives = gameInstance.maxLives || 5;
     this.checkInterval = null;
     this.victoryScreen = null;
+    this.preludeScreen = null;
+    this.currentPreludeIndex = 0;
   }
 
   startMonitoring() {
-    // Verifica a cada segundo se algum time perdeu todas as vidas
-    this.checkInterval = setInterval(() => this.checkGameOver(), 500);
+    // Verifica a cada um quarto de segundo se algum time perdeu todas as vidas
+    this.checkInterval = setInterval(() => this.checkGameOver(), 250);
   }
 
   checkGameOver() {
-    if (this.game.teamLives.team1 <= 0) {
-      this.handleGameOver('team2');
+    const currentRound = this.game.currentQuestion + 1;
+
+    if ((this.game.teamLives.team1 == this.game.teamLives.team2) && (currentRound == global.options.round) ) {
+      this.handleGameOver('draw');
     } else if (this.game.teamLives.team2 <= 0) {
       this.handleGameOver('team1');
+    } else if (this.game.teamLives.team1 <= 0) {
+      this.handleGameOver('team2');
     }
   }
 
@@ -825,21 +831,129 @@ class GameOverHandler {
     if (this.game.visualTimer) {
       this.game.visualTimer.reset();
     }
-
+    
+    // Cria um overlay preto para garantir que não haja cortes
+    this.createBlackOverlay();
+    
+    // Mostra as telas prelude primeiro com fade-in
+    await this.showPreludeScreens();
+    
+    // Depois mostra a tela de vitória com fade-in
     await this.showVictoryScreen(winningTeam);
     
     this.pauseSystem.pause();
 
-    // Mostra tela de vitória
     // Redireciona após um delay
-      window.location.href = `victory.html?winner=${winningTeam}`;
+    window.location.href = `victory.html?winner=${winningTeam}`;
+  }
+
+  createBlackOverlay() {
+    // Cria uma camada preta que permanecerá durante todas as transições
+    this.blackOverlay = document.createElement('div');
+    this.blackOverlay.className = 'black-transition-overlay';
+    this.blackOverlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      z-index: 99999990;
+      opacity: 1;
+      pointer-events: none;
+    `;
+    document.body.appendChild(this.blackOverlay);
+  }
+
+  removeBlackOverlay() {
+    if (this.blackOverlay && this.blackOverlay.parentNode) {
+      this.blackOverlay.parentNode.removeChild(this.blackOverlay);
+      this.blackOverlay = null;
+    }
+  }
+
+  async showPreludeScreens() {
+    return new Promise(async (resolve) => {
+      const preludes = [
+        '../assets/images/winner/prelude-1.png',
+        '../assets/images/winner/prelude-2.png'
+      ];
+      
+      for (let i = 0; i < preludes.length; i++) {
+        await this.showPreludeScreen(preludes[i], 6000);
+      }
+      
+      resolve();
+    });
+  }
+
+  async showPreludeScreen(imageSrc, duration) {
+    return new Promise((resolve) => {
+      // Cria a tela prelude
+      this.preludeScreen = document.createElement('div');
+      this.preludeScreen.className = 'prelude-screen';
+      this.preludeScreen.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999999;
+        opacity: 0;
+        transition: opacity 1.5s ease-in-out;
+      `;
+      
+      // Cria a imagem prelude
+      const img = document.createElement('img');
+      img.src = imageSrc;
+      img.alt = 'Prelude';
+      img.style.cssText = `
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      `;
+      
+      this.preludeScreen.appendChild(img);
+      document.body.appendChild(this.preludeScreen);
+      
+      // Fade-in
+      setTimeout(() => {
+        this.preludeScreen.style.opacity = '1';
+      }, 10);
+      
+      // Aguarda o tempo especificado, faz fade-out e remove a tela
+      setTimeout(() => {
+        this.preludeScreen.style.opacity = '0';
+        
+        // Aguarda a transição de fade-out terminar antes de remover
+        setTimeout(() => {
+          if (this.preludeScreen && this.preludeScreen.parentNode) {
+            this.preludeScreen.parentNode.removeChild(this.preludeScreen);
+            this.preludeScreen = null;
+          }
+          resolve();
+        }, 1500);
+      }, duration - 1500); // Subtrai o tempo do fade-out
+    });
   }
 
   async showVictoryScreen(winningTeam) {
     return new Promise(resolve => {
+      // Remove o overlay preto antes de mostrar a vitória
+      
       // Cria a tela de vitória
       this.victoryScreen = document.createElement('div');
       this.victoryScreen.className = 'victory';
+      this.victoryScreen.style.opacity = '0';
+      this.victoryScreen.style.transition = 'opacity 2s ease-in';
       
       this.victoryScreen.innerHTML = `
         <div class="bgs-victory">
@@ -891,32 +1005,34 @@ class GameOverHandler {
       // Carrega os estilos da vitória
       this.loadVictoryStyles();
       
-           const restartBtn = this.victoryScreen.querySelector('.restart-btn');
-        if (restartBtn) {
-            // Inicialmente desabilita o botão
-            restartBtn.style.pointerEvents = 'none';
-            restartBtn.style.cursor = 'default';
-            
-            restartBtn.addEventListener('click', () => {
-                window.location.href = 'start.html';
-            });
-        }
-      // Mostra a tela com animação
-          setTimeout(() => {
-            this.victoryScreen.style.opacity = '1';
-            
-            // Habilita o botão após a transição de opacidade
-            this.victoryScreen.addEventListener('transitionend', () => {
-                if (this.victoryScreen.style.opacity === '1' && restartBtn) {
-                    restartBtn.style.pointerEvents = 'auto';
-                    restartBtn.style.cursor = 'pointer';
-                }
-                resolve();
-            }, { once: true }); // O evento é removido após ser executado uma vez
-            
-        }, 10);
+      const restartBtn = this.victoryScreen.querySelector('.restart-btn');
+      if (restartBtn) {
+        // Inicialmente desabilita o botão
+        restartBtn.style.pointerEvents = 'none';
+        restartBtn.style.cursor = 'default';
+        
+        restartBtn.addEventListener('click', () => {
+          window.location.href = 'start.html';
+        });
+      }
+      
+      // Mostra a tela com animação de fade-in
+      setTimeout(() => {
+        this.victoryScreen.style.opacity = '1';
+        
+        // Habilita o botão após a transição de opacidade
+        this.victoryScreen.addEventListener('transitionend', () => {
+          if (this.victoryScreen.style.opacity === '1' && restartBtn) {
+            restartBtn.style.pointerEvents = 'auto';
+            restartBtn.style.cursor = 'pointer';
+          }
+          resolve();
+        }, { once: true });
+        
+      }, 0);
     });
-}
+  }
+
   loadVictoryStyles() {
     // Verificar se os estilos já foram carregados
     if (document.getElementById('victory-styles')) return;
@@ -932,7 +1048,6 @@ class GameOverHandler {
     clearInterval(this.checkInterval);
   }
 }
-
 // ============== PAUSE SYSTEM ==============
 class PauseSystem {
   constructor(gameInstance) {

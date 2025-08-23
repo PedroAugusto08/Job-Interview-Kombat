@@ -9,10 +9,9 @@
         {"question": "What can you offer our company?"},
         {"question": "What are your salary requirements?"},
         {"question": "What do you do when you make a mistake at work?"},
-        {"question": "What are your salary requirements?"},
         {"question": "What are your strengths?"},
         {"question": "What motivates you?"},
-        {"question": "What is your biggest career dream?"},
+        {"question": "What is your biggest career goals?"},
         {"question": "Where do you see yourself in 5 years?"},
         {"question": "Have you ever had conflicts with coworkers or bosses? How did you handle it?"},
         {"question": "Why do you think you're the right person for this job?"},
@@ -27,11 +26,11 @@
         {"question": "Have you ever optimized a slow-performing system? What techniques did you use?"},
         {"question": "How do you handle feedback in code reviews?"},
         {"question": "Do you contribute to open-source projects or have a GitHub portfolio?"},
-        {"question": "How do you handle technical debt in a project? Can you give an example?"},
+        {"question": "How do you manage technical debt in a project? Can you share an example?"},
         {"question": "What’s your approach to debugging a problem you’ve never seen before?"},
         {"question": "What’s your process for reviewing someone else’s code? What do you look for?"},
         {"question": "Have you ever missed a deadline? What happened, and how did you handle it?"},
-        {"question": "Describe a recent technical concept you learned. How did you apply it (or plan to)?"}
+        {"question": "Describe a recent technical concept you've learned. How did you apply it (or plan to)?"}
     ],"designer": [
         {"question": "What is your approach to creating interfaces that are both functional and visually appealing?"},
         {"question": "How do you handle feedback from users and stakeholders regarding design?"},
@@ -63,7 +62,6 @@
         {"question": "How do you organize test cases to ensure proper coverage?"},
         {"question": "Tell me about a time you found a problem that developers hadn’t noticed."},
         {"question": "What is your strategy for testing a feature with unclear documentation?"},
-        {"question": "How do you deal with bugs that are not easily reproducible?"},
         {"question": "Which metrics do you consider important for evaluating software quality?"}
     ],"data analyst": [
         {"question": "Which tools and languages do you use for data analysis?"},
@@ -74,7 +72,7 @@
         {"question": "Explain a machine learning model you have implemented."},
         {"question": "How do you handle missing or inconsistent data?"},
         {"question": "Tell me about a case where data analysis led to an unexpected insight."},
-        {"question": "Have you worked with real-time data pipelines?"},
+        {"question": "Have you ever worked with real-time data pipelines?"},
         {"question": "How do you communicate analysis results to non-technical people?"}
     ]
 
