@@ -2,12 +2,25 @@
 
 **Job Interview Kombat** é um Role-Playing Game (RPG) interativo criado para treinar entrevistas de emprego em inglês de forma lúdica e envolvente.
 
+<img src="imgs/main.png"></img>
 ## Sobre o Projeto
 
 O domínio da língua inglesa é uma habilidade essencial para estudantes da área de tecnologia que desejam se destacar em um mercado de trabalho globalizado. Seja para atuar em empresas multinacionais, entender documentações técnicas ou participar de processos seletivos, é crucial que esses estudantes saibam se comunicar com clareza, confiança e domínio técnico em inglês.
 
 **Job Interview Kombat** nasceu dessa necessidade: um jogo educacional voltado para estudantes de Engenharia da Computação e Engenharia Mecatrônica, desenvolvido no contexto da disciplina optativa **Inglês Instrumental II** (ESP) do **CEFET-MG - Campus Divinópolis**.
 
+## View (clique para expandir)
+
+[<img src="imgs/main.png" width="200" alt="Tela 1">](imgs/main.png)
+[<img src="imgs/loading.png" width="200" alt="Tela 2">](imgs/loading.png)
+[<img src="imgs/credits.png" width="200" alt="Tela 1">](imgs/credits.png)
+[<img src="imgs/options.png" width="200" alt="Tela 3">](imgs/options.png)
+[<img src="imgs/jobs.png" width="200" alt="Tela 2">](imgs/jobs.png)
+[<img src="imgs/prelude.png" width="200" alt="Tela 1">](imgs/prelude.png)
+[<img src="imgs/strike.png" width="200" alt="Tela 3">](imgs/strike.png)
+[<img src="imgs/question.png" width="200" alt="Tela 2">](imgs/question.png)
+[<img src="imgs/versus.png" width="200" alt="Tela 3">](imgs/versus.png)
+[<img src="imgs/winner.png" width="200" alt="Tela 3">](imgs/winner.png)
 ## Funcionamento
 
 Inspirado na estrutura clássica de combate do jogo *Mortal Kombat*, este RPG transforma entrevistas de emprego em verdadeiras batalhas verbais. Dois candidatos se enfrentam respondendo perguntas técnicas e comportamentais em inglês. Cada rodada é avaliada por três juízes com base nos seguintes critérios:

@@ -1191,23 +1191,6 @@ class PauseSystem {
       judgementTimer.removeAttribute('data-paused-time');
     }
   }
-
-  // Reinicia o jogo
-  restartGame() {
-    this.resume();
-    if (confirm("Tem certeza que deseja reiniciar o jogo?")) {
-      window.location.reload();
-    }
-  }
-
-  // Sai do jogo
-  quitGame() {
-    this.resume();
-    if (confirm("Tem certeza que deseja sair do jogo?")) {
-      window.location.href = "../index.html";
-    }
-  }
-
   // Inicializa o sistema de pause
   initialize() {
     
