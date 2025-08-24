@@ -9,17 +9,19 @@ O domínio da língua inglesa é uma habilidade essencial para estudantes da ár
 
 **Job Interview Kombat** nasceu dessa necessidade: um jogo educacional voltado para estudantes de Engenharia da Computação e Engenharia Mecatrônica, desenvolvido no contexto da disciplina optativa **Inglês Instrumental II** (ESP) do **CEFET-MG - Campus Divinópolis**.
 
-## View (clique para expandir)
+## Overview
 
 [<img src="imgs/main.png" width="200" alt="Tela 1">](imgs/main.png)
 [<img src="imgs/loading.png" width="200" alt="Tela 2">](imgs/loading.png)
 [<img src="imgs/credits.png" width="200" alt="Tela 1">](imgs/credits.png)
+[<img src="imgs/rules.png" width="200" alt="Tela 1">](imgs/credits.png)
 [<img src="imgs/options.png" width="200" alt="Tela 3">](imgs/options.png)
 [<img src="imgs/jobs.png" width="200" alt="Tela 2">](imgs/jobs.png)
 [<img src="imgs/prelude.png" width="200" alt="Tela 1">](imgs/prelude.png)
 [<img src="imgs/strike.png" width="200" alt="Tela 3">](imgs/strike.png)
 [<img src="imgs/question.png" width="200" alt="Tela 2">](imgs/question.png)
 [<img src="imgs/versus.png" width="200" alt="Tela 3">](imgs/versus.png)
+[<img src="imgs/exit.png" width="200" alt="Tela 1">](imgs/credits.png)
 [<img src="imgs/winner.png" width="200" alt="Tela 3">](imgs/winner.png)
 ## Funcionamento
 
