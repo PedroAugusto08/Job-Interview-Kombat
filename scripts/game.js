@@ -261,10 +261,22 @@ class JudgingScreen {
         if (timerDisplay) timerDisplay.textContent = remaining;
         if (remaining <= 0) {
           clearInterval(timerId);
-          // Se ninguém votou, escolher aleatoriamente
+          // Se ninguém votou, naoo acontece nada
           if (!votedTeam) {
-            const randomTeam = Math.random() < 0.5 ? 'team1' : 'team2';
-            onVote(randomTeam);
+            //  esquema pra votar em um time aleatorio. Acho que não faz sentido, mas pode ser util no futuro. Vou deixar só comentado ent.
+            //const randomTeam = Math.random() < 0.5 ? 'team1' : 'team2'; 
+            voteTeam2Btn.classList.add('inactive');
+            voteTeam1Btn.classList.add('inactive');
+            if (rafId) cancelAnimationFrame(rafId);
+            setTimeout(() => {
+              overlay.style.opacity = '0';
+              setTimeout(() => {
+                overlay.remove();
+                resolve(votedTeam);
+              }, 500);
+            }, 1000);
+
+
           }
         }
       }, 1000);
@@ -809,19 +821,34 @@ class GameOverHandler {
   }
 
   startMonitoring() {
-    // Verifica a cada um quarto de segundo se algum time perdeu todas as vidas
-    this.checkInterval = setInterval(() => this.checkGameOver(), 250);
+    // Verifica a cada 1 milesimo se algum time perdeu todas as vidas ou o numero de rounds ultrapassou o definido
+    this.checkInterval = setInterval(() => this.checkGameOver(), 100);
   }
 
   checkGameOver() {
     const currentRound = this.game.currentQuestion + 1;
+    const maxRounds = global.options.rounds; // Obtém o máximo de rounds das opções
 
-    if ((this.game.teamLives.team1 == this.game.teamLives.team2) && (currentRound == global.options.round) ) {
-      this.handleGameOver('draw');
-    } else if (this.game.teamLives.team2 <= 0) {
+    if (this.game.teamLives.team2 <= 0) {
       this.handleGameOver('team1');
     } else if (this.game.teamLives.team1 <= 0) {
       this.handleGameOver('team2');
+    }
+    // Verifica se o número máximo de rounds foi atingido
+    else if (currentRound > maxRounds) {
+      // Determina o vencedor com base nas vidas restantes
+      if (this.game.teamLives.team1 > this.game.teamLives.team2) {
+        this.handleGameOver('team1');
+      } else if (this.game.teamLives.team2 > this.game.teamLives.team1) {
+        this.handleGameOver('team2');
+      } else {
+        // Empate - ambos têm a mesma quantidade de vidas
+        this.handleGameOver('draw');
+      }
+    }
+    // Verifica se é o último round e as vidas estão empatadas
+    else if (currentRound === maxRounds && this.game.teamLives.team1 === this.game.teamLives.team2) {
+      this.handleGameOver('draw');
     }
   }
 

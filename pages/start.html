@@ -139,22 +139,12 @@
                             style="height:4rem;vertical-align:middle;width: 7.5rem;">
                         ROUNDS
                     </span>
-                <label>
-                    TIME TO THINK
-                    <input id="timeToThink" type="number" min="0.1" max="10" step="0.1" value="2.0"> MINUTES
-                </label>
-                <label>
-                    TIME TO JUDGE
-                    <input id="timeToJudge" type="number" min="0.1" max="10" step="0.1" value="2.0"> MINUTES
-                </label>
-                <label>
-                    ROUND DURATION
-                    <input id="roundDuration" type="number" min="0.1" max="10" step="0.1" value="2.0"> MINUTES
-                </label>
-                <label>
-                    NUMBER OF ROUNDS
-                    <input id="roundsCount" type="number" min="1" max="20" value="9">
-                </label>
+                <div class="options-rounds-controls">
+                    <label>TIME TO THINK <input type="number" min="1" max="10" value="2"> MINUTES</label>
+                    <label>TIME TO JUDGE <input type="number" min="1" max="10" value="2"> MINUTES</label>
+                    <label>ROUND DURATION <input type="number" min="1" max="10" value="2"> MINUTES</label>
+                    <label>NUMBER OF ROUNDS <input type="number" min="1" max="20" value="9"></label>
+                </div>
 
                 </section>
 

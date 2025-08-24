@@ -11,27 +11,27 @@ const jobModalPlay = jobModal.querySelector('.job-modal-play');
 const jobsInfo = {
     'DEV': {
         title: 'DEVELOPER',
-        description: 'Codifica as interfaces, aplicativos e servidores.\nJunto do seu time, é uma parte essencial para a criação do produto!',
+        description: 'Codes the interfaces, applications and servers.\nTogether with your team, it is an essential part of creating the product!',
         hearts: 3
     },
     'DESIGNER': {
         title: 'DESIGNER',
-        description: 'Cria as interfaces, animações e artes do jogo.\nColabora com o time para entregar uma experiência incrível!',
+        description: 'Create the games interfaces, animations, and art.\nCollaborate with the team to deliver an incredible experience!',
         hearts: 2
     },
     'PM': {
         title: 'PROJECT MANAGER',
-        description: 'Organiza o time, define metas e garante que tudo saia no prazo.\nFaz a ponte entre todos!',
+        description: 'Organizes the team, sets goals and ensures everything is delivered on time.\nIt bridges the gap between everyone!',
         hearts: 2
     },
     'QA': {
         title: 'QUALITY ASSURANCE',
-        description: 'Testa o jogo, encontra bugs e sugere melhorias.\nNada escapa do olhar atento!',
+        description: 'Test the game, find bugs and suggest improvements.\nNothing escapes your watchful eye!',
         hearts: 1
     },
     'DATA': {
         title: 'DATA ANALYST',
-        description: 'Analisa dados, gera relatórios e ajuda o time a tomar decisões melhores!',
+        description: 'Analyze data, generate reports, and help the team make better decisions!',
         hearts: 2
     }
 };
