@@ -140,3 +140,33 @@ const resetMenus = () => {
     menuCreditsDialog.classList.remove("active")
     menuOptionsDialog.classList.remove("active")
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  startMusic();
+  const jobCards = document.querySelectorAll(".choose-job-card");
+  jobCards.forEach(card => {
+    const jobNameEl = card.querySelector(".choose-job-name");
+    if (!jobNameEl) return;
+    const jobName = jobNameEl.textContent.trim().toUpperCase();
+
+    if (jobName !== "DEV") {
+      card.classList.add("locked");
+    }
+  });
+});
+const synth = new Tone.Synth().toDestination();
+
+const notes = ["C4", "E4", "G4", "B4", "A4", "F4", "D4", "G3"];
+
+let index = 0;
+const loop = new Tone.Loop(time => {
+    synth.triggerAttackRelease(notes[index % notes.length], "8n", time);
+    index++;
+}, "0.5s");
+
+    // Iniciar transporte e loop após interação (alguns browsers exigem isso)
+    async function startMusic() {
+      await Tone.start();
+      loop.start(0);
+      Tone.Transport.start();
+    }

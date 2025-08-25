@@ -1247,3 +1247,20 @@ footer span {
 .rounds-specs p {
     width: 700px;
 }
+
+.choose-job-card.locked {
+  filter: grayscale(100%) brightness(0.6);
+  position: relative;
+  pointer-events: none; /* impede clique */
+}
+
+.choose-job-card.locked::after {
+  content: "🔒";
+  font-size: 2rem;
+  color: white;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.8;
+}
