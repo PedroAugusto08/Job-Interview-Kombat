@@ -1,30 +1,55 @@
-import { global,loadOptions } from "./global.js";
+
+import { global, loadOptions } from "./global.js";
+import { MusicManager } from "./game.js";
+
 
 document.addEventListener("DOMContentLoaded", () => {
-  const inputs = [
-    { id: "timeToThink", key: "timeToThink" },
-    { id: "timeToJudge", key: "timeToJudge" },
-    { id: "roundDuration", key: "roundDuration" },
-    { id: "roundsCount", key: "roundsCount" }
-  ];
+    const inputs = [
+        { id: "timeToThink", key: "timeToThink" },
+        { id: "timeToJudge", key: "timeToJudge" },
+        { id: "roundDuration", key: "roundDuration" },
+        { id: "roundsCount", key: "roundsCount" }
+    ];
 
-  inputs.forEach(({ id, key }) => {
-    const input = document.getElementById(id);
-    if (!input) {
-      console.warn(`Elemento com id="${id}" não encontrado no HTML`);
-      return; // pula esse input
+    inputs.forEach(({ id, key }) => {
+        const input = document.getElementById(id);
+        if (!input) {
+            console.warn(`Elemento com id="${id}" não encontrado no HTML`);
+            return; // pula esse input
+        }
+
+        const saved = localStorage.getItem(key);
+        if (saved !== null) input.value = saved;
+
+        input.addEventListener("input", () => {
+            localStorage.setItem(key, input.value);
+            loadOptions(); 
+        });
+    });
+
+    // Música: só inicia quando o usuário habilitar o som
+    const musicManager = new MusicManager();
+    const soundOn = document.querySelector('input[type="radio"][id="sound-on"]');
+    const soundOff = document.querySelector('input[type="radio"][id="sound-off"]');
+
+    // Por padrão, som OFF
+    if (soundOn && soundOff) {
+        soundOn.checked = false;
+        soundOff.checked = true;
+
+        soundOn.addEventListener('change', async function() {
+            if (soundOn.checked) {
+                await musicManager.play(true); // menu music
+            }
+        });
+        soundOff.addEventListener('change', function() {
+            if (soundOff.checked) {
+                musicManager.stop();
+            }
+        });
     }
 
-    const saved = localStorage.getItem(key);
-    if (saved !== null) input.value = saved;
-
-    input.addEventListener("input", () => {
-      localStorage.setItem(key, input.value);
-      loadOptions(); 
-    });
-  });
-
-  loadOptions();
+    loadOptions();
 });
 
 
@@ -61,18 +86,17 @@ hoverSound.volume(0.4)
 
 const options = document.querySelectorAll(".option")
 
+const soundOnRadio = document.getElementById('sound-on');
 options.forEach(opt => {
     opt.addEventListener("mouseover", () => {
-        console.log(global.sound)
-        
-        if (global.sound == true) {
+        if (soundOnRadio && soundOnRadio.checked) {
             if (playingSoundsController.hover == false) {
                 hoverSound.play();
-                playingSoundsController.hover = true
+                playingSoundsController.hover = true;
             }
         }
-    })
-})
+    });
+});
 
 hoverSound.on('end', () => {
     playingSoundsController.hover = false
