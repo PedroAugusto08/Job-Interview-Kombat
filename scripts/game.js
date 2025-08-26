@@ -758,6 +758,79 @@ class Countdown {
   }
 }
 
+// ============= MUSIC SYSTEM ==============
+
+export class MusicManager {
+  constructor() {
+    this.currentLoop = null;
+  }
+
+  async play(menu = false) {
+    await Tone.start();
+    Tone.Transport.stop();
+    Tone.Transport.cancel();
+
+    if (this.currentLoop) {
+      this.currentLoop.stop();
+    }
+
+    if (menu) {
+      this.playMenuMusic();
+    } else {
+      this.playGameMusic();
+    }
+
+    Tone.Transport.start();
+  }
+
+  playMenuMusic() {
+    const synth = new Tone.Synth().toDestination();
+    const notes = ["C4", "E4", "G4", "B4"];
+    let index = 0;
+
+    this.currentLoop = new Tone.Loop((time) => {
+      synth.triggerAttackRelease(notes[index % notes.length], "8n", time);
+      index++;
+    }, "0.5s");
+
+    this.currentLoop.start(0);
+  }
+
+  playGameMusic() {
+    const bass = new Tone.MonoSynth({
+      oscillator: { type: "square" },
+      envelope: { attack: 0.05, decay: 0.3, sustain: 0.4, release: 1 }
+    }).toDestination();
+
+    const synth = new Tone.Synth({
+      oscillator: { type: "triangle" },
+      envelope: { attack: 0.1, decay: 0.2, sustain: 0.3, release: 0.8 }
+    }).toDestination();
+
+    const scale = ["C4", "D4", "E4", "G4", "A4"];
+
+    this.currentLoop = new Tone.Loop((time) => {
+      const note = scale[Math.floor(Math.random() * scale.length)];
+      synth.triggerAttackRelease(note, "8n", time);
+
+      if (Math.random() > 0.7) {
+        bass.triggerAttackRelease("C2", "2n", time);
+      }
+    }, "4n");
+
+    this.currentLoop.start(0);
+  }
+
+  stop() {
+    if (this.currentLoop) {
+      this.currentLoop.stop();
+      this.currentLoop = null;
+    }
+    Tone.Transport.stop();
+  }
+}
+
+
 // ============== MAIN GAME FLOW ==============
 class GameFlow {
   static async start() {
@@ -765,6 +838,8 @@ class GameFlow {
     console.log(`Iniciando jogo para o trabalho: ${job}`);
 
     try {
+      const music = new MusicManager();
+
       const loadingScreen = new LoadingScreen('loading-screen', '.loading-block');
       const overlay = new GameOverlay();
       const countdownImgs = [
@@ -775,7 +850,11 @@ class GameFlow {
       ];
 
       loadingScreen.start();
-      await overlay.showAnticipation(4000); // 4 segundos para antecipation
+      await overlay.showAnticipation(4000);
+
+      // 🎵 Música do jogo começa aqui
+      music.play(false);
+
       await overlay.showCountdown(countdownImgs);
 
       const game = await new Game(job).initialize();
@@ -784,7 +863,6 @@ class GameFlow {
         return;
       }
       GameUI.displayGame(job, game.selectedQuestions);
-      // Só inicia a exibição das perguntas, nunca pula direto para votação
       game.startQuestionsDisplay();
     } catch (error) {
       console.error("Erro no fluxo do jogo:", error);
@@ -792,6 +870,7 @@ class GameFlow {
     }
   }
 }
+
 
 // ============== UI HELPER ==============
 class GameUI {

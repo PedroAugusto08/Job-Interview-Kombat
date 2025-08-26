@@ -10,13 +10,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   inputs.forEach(({ id, key }) => {
     const input = document.getElementById(id);
+    if (!input) {
+      console.warn(`Elemento com id="${id}" não encontrado no HTML`);
+      return; // pula esse input
+    }
+
     const saved = localStorage.getItem(key);
     if (saved !== null) input.value = saved;
+
     input.addEventListener("input", () => {
       localStorage.setItem(key, input.value);
       loadOptions(); 
     });
   });
+
   loadOptions();
 });
 
