@@ -4,28 +4,6 @@ import { MusicManager } from "./game.js";
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const inputs = [
-        { id: "timeToThink", key: "timeToThink" },
-        { id: "timeToJudge", key: "timeToJudge" },
-        { id: "roundDuration", key: "roundDuration" },
-        { id: "roundsCount", key: "roundsCount" }
-    ];
-
-    inputs.forEach(({ id, key }) => {
-        const input = document.getElementById(id);
-        if (!input) {
-            console.warn(`Elemento com id="${id}" não encontrado no HTML`);
-            return; // pula esse input
-        }
-
-        const saved = localStorage.getItem(key);
-        if (saved !== null) input.value = saved;
-
-        input.addEventListener("input", () => {
-            localStorage.setItem(key, input.value);
-            loadOptions(); 
-        });
-    });
 
     // Música: só inicia quando o usuário habilitar o som
     const musicManager = new MusicManager();
@@ -79,8 +57,9 @@ let playingSoundsController = {
 
 const hoverSound = new Howl({
     src: ['../assets/audio/hover.wav'],
-    html5: true
-})
+    html5: true,
+    pool: 20 // aumenta ainda mais o número de instâncias simultâneas
+});
 
 hoverSound.volume(0.4)
 

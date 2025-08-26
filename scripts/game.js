@@ -342,13 +342,15 @@ class Game {
     const visualTimer = document.getElementById('visual-timer');
     if (visualTimer) visualTimer.style.display = '';
 
-    const container = document.getElementById('questions-container');
-    container.innerHTML = '';
 
-    // Mostra a pergunta
-    const p = document.createElement('p');
-    p.textContent = `${this.currentQuestion + 1}. ${this.selectedQuestions[this.currentQuestion]}`;
-    container.appendChild(p);
+  const container = document.getElementById('questions-container');
+  if (!container) return;
+  container.innerHTML = '';
+
+  // Mostra a pergunta
+  const p = document.createElement('p');
+  p.textContent = `${this.currentQuestion + 1}. ${this.selectedQuestions[this.currentQuestion]}`;
+  container.appendChild(p);
 
     this.visualTimer.reset();
     this.visualTimer.start();
@@ -852,8 +854,15 @@ class GameFlow {
       loadingScreen.start();
       await overlay.showAnticipation(4000);
 
-      // 🎵 Música do jogo começa aqui
-      music.play(false);
+      // 🎵 Música do jogo só começa se o som estiver ativado no menu, ou sempre se não houver radio (ex: navegação direta)
+      let playMusic = true;
+      const soundOnRadio = document.getElementById('sound-on');
+      if (soundOnRadio) {
+        playMusic = soundOnRadio.checked;
+      }
+      if (playMusic) {
+        music.play(false);
+      }
 
       await overlay.showCountdown(countdownImgs);
 
@@ -875,9 +884,12 @@ class GameFlow {
 // ============== UI HELPER ==============
 class GameUI {
   static displayGame(job, questions) {
-    document.getElementById('job-title').textContent = `THEME: ${job.toUpperCase()}`;
-    document.getElementById('game-container').style.display = 'block';
-    document.getElementById('questions-container').innerHTML = '';
+  const jobTitle = document.getElementById('job-title');
+  if (jobTitle) jobTitle.textContent = `THEME: ${job.toUpperCase()}`;
+  const gameContainer = document.getElementById('game-container');
+  if (gameContainer) gameContainer.style.display = 'block';
+  const questionsContainer = document.getElementById('questions-container');
+  if (questionsContainer) questionsContainer.innerHTML = '';
 
     // Você pode mostrar a lista das perguntas aqui se quiser (opcional)
   }
