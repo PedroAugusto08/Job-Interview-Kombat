@@ -1166,7 +1166,7 @@ class GameOverHandler {
         restartBtn.style.cursor = 'default';
         
         restartBtn.addEventListener('click', () => {
-          window.location.href = '../start.html';
+          window.location.href = '../index.html';
         });
       }
       

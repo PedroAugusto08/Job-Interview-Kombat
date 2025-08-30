@@ -2,7 +2,7 @@ export function createExitOverlay() { //carregando o exit pra js p usar ele em t
 
     if (document.querySelector('.exit-overlay')) return;
     
-    if (window.location.pathname.endsWith('start.html')) return;
+    if (window.location.pathname.endsWith('index.html')) return;
 
     const exitOverlay = document.createElement('div');
     exitOverlay.className = 'exit-overlay';
@@ -81,10 +81,10 @@ function setupExitOverlayEvents() {
     
     if (exitYesBtn) {
         exitYesBtn.addEventListener('click', () => {
-            if (window.location.pathname.endsWith('start.html')) { //p contornar a restrição
+            if (window.location.pathname.endsWith('index.html')) { //p contornar a restrição
                 window.close();
             }
-            window.location.href = '/start.html';  
+            window.location.href = '/index.html';  
           
         });
     }
