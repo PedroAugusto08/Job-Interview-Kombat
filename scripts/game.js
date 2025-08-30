@@ -99,7 +99,6 @@ class QuestionSelector {
     return ArrayHelper.shuffle([...selectedGeneral, ...selectedJob]);
   }
 }
-
 class VisualTimer {
   constructor(containerId, duration) {
     this.container = document.getElementById(containerId);
@@ -108,12 +107,15 @@ class VisualTimer {
     this.remainingTime = duration;
     this.interval = null;
     this.isPaused = false;
+    this.pauseStartTime = null;
+    this.lastDeg = 0; 
   }
 
   start() {
     this.startTime = Date.now();
     this.remainingTime = this.duration;
     this.isPaused = false;
+    this.lastDeg = 0; // Resetar o estado visual
     this.update();
     this.interval = setInterval(() => this.update(), 100);
   }
@@ -124,11 +126,14 @@ class VisualTimer {
     const elapsed = (Date.now() - this.startTime) / 1000;
     const percentage = Math.min((elapsed / this.duration) * 100, 100);
     const deg = (percentage / 100) * 360;
+    this.lastDeg = deg; // Armazenar o estado visual atual
 
     this.container.style.background = `conic-gradient(#a5dfff ${deg}deg, #f69ac1 0deg)`;
+    this.remainingTime = this.duration - elapsed;
 
     if (elapsed >= this.duration) {
       clearInterval(this.interval);
+      this.interval = null;
     }
   }
 
@@ -136,7 +141,8 @@ class VisualTimer {
     if (this.isPaused || !this.interval) return;
     
     this.isPaused = true;
-    this.remainingTime = this.duration - ((Date.now() - this.startTime) / 1000);
+    this.pauseStartTime = Date.now();
+    this.remainingTime = this.duration - ((this.pauseStartTime - this.startTime) / 1000);
     clearInterval(this.interval);
     this.interval = null;
   }
@@ -145,7 +151,9 @@ class VisualTimer {
     if (!this.isPaused || this.remainingTime <= 0) return;
     
     this.isPaused = false;
-    this.duration = this.remainingTime;
+    // Restaurar o estado visual imediatamente
+    this.container.style.background = `conic-gradient(#a5dfff ${this.lastDeg}deg, #f69ac1 0deg)`;
+    
     this.startTime = Date.now() - ((this.duration - this.remainingTime) * 1000);
     this.interval = setInterval(() => this.update(), 100);
   }
@@ -154,10 +162,10 @@ class VisualTimer {
     clearInterval(this.interval);
     this.interval = null;
     this.isPaused = false;
+    this.lastDeg = 0;
     this.container.style.background = `conic-gradient(#a5dfff 0deg, #f69ac1 0deg)`;
   }
 }
-
 class JudgingScreen {
   static show(teamLives = {team1: 5, team2: 5}, gameInstance = null) {
     return new Promise(resolve => {
@@ -447,77 +455,107 @@ class Game {
     `;
   }
 
-  async runTeamTurn(team, seconds) {
+async runTeamTurn(team, seconds) {
   const team1Label = document.getElementById('turn-team1');
   const team2Label = document.getElementById('turn-team2');
   const team1BarWrap = document.querySelector('.life-bar-wrapper.team1');
   const team2BarWrap = document.querySelector('.life-bar-wrapper.team2');
 
-    if (team1Label && team2Label) {
-      if (team === 'team1') {
-        team1Label.classList.add('active-turn-label');
-        team2Label.classList.remove('active-turn-label');
-        team1Label.classList.remove('inactive-turn-label');
-        team2Label.classList.add('inactive-turn-label');
-        // Ativa barra/heart do time 1, desativa do time 2
-        if (team1BarWrap) {
-          team1BarWrap.classList.remove('inactive');
-          const bar = team1BarWrap.querySelector('.life-bar');
-          const heart = team1BarWrap.querySelector('.life-heart');
-          if (bar) bar.classList.remove('inactive');
-          if (heart) heart.classList.remove('inactive');
-        }
-        if (team2BarWrap) {
-          team2BarWrap.classList.add('inactive');
-          const bar = team2BarWrap.querySelector('.life-bar');
-          const heart = team2BarWrap.querySelector('.life-heart');
-          if (bar) bar.classList.add('inactive');
-          if (heart) heart.classList.add('inactive');
-        }
-      } else {
-        team2Label.classList.add('active-turn-label');
-        team1Label.classList.remove('active-turn-label');
-        team2Label.classList.remove('inactive-turn-label');
-        team1Label.classList.add('inactive-turn-label');
-        // Ativa barra/heart do time 2, desativa do time 1
-        if (team2BarWrap) {
-          team2BarWrap.classList.remove('inactive');
-          const bar = team2BarWrap.querySelector('.life-bar');
-          const heart = team2BarWrap.querySelector('.life-heart');
-          if (bar) bar.classList.remove('inactive');
-          if (heart) heart.classList.remove('inactive');
-        }
-        if (team1BarWrap) {
-          team1BarWrap.classList.add('inactive');
-          const bar = team1BarWrap.querySelector('.life-bar');
-          const heart = team1BarWrap.querySelector('.life-heart');
-          if (bar) bar.classList.add('inactive');
-          if (heart) heart.classList.add('inactive');
-        }
+  if (team1Label && team2Label) {
+    if (team === 'team1') {
+      team1Label.classList.add('active-turn-label');
+      team2Label.classList.remove('active-turn-label');
+      team1Label.classList.remove('inactive-turn-label');
+      team2Label.classList.add('inactive-turn-label');
+      if (team1BarWrap) {
+        team1BarWrap.classList.remove('inactive');
+        const bar = team1BarWrap.querySelector('.life-bar');
+        const heart = team1BarWrap.querySelector('.life-heart');
+        if (bar) bar.classList.remove('inactive');
+        if (heart) heart.classList.remove('inactive');
+      }
+      if (team2BarWrap) {
+        team2BarWrap.classList.add('inactive');
+        const bar = team2BarWrap.querySelector('.life-bar');
+        const heart = team2BarWrap.querySelector('.life-heart');
+        if (bar) bar.classList.add('inactive');
+        if (heart) heart.classList.add('inactive');
+      }
+    } else {
+      team2Label.classList.add('active-turn-label');
+      team1Label.classList.remove('active-turn-label');
+      team2Label.classList.remove('inactive-turn-label');
+      team1Label.classList.add('inactive-turn-label');
+      if (team2BarWrap) {
+        team2BarWrap.classList.remove('inactive');
+        const bar = team2BarWrap.querySelector('.life-bar');
+        const heart = team2BarWrap.querySelector('.life-heart');
+        if (bar) bar.classList.remove('inactive');
+        if (heart) heart.classList.remove('inactive');
+      }
+      if (team1BarWrap) {
+        team1BarWrap.classList.add('inactive');
+        const bar = team1BarWrap.querySelector('.life-bar');
+        const heart = team1BarWrap.querySelector('.life-heart');
+        if (bar) bar.classList.add('inactive');
+        if (heart) heart.classList.add('inactive');
       }
     }
-    // Timer
-    const timerElement = document.getElementById('team-timer');
-    const timerSpan = timerElement.querySelector('span');
-    let startTime = Date.now();
-    return new Promise(res => {
-      const isTeam1 = team === 'team1';
-      timerSpan.textContent = seconds;
-      const interval = setInterval(() => {
-        const elapsed = (Date.now() - startTime) / 1000;
-        const remaining = Math.max(seconds - elapsed, 0);
-        const percentage = (remaining / seconds) * 100;
-        const deg = (percentage / 100) * 360;
-        timerElement.style.background = `conic-gradient(${isTeam1 ? '#3a87ad' : '#e37ea3'} ${deg}deg, #eee 0deg)`;
-        timerSpan.textContent = Math.ceil(remaining);
-        if (remaining <= 0) {
-          clearInterval(interval);
-          res();
-        }
-      }, 100);
-    });
   }
-  constructor(job) {
+  
+  // Timer
+  const timerElement = document.getElementById('team-timer');
+  const timerSpan = timerElement.querySelector('span');
+  let startTime = Date.now();
+  let remaining = seconds;
+  
+  return new Promise(resolve => {
+    const isTeam1 = team === 'team1';
+    
+    const updateTimer = () => {
+      if (this.pauseSystem.isPaused) return;
+      
+      const elapsed = (Date.now() - startTime) / 1000;
+      remaining = Math.max(seconds - elapsed, 0);
+      const percentage = (remaining / seconds) * 100;
+      const deg = (percentage / 100) * 360;
+
+      timerElement.style.background = `conic-gradient(${isTeam1 ? '#3a87ad' : '#e37ea3'} ${deg}deg, #eee 0deg)`;
+      timerSpan.textContent = Math.ceil(remaining);
+
+      if (remaining <= 0) {
+        clearInterval(intervalId);
+        resolve();
+      }
+    };
+    
+    // Iniciar o timer
+    let intervalId = setInterval(updateTimer, 100);
+    updateTimer();
+    
+    // Listener para pausar/resumir
+    const pauseHandler = (e) => {
+      if (e.detail.paused) {
+        clearInterval(intervalId);
+      } else {
+        // Ajustar o tempo inicial para compensar o pause
+        startTime += (Date.now() - this.pauseSystem.pauseTime);
+        intervalId = setInterval(updateTimer, 100);
+        updateTimer();
+      }
+    };
+    
+    document.addEventListener('pauseStateChanged', pauseHandler);
+    
+    // Limpar quando terminar
+    setTimeout(() => {
+      clearInterval(intervalId);
+      document.removeEventListener('pauseStateChanged', pauseHandler);
+      resolve();
+    }, seconds * 1000);
+  });
+}
+    constructor(job) {
     this.job = job;
     this.selectedQuestions = [];
     this.currentQuestion = 0;
@@ -528,6 +566,7 @@ class Game {
     this.teamLives = { team1: this.maxLives, team2: this.maxLives };
     this.isGameOver = false;
     this.gameOverHandler = new GameOverHandler(this);
+    this.pauseSystem = new PauseSystem(this);
 
   }
 
@@ -923,7 +962,7 @@ class GameOverHandler {
       this.handleGameOver('team2');
     }
     // Verifica se o número máximo de rounds foi atingido
-    else if (currentRound > maxRounds) {
+    else if (currentRound >= maxRounds) {
       // Determina o vencedor com base nas vidas restantes
       if (this.game.teamLives.team1 > this.game.teamLives.team2) {
         this.handleGameOver('team1');
@@ -1127,7 +1166,7 @@ class GameOverHandler {
         restartBtn.style.cursor = 'default';
         
         restartBtn.addEventListener('click', () => {
-          window.location.href = 'start.html';
+          window.location.href = '../start.html';
         });
       }
       
@@ -1163,3 +1202,173 @@ class GameOverHandler {
     clearInterval(this.checkInterval);
   }
 }
+// ============== PAUSE SYSTEM ==============
+class PauseSystem {
+  constructor(gameInstance) {
+    this.game = gameInstance;
+    this.isPaused = false;
+    this.pauseOverlay = null;
+    this.pauseButton = null;
+    this.activeIntervals = [];
+    this.activeTimeouts = [];
+    this.createPauseButton();
+  }
+
+  createPauseButton() {
+    this.pauseButton = document.createElement('div');
+    this.pauseButton.id = 'pause-button';
+    this.pauseButton.innerHTML = '⏸️';
+    this.pauseButton.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 1000;
+      font-size: 20px;
+      color: white;
+    `;
+    
+    this.pauseButton.addEventListener('click', () => this.togglePause());
+    document.body.appendChild(this.pauseButton);
+  }
+
+  togglePause() {
+    if (this.isPaused) {
+      this.resume();
+    } else {
+      this.pause();
+    }
+  }
+
+  pause() {
+    if (this.isPaused || this.game.isGameOver) return;
+    
+    this.isPaused = true;
+    this.pauseTime = Date.now();
+    
+    // Pausar o timer visual
+    if (this.game.visualTimer) {
+      this.game.visualTimer.pause();
+    }
+    
+    // Encontrar e armazenar todos os intervalos ativos
+    this.activeIntervals = [];
+    for (let i = 1; i < 10000; i++) {
+      if (window[`${i}`] !== undefined) {
+        this.activeIntervals.push(i);
+        window.clearInterval(i);
+      }
+    }
+    
+    // Criar overlay de pause
+    this.createPauseOverlay();
+    
+    // Adicionar evento de tecla para despausar com ESC
+    this.escapeHandler = (e) => {
+      if (e.key === 'Escape') this.resume();
+    };
+    document.addEventListener('keydown', this.escapeHandler);
+    
+    // Disparar evento de pause
+    document.dispatchEvent(new CustomEvent('gamePaused'));
+  }
+
+  resume() {
+    if (!this.isPaused) return;
+    
+    this.isPaused = false;
+    const pauseDuration = Date.now() - this.pauseTime;
+    
+    // Remover overlay de pause
+    if (this.pauseOverlay) {
+      document.body.removeChild(this.pauseOverlay);
+      this.pauseOverlay = null;
+    }
+    
+    // Retomar o timer visual
+    if (this.game.visualTimer) {
+      this.game.visualTimer.resume();
+    }
+    
+    // Reativar intervalos (não precisamos restaurar os intervalos exatos,
+    // pois o timer visual já cuida da parte visual)
+    
+    // Remover evento de tecla
+    document.removeEventListener('keydown', this.escapeHandler);
+    
+    // Disparar evento de resume
+    document.dispatchEvent(new CustomEvent('gameResumed'));
+  }
+
+  createPauseOverlay() {
+    this.pauseOverlay = document.createElement('div');
+    this.pauseOverlay.id = 'pause-overlay';
+    this.pauseOverlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      flex-direction: column;
+      color: white;
+      font-family: Arial, sans-serif;
+    `;
+    
+    this.pauseOverlay.innerHTML = `
+      <div style="font-size: 48px; margin-bottom: 20px;">PAUSED</div>
+      <div style="font-size: 18px; margin-bottom: 30px;">Press ESC or click Resume to continue</div>
+      <button id="resume-button" style="
+        padding: 10px 20px;
+        font-size: 16px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      ">Resume</button>
+    `;
+    
+    document.body.appendChild(this.pauseOverlay);
+    
+    // Adicionar evento ao botão de resume
+    document.getElementById('resume-button').addEventListener('click', () => this.resume());
+  }
+}
+// Eventos personalizados para controle de pause
+const originalPause = PauseSystem.prototype.pause;
+const originalResume = PauseSystem.prototype.resume;
+
+PauseSystem.prototype.pause = function() {
+  const result = originalPause.apply(this, arguments);
+  document.dispatchEvent(new CustomEvent('pauseStateChanged', { 
+    detail: { paused: true } 
+  }));
+  return result;
+};
+
+PauseSystem.prototype.resume = function() {
+  const result = originalResume.apply(this, arguments);
+  document.dispatchEvent(new CustomEvent('pauseStateChanged', { 
+    detail: { paused: false } 
+  }));
+  return result;
+};
+
+// Evento global de tecla ESC
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && window.gameInstance && window.gameInstance.pauseSystem) {
+    window.gameInstance.pauseSystem.togglePause();
+  }
+});
