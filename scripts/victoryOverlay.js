@@ -86,7 +86,7 @@ function setupVictoryOverlayEvents() {
     if (restartBtn) {
         restartBtn.addEventListener('click', () => {
             // Redirecionar para start.html
-            window.location.href = 'index.html';
+            window.location.href = '/Job-Interview-Kombat';
         });
     }
 

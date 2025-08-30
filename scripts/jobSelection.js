@@ -84,5 +84,5 @@ jobModalBack.addEventListener('click', closeJobModalSidebar);
 jobModalPlay.addEventListener('click', function () {
     closeJobModalSidebar();
     const job = jobModalTitle.textContent.trim().toLowerCase(); // ex: 'designer'
-    window.location.href = `/pages/game.html?job=${job}`;
+    window.location.href = `/Job-Interview-Kombat/pages/game.html?job=${job}`;
 });
