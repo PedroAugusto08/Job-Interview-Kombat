@@ -528,7 +528,6 @@ class Game {
     this.teamLives = { team1: this.maxLives, team2: this.maxLives };
     this.isGameOver = false;
     this.gameOverHandler = new GameOverHandler(this);
-    this.pauseSystem = new PauseSystem(this); 
 
   }
 
@@ -542,8 +541,6 @@ class Game {
     this.selectedQuestions = QuestionSelector.selectQuestions(general, jobSpecific);
 
     this.gameOverHandler.startMonitoring();
-
-    this.pauseSystem.initialize(); 
 
     return this;
   }
@@ -917,7 +914,7 @@ class GameOverHandler {
   }
 
   checkGameOver() {
-    const currentRound = this.game.currentQuestion + 1;
+    const currentRound = this.game.currentQuestion;
     const maxRounds = global.options.rounds; // Obtém o máximo de rounds das opções
 
     if (this.game.teamLives.team2 <= 0) {
@@ -1164,132 +1161,5 @@ class GameOverHandler {
 
   stopMonitoring() {
     clearInterval(this.checkInterval);
-  }
-}
-// ============== PAUSE SYSTEM ==============
-class PauseSystem {
-  constructor(gameInstance) {
-    this.game = gameInstance;
-    this.isPaused = false;
-    this.pauseOverlay = null;
-    this.pauseTimers = []; // Armazena referências aos timers pausados
-    this.pauseAnimations = []; // Armazena referências às animações pausadas
-  }
-  // Alterna entre pausado e despausado
-  togglePause() {
-    if (this.isPaused) {
-      this.resume();
-    } else {
-      this.pause();
-    }
-  }
-
-  // Pausa o jogo
-  pause() {
-    if (this.isPaused) return;
-    
-    this.isPaused = true;
-    
-    // Salva todos os timers ativos
-    this.saveActiveTimers();
-    
-    // Pausa o visual timer se existir
-    if (this.game.visualTimer) {
-      this.game.visualTimer.pause();
-    }
-    
-    // Pausa a contagem regressiva do julgamento se estiver ativa
-    this.pauseJudgementTimer();
-        
-    console.log("Jogo pausado");
-  }
-
-  // Retoma o jogo
-  resume() {
-    if (!this.isPaused) return;
-    
-    this.isPaused = false;
-    
-    // Retoma todos os timers
-    this.restoreTimers();
-    
-    // Retoma o visual timer se existir
-    if (this.game.visualTimer) {
-      this.game.visualTimer.resume();
-    }
-    
-    // Retoma a contagem regressiva do julgamento se estiver ativa
-    this.resumeJudgementTimer();
-        
-    console.log("Jogo retomado");
-  }
-
-  // Salva todos os timers ativos
-  saveActiveTimers() {
-    this.pauseTimers = [];
-    
-    // Itera por todos os intervalos e timeouts ativos
-    for (let i = 1; i < 10000; i++) {
-      const interval = window[i];
-      if (interval && typeof interval === 'object' && interval.intervalId) {
-        this.pauseTimers.push({
-          type: 'interval',
-          id: interval.intervalId,
-          func: interval.func,
-          delay: interval.delay,
-          remaining: interval.remaining
-        });
-      }
-    }
-    
-    // Também precisamos pausar os timers específicos do jogo
-    if (this.game.visualTimer && this.game.visualTimer.interval) {
-      this.pauseTimers.push({
-        type: 'visualTimer',
-        instance: this.game.visualTimer
-      });
-    }
-  }
-
-  // Restaura todos os timers pausados
-  restoreTimers() {
-    this.pauseTimers.forEach(timer => {
-      if (timer.type === 'interval') {
-        // Recria os intervalos
-        timer.id = setInterval(timer.func, timer.delay);
-      } else if (timer.type === 'visualTimer' && timer.instance) {
-        // Recria o visual timer
-        timer.instance.resume();
-      }
-    });
-    
-    this.pauseTimers = [];
-  }
-
-  // Pausa o timer de julgamento se estiver ativo
-  pauseJudgementTimer() {
-    const judgementTimer = document.getElementById('judging-timer');
-    if (judgementTimer && !isNaN(parseInt(judgementTimer.textContent))) {
-      judgementTimer.setAttribute('data-paused-time', judgementTimer.textContent);
-    }
-  }
-
-  // Retoma o timer de julgamento se estiver pausado
-  resumeJudgementTimer() {
-    const judgementTimer = document.getElementById('judging-timer');
-    if (judgementTimer && judgementTimer.hasAttribute('data-paused-time')) {
-      judgementTimer.textContent = judgementTimer.getAttribute('data-paused-time');
-      judgementTimer.removeAttribute('data-paused-time');
-    }
-  }
-  // Inicializa o sistema de pause
-  initialize() {
-    
-    // Adiciona listener para a tecla ESC
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' || e.key === 'P' || e.key === 'p') {
-        this.togglePause();
-      }
-    });
   }
 }
