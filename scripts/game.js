@@ -190,7 +190,7 @@ class JudgingScreen {
               <img src="/assets/images/game/team1.png" alt="Team 1" class="judging-banner-img team1" />
             </div>
             <div class="judging-life-bar-wrapper team1">
-              <img src="../assets/images/game/life_bar_rosa.png" alt="Coração Rosa" class="judging-life-heart" />
+              <img src="/assets/images/game/life_bar_rosa.png" alt="Coração Rosa" class="judging-life-heart" />
               <div class="judging-life-bar team1"><div id="judging-life-team1" class="judging-life-bar-fill team1"></div></div>
             </div>
           </div>
@@ -201,7 +201,7 @@ class JudgingScreen {
             </div>
             <div class="judging-life-bar-wrapper team2">
               <div class="judging-life-bar team2"><div id="judging-life-team2" class="judging-life-bar-fill team2"></div></div>
-              <img src="../assets/images/game/life_bar_azul.png" alt="Coração Azul" class="judging-life-heart" />
+              <img src="/assets/images/game/life_bar_azul.png" alt="Coração Azul" class="judging-life-heart" />
             </div>
           </div>
           <div class="judging-strike-row diagonal-strike-row">
@@ -418,7 +418,7 @@ class Game {
         <div class="turn-block" data-team="team1">
           <span id="turn-team1" class="turn-label">TEAM 1'S TURN!</span>
           <div class="life-bar-wrapper team1">
-            <img src="/assets/images/game/life_bar_rosa.png" alt="Coração Rosa" class="life-heart" />
+            <img src="assets/images/game/life_bar_rosa.png" alt="Coração Rosa" class="life-heart" />
             <div class="life-bar team1"><div id="life-team1" class="life-bar-fill team1"></div></div>
           </div>
         </div>
@@ -429,13 +429,13 @@ class Game {
           <span id="turn-team2" class="turn-label">TEAM 2'S TURN!</span>
           <div class="life-bar-wrapper team2">
             <div class="life-bar team2"><div id="life-team2" class="life-bar-fill team2"></div></div>
-            <img src="/assets/images/game/life_bar_azul.png" alt="Coração Azul" class="life-heart" />
+            <img src="assets/images/game/life_bar_azul.png" alt="Coração Azul" class="life-heart" />
           </div>
         </div>
       </div>
       <div id="fight-overlay" class="fight-overlay">
         <div class="fight-banner">
-          <img src="/assets/images/game/fight.png" alt="FIGHT!" class="fight-img" />
+          <img src="assets/images/game/fight.png" alt="FIGHT!" class="fight-img" />
         </div>
       </div>
     `;
@@ -718,7 +718,7 @@ class GameOverlay {
     if (!this.overlay || !this.content) return;
     this.content.innerHTML = '';
     const img = document.createElement('img');
-    img.src = '../assets/images/game/antecipation.png';
+    img.src = '/assets/images/game/antecipation.png';
     img.alt = 'Antecipação';
     img.className = 'anticipation-img';
     this.content.appendChild(img);
