@@ -50,7 +50,7 @@
 
 
 .exit-overlay .faixa {
-    background-image: url('../assets/images/exit/faixa\ cinza1.png');
+    background-image: url('../assets/images/exit/faixa-cinza1.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -134,7 +134,7 @@
     height: 450px;
 }
 .exit .faixa {
-    background-image: url('../assets/images/exit/faixa\ cinza1.png');
+    background-image: url('../assets/images/exit/faixa-cinza1.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -210,7 +210,7 @@
 }
 
 .exit-btn-no {
-    background: url('../assets/images/exit/botao\ nooo1.png') no-repeat center center;
+    background: url('../assets/images/exit/botao-nooo1.png') no-repeat center center;
     width: 300px; 
     height: 150px;
     right: 23.5%; 
@@ -230,7 +230,7 @@
     right: 21em;
     bottom: 0.2rem;
     z-index: 10000000;
-    background-image: url('../assets/images/exit/emoji\ farmando\ aura\ cut.png');
+    background-image: url('../assets/images/exit/emoji-farmando-aura-cut.png');
     width: 100px;
     height: 100px;
     background-repeat: no-repeat;
@@ -244,7 +244,7 @@
     left: 22rem;
     bottom: 0.2rem;
     z-index: 10000000;
-    background-image: url('../assets/images/exit/emoji\ kkkrying\ \(1\).png');
+    background-image: url('../assets/images/exit/emoji-kkkrying-1.png');
     width: 80px;
     height: 90px;
     background-repeat: no-repeat;

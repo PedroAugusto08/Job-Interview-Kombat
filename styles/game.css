@@ -5,7 +5,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #1a0933 url('/Job-Interview-Komb/Job-Interview-Kombat/assets/images/jobs/bg-2.png') center center no-repeat;
+  background: #1a0933 url('../assets/images/jobs/bg-2.png') center center no-repeat;
   background-size: cover;
   z-index: 99999;
   opacity: 1;
@@ -142,7 +142,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #1a0933 url('/Job-Interview-Komb/Job-Interview-Kombat/assets/images/jobs/bg-2.png') center center no-repeat;
+  background: #1a0933 url('../assets/images/jobs/bg-2.png') center center no-repeat;
   background-size: cover;
   z-index: 10000;
   display: flex;
@@ -199,10 +199,10 @@
   image-rendering: pixelated;
 }
 .judging-banner.team1 {
-  background-image: url('/Job-Interview-Kombat/assets/images/game/faixa_diagnonal_esquerda.png');
+  background-image: url('../assets/images/game/faixa_diagnonal_esquerda.png');
 }
 .judging-banner.team2 {
-  background-image: url('/Job-Interview-Kombat/assets/images/game/faixa_diagnonal_direita.png');
+  background-image: url('../assets/images/game/faixa_diagnonal_direita.png');
   justify-content: flex-end;
 }
 .judging-banner-label {
@@ -539,10 +539,10 @@
 
 /* Banner rosa para TEAM 1 */
 #turn-team1.turn-label {
-  background-image: url('/Job-Interview-Kombat/assets/images/game/marquise_rosa.png');
+  background-image: url('../assets/images/game/marquise_rosa.png');
 }
 #turn-team2.turn-label {
-  background-image: url('/Job-Interview-Kombat/assets/images/game/marquise_azul.png');
+  background-image: url('../assets/images/game/marquise_azul.png');
 }
 .turn-label:last-child {
   text-align: right;
@@ -728,7 +728,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url('/Job-Interview-Kombat/assets/images/game/faixa.png') center center no-repeat;
+  background: url('../assets/images/game/faixa.png') center center no-repeat;
   background-size: contain;
   width: 800px;
   max-width: 95vw;
@@ -751,7 +751,7 @@ body {
   font-family: 'Press Start 2P', monospace;
   color: white;
   text-align: center;
-  background: #2a1747 url('/Job-Interview-Kombat/assets/images/jobs/bg-2.png') center center no-repeat;
+  background: #2a1747 url('../assets/images/jobs/bg-2.png') center center no-repeat;
   background-size: cover;
   min-height: 100vh;
   overflow: hidden;
@@ -774,7 +774,7 @@ body {
   left: -10%;
   width: 32vw;
   height: 40vh;
-  background: url('/Job-Interview-Kombat/assets/images/jobs/bg triangulo.png') no-repeat left center;
+  background: url('../assets/images/jobs/bg-triangulo.png') no-repeat left center;
   background-size: contain;
   z-index: 0;
   pointer-events: none;
@@ -786,7 +786,7 @@ body {
   right: -10%;
   width: 32vw;
   height: 40vh;
-  background: url('/Job-Interview-Kombat/assets/images/jobs/bg triangulo.png') no-repeat right center;
+  background: url('../assets/images/jobs/bg-triangulo.png') no-repeat right center;
   background-size: contain;
   z-index: 0;
   pointer-events: none;
@@ -798,7 +798,7 @@ body {
   left: 3.5rem;
   width: 150px;
   height: 150px;
-  background: url('/Job-Interview-Kombat/assets/images/jobs/copas.png') no-repeat center center;
+  background: url('../assets/images/jobs/copas.png') no-repeat center center;
   background-size: contain;
   z-index: 1;
   pointer-events: none;
@@ -809,7 +809,7 @@ body {
   left: 3.5rem;
   width: 150px;
   height: 150px;
-  background: url('/Job-Interview-Kombat/assets/images/jobs/espadas.png') no-repeat center center;
+  background: url('../assets/images/jobs/espadas.png') no-repeat center center;
   background-size: contain;
   z-index: 1;
   pointer-events: none;
@@ -820,7 +820,7 @@ body {
   right: 3.5rem;
   width: 150px;
   height: 150px;
-  background: url('/Job-Interview-Kombat/assets/images/jobs/ouros.png') no-repeat center center;
+  background: url('../assets/images/jobs/ouros.png') no-repeat center center;
   background-size: contain;
   z-index: 1;
   pointer-events: none;
@@ -831,7 +831,7 @@ body {
   right: 3.5rem;
   width: 150px;
   height: 150px;
-  background: url('/Job-Interview-Kombat/assets/images/jobs/paus.png') no-repeat center center;
+  background: url('../assets/images/jobs/paus.png') no-repeat center center;
   background-size: contain;
   z-index: 1;
   pointer-events: none;
@@ -879,7 +879,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #1a0933 url('/Job-Interview-Kombat/assets/images/jobs/bg-2.png') center center no-repeat;
+  background: #1a0933 url('../assets/images/jobs/bg-2.png') center center no-repeat;
   background-size: cover;
   overflow: hidden;
   pointer-events: none;
@@ -890,7 +890,7 @@ body {
   left: -10%;
   width: 32vw;
   height: 40vh;
-  background: url('/Job-Interview-Kombat/assets/images/jobs/bg triangulo.png') no-repeat left center;
+  background: url('../assets/images/jobs/bg triangulo.png') no-repeat left center;
   background-size: contain;
   z-index: 1;
   pointer-events: none;
@@ -902,7 +902,7 @@ body {
   right: -10%;
   width: 32vw;
   height: 40vh;
-  background: url('/Job-Interview-Kombat/assets/images/jobs/bg triangulo.png') no-repeat right center;
+  background: url('../assets/images/jobs/bg triangulo.png') no-repeat right center;
   background-size: contain;
   z-index: 1;
   pointer-events: none;
@@ -914,7 +914,7 @@ body {
   left: 3.5rem;
   width: 150px;
   height: 150px;
-  background: url('/Job-Interview-Kombat/assets/images/jobs/copas.png') no-repeat center center;
+  background: url('../assets/images/jobs/copas.png') no-repeat center center;
   background-size: contain;
   z-index: 2;
   pointer-events: none;
@@ -925,7 +925,7 @@ body {
   left: 3.5rem;
   width: 150px;
   height: 150px;
-  background: url('/Job-Interview-Kombat/assets/images/jobs/espadas.png') no-repeat center center;
+  background: url('../assets/images/jobs/espadas.png') no-repeat center center;
   background-size: contain;
   z-index: 2;
   pointer-events: none;
@@ -936,7 +936,7 @@ body {
   right: 3.5rem;
   width: 150px;
   height: 150px;
-  background: url('/Job-Interview-Kombat/assets/images/jobs/ouros.png') no-repeat center center;
+  background: url('../assets/images/jobs/ouros.png') no-repeat center center;
   background-size: contain;
   z-index: 2;
   pointer-events: none;
@@ -947,7 +947,7 @@ body {
   right: 3.5rem;
   width: 150px;
   height: 150px;
-  background: url('/Job-Interview-Kombat/assets/images/jobs/paus.png') no-repeat center center;
+  background: url('../assets/images/jobs/paus.png') no-repeat center center;
   background-size: contain;
   z-index: 2;
   pointer-events: none;
@@ -1103,7 +1103,7 @@ body {
     font-size: clamp(1.4rem, 2vw, 2.6rem);
     line-height: 1.4;
     text-align: center;
-    background: url('/Job-Interview-Kombat/assets/images/game/small_question.png') center center no-repeat;
+    background: url('../assets/images/game/small_question.png') center center no-repeat;
     background-size: 100% 100%;
     color: #2a1747;
     text-shadow: 2px 2px 0 #ca2bff89;

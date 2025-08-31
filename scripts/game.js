@@ -617,7 +617,7 @@ async runTeamTurn(team, seconds) {
       container.innerHTML = `
         <div class="fight-screen">
           <div class="fight-banner">
-            <img src="assets/images/game/fight.png" alt="FIGHT!" class="fight-img" />
+            <img src="../assets/images/game/fight.png" alt="FIGHT!" class="fight-img" />
           </div>
         </div>
       `;
