@@ -979,7 +979,7 @@ body {
   transform: scale(0.7);
   animation: anticipationIn var(--anticipation-in, 1.2s) cubic-bezier(.25,.8,.25,1) forwards;
 }
-#overlay-content .anticipation-img[src*="../assets/images/game/7-antecipation-1.png"] {
+#overlay-content .anticipation-img[src*="assets/images/game/antecipation.png"] {
   width: 170%;
   height: 170%;
   max-width: none;
