@@ -718,7 +718,7 @@ class GameOverlay {
     if (!this.overlay || !this.content) return;
     this.content.innerHTML = '';
     const img = document.createElement('img');
-  img.src = 'assets/images/game/antecipation.png';
+    img.src = '../assets/images/game/antecipation.png';
     img.alt = 'Antecipação';
     img.className = 'anticipation-img';
     this.content.appendChild(img);
