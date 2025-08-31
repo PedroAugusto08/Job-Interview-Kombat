@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+
     // Música: só inicia quando o usuário habilitar o som
     const musicManager = new MusicManager();
     const soundOn = document.querySelector('input[type="radio"][id="sound-on"]');
@@ -35,16 +36,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Por padrão, som OFF
     if (soundOn && soundOff) {
-        soundOn.checked = false;
-        soundOff.checked = true;
+        // Recupera preferência do localStorage
+        const savedSound = localStorage.getItem('sound');
+        if (savedSound === 'on') {
+            soundOn.checked = true;
+            soundOff.checked = false;
+        } else {
+            soundOn.checked = false;
+            soundOff.checked = true;
+        }
 
         soundOn.addEventListener('change', async function() {
             if (soundOn.checked) {
+                localStorage.setItem('sound', 'on');
                 await musicManager.play(true); // menu music
             }
         });
         soundOff.addEventListener('change', function() {
             if (soundOff.checked) {
+                localStorage.setItem('sound', 'off');
                 musicManager.stop();
             }
         });
@@ -68,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 fadeDiv.classList.add('active');
             }, 10);
             setTimeout(() => {
-                window.location.href = 'game.html';
+                window.location.href = 'pages/game.html';
             }, 800);
         });
     }

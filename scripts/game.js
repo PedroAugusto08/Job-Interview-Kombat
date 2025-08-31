@@ -75,7 +75,7 @@ class ArrayHelper {
 // ============== DATA LOADER ==============
 class QuestionLoader {
   static async loadQuestions(job) {
-    const response = await fetch('../db/questions.json');
+  const response = await fetch('../db/questions.json');
     if (!response.ok) throw new Error('Erro ao carregar o JSON');
 
     const data = await response.json();
@@ -894,10 +894,11 @@ class GameFlow {
       await overlay.showAnticipation(4000);
 
       // 🎵 Música do jogo só começa se o som estiver ativado no menu, ou sempre se não houver radio (ex: navegação direta)
-      let playMusic = true;
-      const soundOnRadio = document.getElementById("sound-on");
-      if (soundOnRadio) {
-        playMusic = soundOnRadio.checked;
+      // Música só toca se o usuário ativou no menu (persistido no localStorage)
+      let playMusic = false;
+      const soundPref = localStorage.getItem('sound');
+      if (soundPref === 'on') {
+        playMusic = true;
       }
       if (playMusic) {
         music.play(false);
@@ -915,8 +916,11 @@ class GameFlow {
       game.startQuestionsDisplay();
     } catch (error) {
       console.error("Erro no fluxo do jogo:", error);
-      document.getElementById("job-title").textContent =
-        "Erro ao carregar o jogo!";
+      const jobTitle = document.getElementById("job-title");
+      if (jobTitle) {
+        jobTitle.textContent = "Erro ao carregar o jogo!";
+      }
+
     }
   }
 }
