@@ -75,7 +75,7 @@
     row-gap: 20vw;
 }
 .copasGolden { 
-    background-image: url('..assets/images/winner/copas-dourado.png');
+    background-image: url('../assets/images/winner/copas-dourado.png');
     grid-area: 1 / 1; 
     width: 200px; 
     height: 200px;
@@ -135,7 +135,7 @@
 }
 
 .faixa {
-    background-image: url('./assets/images/winner/faixa-branca-large.png');
+    background-image: url('../assets/images/winner/faixa-branca-large.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
