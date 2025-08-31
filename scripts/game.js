@@ -878,13 +878,16 @@ class GameFlow {
     try {
       const music = new MusicManager();
 
-      const loadingScreen = new LoadingScreen('loading-screen', '.loading-block');
+      const loadingScreen = new LoadingScreen(
+        "loading-screen",
+        ".loading-block"
+      );
       const overlay = new GameOverlay();
       const countdownImgs = [
-  'assets/images/game/c3.png',
-  'assets/images/game/c2.png',
-  'assets/images/game/c1.png',
-  'assets/images/game/ready.png'
+        "../assets/images/game/c3.png",
+        "../assets/images/game/c2.png",
+        "../assets/images/game/c1.png",
+        "../assets/images/game/ready.png",
       ];
 
       loadingScreen.start();
@@ -892,7 +895,7 @@ class GameFlow {
 
       // 🎵 Música do jogo só começa se o som estiver ativado no menu, ou sempre se não houver radio (ex: navegação direta)
       let playMusic = true;
-      const soundOnRadio = document.getElementById('sound-on');
+      const soundOnRadio = document.getElementById("sound-on");
       if (soundOnRadio) {
         playMusic = soundOnRadio.checked;
       }
@@ -904,14 +907,16 @@ class GameFlow {
 
       const game = await new Game(job).initialize();
       if (!game.selectedQuestions || game.selectedQuestions.length === 0) {
-        document.getElementById('job-title').textContent = 'Nenhuma pergunta disponível para este tema!';
+        document.getElementById("job-title").textContent =
+          "Nenhuma pergunta disponível para este tema!";
         return;
       }
       GameUI.displayGame(job, game.selectedQuestions);
       game.startQuestionsDisplay();
     } catch (error) {
       console.error("Erro no fluxo do jogo:", error);
-      document.getElementById('job-title').textContent = 'Erro ao carregar o jogo!';
+      document.getElementById("job-title").textContent =
+        "Erro ao carregar o jogo!";
     }
   }
 }
