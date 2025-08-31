@@ -187,21 +187,21 @@ class JudgingScreen {
         <div class="judging-content diagonal-layout">
           <div class="judging-team judging-team1 diagonal-team1">
             <div class="judging-banner team1">
-              <img src="/assets/images/game/team1.png" alt="Team 1" class="judging-banner-img team1" />
+              <img src="../assets/images/game/team1.png" alt="Team 1" class="judging-banner-img team1" />
             </div>
             <div class="judging-life-bar-wrapper team1">
-              <img src="/assets/images/game/life_bar_rosa.png" alt="Coração Rosa" class="judging-life-heart" />
+              <img src="../assets/images/game/life_bar_rosa.png" alt="Coração Rosa" class="judging-life-heart" />
               <div class="judging-life-bar team1"><div id="judging-life-team1" class="judging-life-bar-fill team1"></div></div>
             </div>
           </div>
           <div class="judging-vs diagonal-vs">VS</div>
           <div class="judging-team judging-team2 diagonal-team2">
             <div class="judging-banner team2">
-              <img src="/assets/images/game/team2.png" alt="Team 2" class="judging-banner-img team2" />
+              <img src="../assets/images/game/team2.png" alt="Team 2" class="judging-banner-img team2" />
             </div>
             <div class="judging-life-bar-wrapper team2">
               <div class="judging-life-bar team2"><div id="judging-life-team2" class="judging-life-bar-fill team2"></div></div>
-              <img src="/assets/images/game/life_bar_azul.png" alt="Coração Azul" class="judging-life-heart" />
+              <img src="../assets/images/game/life_bar_azul.png" alt="Coração Azul" class="judging-life-heart" />
             </div>
           </div>
           <div class="judging-strike-row diagonal-strike-row">
@@ -306,7 +306,7 @@ class Game {
       judgesDiv.className = 'judges-will-decide-overlay';
       // Imagem central
       const img = document.createElement('img');
-      img.src = '/assets/images/game/judges_will_decide.png';
+      img.src = '../assets/images/game/judges_will_decide.png';
       img.alt = 'Judges Will Decide';
       img.className = 'judges-will-decide-img';
       judgesDiv.appendChild(img);
