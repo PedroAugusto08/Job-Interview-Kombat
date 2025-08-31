@@ -418,7 +418,7 @@ class Game {
         <div class="turn-block" data-team="team1">
           <span id="turn-team1" class="turn-label">TEAM 1'S TURN!</span>
           <div class="life-bar-wrapper team1">
-            <img src="assets/images/game/life_bar_rosa.png" alt="Coração Rosa" class="life-heart" />
+            <img src="../assets/images/game/life_bar_rosa.png" alt="Coração Rosa" class="life-heart" />
             <div class="life-bar team1"><div id="life-team1" class="life-bar-fill team1"></div></div>
           </div>
         </div>
@@ -429,13 +429,13 @@ class Game {
           <span id="turn-team2" class="turn-label">TEAM 2'S TURN!</span>
           <div class="life-bar-wrapper team2">
             <div class="life-bar team2"><div id="life-team2" class="life-bar-fill team2"></div></div>
-            <img src="assets/images/game/life_bar_azul.png" alt="Coração Azul" class="life-heart" />
+            <img src="../assets/images/game/life_bar_azul.png" alt="Coração Azul" class="life-heart" />
           </div>
         </div>
       </div>
       <div id="fight-overlay" class="fight-overlay">
         <div class="fight-banner">
-          <img src="assets/images/game/fight.png" alt="FIGHT!" class="fight-img" />
+          <img src="../assets/images/game/fight.png" alt="FIGHT!" class="fight-img" />
         </div>
       </div>
     `;
@@ -995,10 +995,10 @@ class GameOverHandler {
     // Depois mostra a tela de vitória com fade-in
     await this.showVictoryScreen(winningTeam);
     
-    this.pauseSystem.pause();
+    //this.pauseSystem.pause();
 
     // Redireciona após um delay
-    window.location.href = `victory.html?winner=${winningTeam}`;
+   // window.location.href = `victory.html?winner=${winningTeam}`;
   }
 
   createBlackOverlay() {
