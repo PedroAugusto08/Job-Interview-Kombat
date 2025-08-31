@@ -2,7 +2,7 @@
 
 **Job Interview Kombat** é um Role-Playing Game (RPG) interativo criado para treinar entrevistas de emprego em inglês de forma lúdica e envolvente.
 
-<img src="imgs/main.png"></img>
+<img src="imgs/mainG.gif"></img>
 ## Sobre o Projeto
 
 O domínio da língua inglesa é uma habilidade essencial para estudantes da área de tecnologia que desejam se destacar em um mercado de trabalho globalizado. Seja para atuar em empresas multinacionais, entender documentações técnicas ou participar de processos seletivos, é crucial que esses estudantes saibam se comunicar com clareza, confiança e domínio técnico em inglês.
