@@ -5,7 +5,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #1a0933 url('/Job-Interview-Komb/Job-Interview-Kombat/assets/images/jobs/bg 2.png') center center no-repeat;
+  background: #1a0933 url('/Job-Interview-Komb/Job-Interview-Kombat/assets/images/jobs/bg-2.png') center center no-repeat;
   background-size: cover;
   z-index: 99999;
   opacity: 1;
@@ -142,7 +142,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #1a0933 url('/Job-Interview-Komb/Job-Interview-Kombat/assets/images/jobs/bg 2.png') center center no-repeat;
+  background: #1a0933 url('/Job-Interview-Komb/Job-Interview-Kombat/assets/images/jobs/bg-2.png') center center no-repeat;
   background-size: cover;
   z-index: 10000;
   display: flex;
@@ -751,7 +751,7 @@ body {
   font-family: 'Press Start 2P', monospace;
   color: white;
   text-align: center;
-  background: #2a1747 url('/Job-Interview-Kombat/assets/images/jobs/bg 2.png') center center no-repeat;
+  background: #2a1747 url('/Job-Interview-Kombat/assets/images/jobs/bg-2.png') center center no-repeat;
   background-size: cover;
   min-height: 100vh;
   overflow: hidden;
@@ -879,7 +879,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #1a0933 url('/Job-Interview-Kombat/assets/images/jobs/bg 2.png') center center no-repeat;
+  background: #1a0933 url('/Job-Interview-Kombat/assets/images/jobs/bg-2.png') center center no-repeat;
   background-size: cover;
   overflow: hidden;
   pointer-events: none;

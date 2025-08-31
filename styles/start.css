@@ -5,7 +5,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #1a0933 url('../assets/images/jobs/bg 2.png') center center no-repeat;
+  background: #1a0933 url('../assets/images/jobs/bg-2.png') center center no-repeat;
   background-size: cover;
   z-index: 99999;
   opacity: 0;
@@ -124,7 +124,7 @@
   width: 100vw;
   height: 100vh;
   z-index: 100;
-  background: #2a1747 url('../assets/images/jobs/bg 2.png') center center no-repeat;
+  background: #2a1747 url('../assets/images/jobs/bg-2.png') center center no-repeat;
   background-size: cover;
   display: flex;
   align-items: center;
@@ -833,7 +833,7 @@ footer span {
     position: relative;
     padding: 1.5rem 8rem;
     background: #2e1a5a;
-    background-image: url("../assets/images/bg 3.png");
+  background-image: url("../assets/images/bg-3.png");
     background-size: 120%;
     background-repeat: no-repeat;
     background-position: -4rem top;

@@ -617,7 +617,7 @@ async runTeamTurn(team, seconds) {
       container.innerHTML = `
         <div class="fight-screen">
           <div class="fight-banner">
-            <img src="/assets/images/game/fight.png" alt="FIGHT!" class="fight-img" />
+            <img src="assets/images/game/fight.png" alt="FIGHT!" class="fight-img" />
           </div>
         </div>
       `;
@@ -718,7 +718,7 @@ class GameOverlay {
     if (!this.overlay || !this.content) return;
     this.content.innerHTML = '';
     const img = document.createElement('img');
-    img.src = '/assets/images/game/antecipation.png';
+  img.src = 'assets/images/game/antecipation.png';
     img.alt = 'Antecipação';
     img.className = 'anticipation-img';
     this.content.appendChild(img);
@@ -881,10 +881,10 @@ class GameFlow {
       const loadingScreen = new LoadingScreen('loading-screen', '.loading-block');
       const overlay = new GameOverlay();
       const countdownImgs = [
-        '/assets/images/game/c3.png',
-        '/assets/images/game/c2.png',
-        '/assets/images/game/c1.png',
-        '/assets/images/game/ready.png'
+  'assets/images/game/c3.png',
+  'assets/images/game/c2.png',
+  'assets/images/game/c1.png',
+  'assets/images/game/ready.png'
       ];
 
       loadingScreen.start();
