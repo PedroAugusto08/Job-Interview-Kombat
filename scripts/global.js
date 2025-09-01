@@ -10,9 +10,9 @@ export const global = {
 
 // Função para carregar os valores salvos no localStorage
 export function loadOptions() {
-  global.options.think = parseFloat(localStorage.getItem("timeToThink") || "0.1", 10) * 60;
-  global.options.judge = parseFloat(localStorage.getItem("timeToJudge") || "0.1", 10) * 60;
-  global.options.round = parseFloat(localStorage.getItem("roundDuration") || "0.1", 10) * 60;
+  global.options.think = parseFloat(localStorage.getItem("timeToThink") || "0.1", 10) * 6;
+  global.options.judge = parseFloat(localStorage.getItem("timeToJudge") || "1", 10) * 6;
+  global.options.round = parseFloat(localStorage.getItem("roundDuration") || "1", 10) * 6;
   global.options.rounds = parseInt(localStorage.getItem("roundsCount") || "3", 10);
 }
 
