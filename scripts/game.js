@@ -109,13 +109,16 @@ class VisualTimer {
     this.isPaused = false;
     this.pauseStartTime = null;
     this.lastDeg = 0; 
+    this.isFinished = false;
   }
 
   start() {
     this.startTime = Date.now();
     this.remainingTime = this.duration;
     this.isPaused = false;
-    this.lastDeg = 0; // Resetar o estado visual
+    this.lastDeg = 0; 
+    this.isFinished = false; 
+
     this.update();
     this.interval = setInterval(() => this.update(), 100);
   }
@@ -126,12 +129,13 @@ class VisualTimer {
     const elapsed = (Date.now() - this.startTime) / 1000;
     const percentage = Math.min((elapsed / this.duration) * 100, 100);
     const deg = (percentage / 100) * 360;
-    this.lastDeg = deg; // Armazenar o estado visual atual
+    this.lastDeg = deg; 
 
     this.container.style.background = `conic-gradient(#a5dfff ${deg}deg, #f69ac1 0deg)`;
     this.remainingTime = this.duration - elapsed;
 
     if (elapsed >= this.duration) {
+      this.isFinished = true; 
       clearInterval(this.interval);
       this.interval = null;
     }
@@ -147,17 +151,29 @@ class VisualTimer {
     this.interval = null;
   }
 
-  resume() {
-    if (!this.isPaused || this.remainingTime <= 0) return;
-    
-    this.isPaused = false;
-    // Restaurar o estado visual imediatamente
-    this.container.style.background = `conic-gradient(#a5dfff ${this.lastDeg}deg, #f69ac1 0deg)`;
-    
-    this.startTime = Date.now() - ((this.duration - this.remainingTime) * 1000);
-    this.interval = setInterval(() => this.update(), 100);
+resume() {
+  if (!this.isPaused || this.remainingTime <= 0) return;
+  
+  this.isPaused = false;
+  
+  // Verificar se o tempo já esgotou durante a pausa
+  const currentTime = Date.now();
+  const elapsedDuringPause = (currentTime - this.pauseStartTime) / 1000;
+  
+  if (this.remainingTime - elapsedDuringPause <= 0) {
+    this.isFinished = true; // ← Marcar como terminado se o tempo esgotou durante a pausa
+    this.container.style.background = `conic-gradient(#a5dfff 360deg, #f69ac1 0deg)`;
+    return;
   }
+  
+  // Restaurar o estado visual imediatamente
+  this.container.style.background = `conic-gradient(#a5dfff ${this.lastDeg}deg, #f69ac1 0deg)`;
+  
+  this.startTime = Date.now() - ((this.duration - this.remainingTime) * 1000);
+  if (this.interval) clearInterval(this.interval);
 
+  this.interval = setInterval(() => this.update(), 100);
+}
   reset() {
     clearInterval(this.interval);
     this.interval = null;
@@ -330,13 +346,39 @@ class Game {
   stopQuestionsDisplay() {
     // Lógica para finalizar a exibiçao das perguntas pode ser adicionada aqui
   }
-  delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+delay(ms) {
+  return new Promise(resolve => {
+    const start = Date.now();
+    let checkInterval = null;
+    
+    const check = () => {
+      // Verificar se o timer visual terminou (mais robusto)
+      if (this.visualTimer.isFinished || this.visualTimer.remainingTime <= 0) {
+        if (checkInterval) clearInterval(checkInterval);
+        resolve();
+        return;
+      }
+      
+      if (this.pauseSystem.isPaused) {
+        // Continua verificando a cada 100ms se estiver pausado
+        return;
+      }
+      
+      const elapsed = Date.now() - start - this.pauseSystem.totalPauseTime;
+      if (elapsed >= ms) {
+        if (checkInterval) clearInterval(checkInterval);
+        resolve();
+      }
+    };
+    
+    // Verificar a cada 50ms para ser mais responsivo
+    checkInterval = setInterval(check, 50);
+    check(); // Chamar imediatamente
+  });
+}
   startQuestionsDisplay() {
     // Inicia a exibição das perguntas
     this.currentQuestion = 0;
-    this.createVisualTimer();
     if (typeof this.showCurrentQuestion === 'function') {
       this.showCurrentQuestion();
     }
@@ -363,9 +405,13 @@ class Game {
 
     this.visualTimer.reset();
     this.visualTimer.start();
-    await this.delay(global.options.think * 1000); // Espera o tempo de pensar
-    this.visualTimer.reset();
 
+    await this.delay(global.options.think * 1000);
+    
+// Verificação extra para garantir que o timer seja resetado apenas se não tiver terminado
+  if (!this.visualTimer.isFinished && this.visualTimer.remainingTime > 0) {
+    this.visualTimer.reset();
+  }
     // Esconde o visual-timer antes dos turnos
     if (visualTimer) visualTimer.style.display = 'none';
 
@@ -575,7 +621,7 @@ async runTeamTurn(team, seconds) {
     this.job = job;
     this.selectedQuestions = [];
     this.currentQuestion = 0;
-    this.visualTimer = null;
+    this.visualTimer = new VisualTimer('visual-timer', global.options.think); // Criar aqui
     this.teamScores = { team1: 0, team2: 0 };
     this.maxPoints = 10;
     this.maxLives = 5;
@@ -865,12 +911,12 @@ export class MusicManager {
 
     this.currentLoop = new Tone.Loop((time) => {
       const note = scale[Math.floor(Math.random() * scale.length)];
-      synth.triggerAttackRelease(note, "8n", time);
+      synth.triggerAttackRelease(note, "", time);
 
       if (Math.random() > 0.7) {
         bass.triggerAttackRelease("C2", "2n", time);
       }
-    }, "4n");
+    }, "16n");
 
     this.currentLoop.start(0);
   }

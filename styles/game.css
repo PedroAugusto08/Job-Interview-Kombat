@@ -150,6 +150,10 @@
   justify-content: center;
   transition: opacity 0.5s;
   pointer-events: auto;
+  font-family: MortalKombat1Font, 'Press Start 2P', monospace;
+  text-shadow: 1px 1px 0 #ff2b7c;
+
+  
 }
 .judging-content {
   width: 100vw;
@@ -308,10 +312,12 @@
   margin-top: 32px;
 }
 .judging-timer-center {
+  
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 32px 0 32px 0;
+  font-family: MortalKombat1Font, 'Press Start 2P', monospace;
 }
 .judging-timer-circle {
   width: 120px;
@@ -324,7 +330,7 @@
   justify-content: center;
   font-size: 1.1rem;
   color: #fff;
-  font-family: 'Press Start 2P', monospace;
+  font-family: MortalKombat1Font, 'Press Start 2P', monospace;
   text-align: center;
   box-shadow: 0 0 0 6px #3a87ad;
   text-shadow: 2px 2px 0 #ff2b7c;
@@ -569,6 +575,8 @@
   min-width: 120px;
   margin: 0 0 0 0;
   transform: translateY(-65px);
+  font-family: MortalKombat1Font, 'Press Start 2P', monospace;
+  
 }
 /* Destaque de turno no placar do topo */
 .team-score.active-turn {
@@ -592,6 +600,9 @@
   justify-content: center;
   min-width: 120px;
   margin: 48px 0 32px 0;
+  font-family: MortalKombat1Font, 'Press Start 2P', monospace;
+  
+
 }
 
 /* Labels de turno */
@@ -711,6 +722,8 @@
   align-items: center;
   justify-content: center;
   min-width: 120px;
+  font-family: MortalKombat1Font, 'Press Start 2P', monospace;
+
 }
 /* FIGHT SCREEN */
 .fight-screen {
@@ -1127,6 +1140,8 @@ body {
   color: #333;
   margin: 20px auto;
   position: relative;
+  font-family: MortalKombat1Font, 'Press Start 2P', monospace;
+  text-shadow: 1px 1px 0 #ff2b7c;
 }
 
 .timer-circle span {
@@ -1135,7 +1150,8 @@ body {
   font-size: 24px;
   color: #fff;
   text-shadow: 2px 2px #000;
-  
+  font-family: MortalKombat1Font, 'Press Start 2P', monospace;
+  text-shadow: 1px 1px 0 #ff2b7c;
 }
 
 /* Barras de pontuação */
@@ -1165,6 +1181,8 @@ body {
     inset: 10px;
     background-color: #1a0033;
     border-radius: 50%;
+    font-family: MortalKombat1Font, 'Press Start 2P', monospace;
+
 }
 
 .announcement {
@@ -1290,6 +1308,7 @@ body {
 .team-timer {
     font-size: 22px;
     margin-top: 20px;
+    font-family: MortalKombat1Font, 'Press Start 2P', monospace;
 }
 
 .hidden {
