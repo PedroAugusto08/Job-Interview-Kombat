@@ -12,6 +12,7 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 
+
 // ============== LOADING SCREEN ==============
 class LoadingScreen {
   constructor(loadingScreenId, blockSelector) {
@@ -93,12 +94,15 @@ class QuestionSelector {
     const totalQuestions = Math.min(maxQuestions, totalAvailable);
     const half = Math.floor(totalQuestions / 2);
 
+    // Embaralha dentro de cada grupo
     const selectedGeneral = ArrayHelper.shuffle(generalQuestions).slice(0, half);
     const selectedJob = ArrayHelper.shuffle(jobQuestions).slice(0, totalQuestions - half);
 
-    return ArrayHelper.shuffle([...selectedGeneral, ...selectedJob]);
+    // Junta: gerais primeiro, técnicas depois
+    return [...selectedGeneral, ...selectedJob];
   }
 }
+
 class VisualTimer {
   constructor(containerId, duration) {
     this.container = document.getElementById(containerId);

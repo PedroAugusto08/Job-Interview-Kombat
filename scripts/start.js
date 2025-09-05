@@ -41,10 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (savedSound === 'on') {
             soundOn.checked = true;
             soundOff.checked = false;
+            musicManager.play(true);
         } else {
             soundOn.checked = false;
             soundOff.checked = true;
         }
+
 
         soundOn.addEventListener('change', async function() {
             if (soundOn.checked) {
