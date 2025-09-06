@@ -91,7 +91,7 @@ let playingSoundsController = {
 }
 
 const hoverSound = new Howl({
-    src: ['../assets/audio/hover.wav'],
+    src: ['assets/audio/hover.wav'],
     html5: true,
     pool: 20 // aumenta ainda mais o número de instâncias simultâneas
 });
