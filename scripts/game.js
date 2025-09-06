@@ -1023,6 +1023,8 @@ class Countdown {
 export class MusicManager {
   constructor() {
     this.currentLoop = null;
+  this.synth = null;
+  this.bass = null;
   }
 
   async play(menu = false) {
@@ -1030,9 +1032,10 @@ export class MusicManager {
     Tone.Transport.stop();
     Tone.Transport.cancel();
 
-    if (this.currentLoop) {
-      this.currentLoop.stop();
-    }
+  // Para e libera recursos anteriores
+  if (this.currentLoop) this.currentLoop.stop();
+  if (this.synth) { try { this.synth.dispose(); } catch(_){} this.synth = null; }
+  if (this.bass)  { try { this.bass.dispose(); } catch(_){} this.bass  = null; }
 
     if (menu) {
       this.playMenuMusic();
@@ -1044,12 +1047,12 @@ export class MusicManager {
   }
 
   playMenuMusic() {
-    const synth = new Tone.Synth().toDestination();
+    this.synth = new Tone.Synth().toDestination();
     const notes = ["C4", "E4", "G4", "B4"];
     let index = 0;
 
     this.currentLoop = new Tone.Loop((time) => {
-      synth.triggerAttackRelease(notes[index % notes.length], "8n", time);
+      this.synth && this.synth.triggerAttackRelease(notes[index % notes.length], "8n", time);
       index++;
     }, "0.5s");
 
@@ -1057,12 +1060,12 @@ export class MusicManager {
   }
 
   playGameMusic() {
-    const bass = new Tone.MonoSynth({
+    this.bass = new Tone.MonoSynth({
       oscillator: { type: "square" },
       envelope: { attack: 0.05, decay: 0.3, sustain: 0.4, release: 1 }
     }).toDestination();
 
-    const synth = new Tone.Synth({
+    this.synth = new Tone.Synth({
       oscillator: { type: "triangle" },
       envelope: { attack: 0.1, decay: 0.2, sustain: 0.3, release: 0.8 }
     }).toDestination();
@@ -1071,10 +1074,11 @@ export class MusicManager {
 
     this.currentLoop = new Tone.Loop((time) => {
       const note = scale[Math.floor(Math.random() * scale.length)];
-      synth.triggerAttackRelease(note, "", time);
+      // Corrige duração vazia que podia gerar sustain infinito (bip)
+      this.synth && this.synth.triggerAttackRelease(note, "8n", time);
 
       if (Math.random() > 0.7) {
-        bass.triggerAttackRelease("C2", "2n", time);
+        this.bass && this.bass.triggerAttackRelease("C2", "2n", time);
       }
     }, "16n");
 
@@ -1082,11 +1086,11 @@ export class MusicManager {
   }
 
   stop() {
-    if (this.currentLoop) {
-      this.currentLoop.stop();
-      this.currentLoop = null;
-    }
-    Tone.Transport.stop();
+    if (this.currentLoop) { try { this.currentLoop.stop(); } catch(_){} this.currentLoop = null; }
+    // Libera e garante silêncio
+    if (this.synth) { try { this.synth.dispose(); } catch(_){} this.synth = null; }
+    if (this.bass)  { try { this.bass.dispose(); }  catch(_){} this.bass  = null; }
+    try { Tone.Transport.stop(); Tone.Transport.cancel(); } catch(_){}
   }
 }
 
@@ -1164,7 +1168,11 @@ class GameUI {
 
 // ============== INIT ==============
 window.addEventListener('DOMContentLoaded', () => {
-  GameFlow.start();
+  // Só inicializa o jogo quando estiver em pages/game.html
+  const isGamePage = /\/pages\/game\.html$/.test(window.location.pathname);
+  if (isGamePage) {
+    GameFlow.start();
+  }
 });
 
 // ============== GAME OVER ==============

@@ -90,30 +90,72 @@ let playingSoundsController = {
     hover: false
 }
 
+// Constrói URL absoluta correta considerando subpath do GitHub Pages
+const hoverUrl = new URL('assets/audio/hover.wav', window.location.href).toString();
 const hoverSound = new Howl({
-    src: ['assets/audio/hover.wav'],
+    src: [hoverUrl],
     html5: true,
-    pool: 20 // aumenta ainda mais o número de instâncias simultâneas
+    pool: 20, // aumenta ainda mais o número de instâncias simultâneas
+    preload: true
 });
 
 hoverSound.volume(0.4)
 
-const options = document.querySelectorAll(".option")
+// Se der erro de carregamento, loga para diagnosticar caminho incorreto
+hoverSound.on('loaderror', (id, err) => {
+    try {
+        const src = (hoverSound && hoverSound._src) || (hoverSound && hoverSound._sounds && hoverSound._sounds[0] && hoverSound._sounds[0]._src) || 'unknown';
+        console.error('Hover sound loaderror:', err, 'src:', src);
+    } catch (e) {
+        console.error('Hover sound loaderror (no src info):', err);
+    }
+});
 
-const soundOnRadio = document.getElementById('sound-on');
-options.forEach(opt => {
-    opt.addEventListener("mouseover", () => {
-        if (soundOnRadio && soundOnRadio.checked) {
-            if (playingSoundsController.hover == false) {
-                hoverSound.play();
-                playingSoundsController.hover = true;
-            }
-        }
-    });
+// Delegação garante que funcione mesmo que o DOM mude
+
+// Garante desbloqueio do áudio em primeiro input do usuário
+let audioUnlocked = false;
+const tryUnlockAudio = () => {
+        if (audioUnlocked) return;
+        audioUnlocked = true;
+        try { if (Howler && Howler.ctx && Howler.ctx.state === 'suspended') { Howler.ctx.resume(); } } catch(_){}
+        try { hoverSound.load(); } catch(_){}
+        // Prime silencioso para garantir liberação do contexto
+        try {
+            const prevMute = Howler._muted;
+            Howler.mute(true);
+            const id = hoverSound.play();
+            hoverSound.once('play', () => {
+                try { hoverSound.stop(id); } catch(_){}
+                Howler.mute(prevMute || false);
+            });
+        } catch(_){}
+        // remove unlock listeners após sucesso
+        ['pointerdown','click','touchstart','keydown'].forEach(evt => {
+            try { window.removeEventListener(evt, tryUnlockAudio, true); } catch(_){}
+        });
+};
+['pointerdown','click','touchstart','keydown'].forEach(evt => {
+    window.addEventListener(evt, tryUnlockAudio, { capture: true });
+});
+
+document.addEventListener("mouseover", (e) => {
+    const opt = e.target.closest('.option');
+    if (!opt) return;
+    if (playingSoundsController.hover == false) {
+        const id = hoverSound.play();
+        // Só marcar como ocupando após iniciar de fato
+        hoverSound.once('play', () => { playingSoundsController.hover = true; });
+        hoverSound.once('playerror', () => { playingSoundsController.hover = false; });
+        hoverSound.once('loaderror', () => { playingSoundsController.hover = false; });
+    }
 });
 
 hoverSound.on('end', () => {
     playingSoundsController.hover = false
+})
+hoverSound.on('playerror', () => {
+    playingSoundsController.hover = false;
 })
 
 // DIALOG
