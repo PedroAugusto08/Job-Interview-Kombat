@@ -502,7 +502,7 @@
   width: 100%;
   transition: width 0.5s steps(8);
   background: linear-gradient(90deg,#ff9bd8,#ff2b7c 60%,#ff9bd8);
-  border-radius: 12px 0 0 12px;
+  border-radius: 0 12px 12px 0;
   z-index: 1;
 }
 .life-bar-fill.team2 {
@@ -547,7 +547,7 @@
 
 /* Aplica o pulso somente ao time ATIVO (wrapper sem .inactive) */
 .life-bar-wrapper:not(.inactive) .life-heart {
-  animation: heartbeat 1.2s ease-in-out infinite;
+  animation: heartbeat 1.8s ease-in-out infinite;
   transform-origin: center; 
   will-change: transform, filter;
 }
@@ -1172,6 +1172,73 @@ body {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+}
+
+/* Ações da pergunta (ex.: Skip thinking time) */
+.question-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+#skip-thinking-btn {
+  font-family: MortalKombat1Font, 'Press Start 2P', monospace;
+  font-size: clamp(0.9rem, 1.3vw, 1.2rem);
+  padding: 12px 20px;
+  color: #2a1747;
+  background: linear-gradient(180deg, #ffb6e1 0%, #ff69b4 100%);
+  border: 4px solid #000;
+  border-radius: 10px;
+  box-shadow: 4px 4px 0 #000;
+  cursor: pointer;
+  text-shadow: 1px 1px 0 #fff;
+  transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.12s ease, opacity 0.2s ease;
+}
+
+#skip-thinking-btn:hover:not(:disabled) {
+  transform: translateY(-4px) scale(1.03);
+  filter: brightness(1.05);
+  box-shadow: 8px 8px 0 #000;
+}
+
+#skip-thinking-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+#skip-thinking-btn:disabled {
+  opacity: 0.6;
+  filter: grayscale(0.3);
+  cursor: default;
+}
+
+/* Transições suaves para trocar pergunta -> fight */
+.fade-out-up {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.35s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Revelar fight overlay com fade/scale sutis */
+.fight-overlay {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.fight-overlay.show {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* Timer circular igual para equipes */

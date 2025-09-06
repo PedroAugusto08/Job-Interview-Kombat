@@ -12,7 +12,6 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 
-
 // ============== LOADING SCREEN ==============
 class LoadingScreen {
   constructor(loadingScreenId, blockSelector) {
@@ -178,6 +177,19 @@ resume() {
 
   this.interval = setInterval(() => this.update(), 100);
 }
+  finishNow() {
+    // Finaliza imediatamente o timer visual
+    this.isFinished = true;
+    this.remainingTime = 0;
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = null;
+    }
+    // Preenche o círculo para feedback visual instantâneo
+    if (this.container) {
+      this.container.style.background = `conic-gradient(#a5dfff 360deg, #f69ac1 0deg)`;
+    }
+  }
   reset() {
     clearInterval(this.interval);
     this.interval = null;
@@ -407,10 +419,42 @@ delay(ms) {
     p.textContent = `${this.currentQuestion + 1}. ${this.selectedQuestions[this.currentQuestion]}`;
     container.appendChild(p);
 
+    // Ações da pergunta (ex.: botão para pular tempo de pensar)
+    const actions = document.createElement('div');
+    actions.className = 'question-actions';
+    const skipBtn = document.createElement('button');
+    skipBtn.id = 'skip-thinking-btn';
+    skipBtn.type = 'button';
+    skipBtn.textContent = 'SKIP THE THINKING TIME';
+    skipBtn.addEventListener('click', () => {
+      // Evitar múltiplos cliques
+      skipBtn.disabled = true;
+      // Animação de saída suave da pergunta e do timer visual
+      try {
+        p.classList.add('fade-out-up');
+        actions.classList.add('fade-out-up');
+        const vt = document.getElementById('visual-timer');
+        if (vt) vt.classList.add('fade-out-up');
+      } catch (_) {}
+      // Guardar pequena janela para a animação concluir
+      this.skipTransitionMS = 350;
+      // Finaliza imediatamente o timer de pensar
+      if (this.visualTimer && !this.visualTimer.isFinished) {
+        this.visualTimer.finishNow();
+      }
+    });
+    actions.appendChild(skipBtn);
+    container.appendChild(actions);
+
     this.visualTimer.reset();
     this.visualTimer.start();
 
     await this.delay(global.options.think * 1000);
+    // Se veio de um skip, aguarda a animação de saída terminar
+    if (this.skipTransitionMS && this.skipTransitionMS > 0) {
+      await new Promise(res => setTimeout(res, this.skipTransitionMS));
+      this.skipTransitionMS = 0;
+    }
     
 // Verificação extra para garantir que o timer seja resetado apenas se não tiver terminado
   if (!this.visualTimer.isFinished && this.visualTimer.remainingTime > 0) {
@@ -497,6 +541,19 @@ delay(ms) {
       </div>
     `;
     this.updateLifeBars();
+
+    // Transição de entrada suave
+    const fightOverlay = document.getElementById('fight-overlay');
+    const turnsRow = container.querySelector('.turns-top-row');
+    if (turnsRow) {
+      turnsRow.classList.add('fade-in-up');
+    }
+    if (fightOverlay) {
+      // Garante um frame para aplicar a classe que revela
+      requestAnimationFrame(() => {
+        fightOverlay.classList.add('show');
+      });
+    }
   }
 
   showTurnsScreen() {
@@ -633,6 +690,7 @@ async runTeamTurn(team, seconds) {
     this.isGameOver = false;
     this.gameOverHandler = new GameOverHandler(this);
     this.pauseSystem = new PauseSystem(this);
+  this.skipTransitionMS = 0;
 
   }
 
