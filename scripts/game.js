@@ -237,6 +237,10 @@ class JudgingScreen {
       // Estrutura do conteúdo central
       overlay.innerHTML = `
         <div class="judging-content diagonal-layout">
+          <!-- Timer no topo, como nas outras telas -->
+          <div class="judging-top-timer">
+            <div class="timer-circle" id="judge-timer"><span>${judgeTime}</span></div>
+          </div>
           <div class="judging-team judging-team1 diagonal-team1">
             <div class="judging-banner team1">
               <img src="../assets/images/game/team1.png" alt="Team 1" class="judging-banner-img team1" />
@@ -258,7 +262,7 @@ class JudgingScreen {
           </div>
           <div class="judging-strike-row diagonal-strike-row">
             <button class="judging-strike-btn team1" id="voteTeam1">STRIKE!</button>
-            <div class="judging-timer" id="judging-timer">${judgeTime}</div>
+            <img src="../assets/images/game/joystick.png" alt="Joystick" class="judging-joystick" />
             <button class="judging-strike-btn team2" id="voteTeam2">STRIKE!</button>
           </div>
         </div>
@@ -283,9 +287,10 @@ class JudgingScreen {
 
       // Votação
       let votedTeam = null;
-      const voteTeam1Btn = overlay.querySelector('#voteTeam1');
-      const voteTeam2Btn = overlay.querySelector('#voteTeam2');
-      const timerDisplay = overlay.querySelector('#judging-timer');
+  const voteTeam1Btn = overlay.querySelector('#voteTeam1');
+  const voteTeam2Btn = overlay.querySelector('#voteTeam2');
+  const judgeTimerEl = overlay.querySelector('#judge-timer');
+  const judgeTimerSpan = judgeTimerEl ? judgeTimerEl.querySelector('span') : null;
 
       function onVote(team) {
         if (votedTeam) return; // Evita votos duplos
@@ -339,9 +344,17 @@ class JudgingScreen {
 
       // Timer de contagem regressiva
       let remaining = judgeTime;
+      let elapsed = 0;
       const timerId = setInterval(() => {
-        remaining--;
-        if (timerDisplay) timerDisplay.textContent = remaining;
+        elapsed += 1;
+        remaining = Math.max(judgeTime - elapsed, 0);
+        if (judgeTimerEl) {
+          const percentage = Math.min((elapsed / judgeTime) * 100, 100);
+          const deg = (percentage / 100) * 360;
+          // Estilo neutro, alinhado ao visual do timer global
+          judgeTimerEl.style.background = `conic-gradient(#a5dfff ${deg}deg, #f69ac1 0deg)`;
+        }
+        if (judgeTimerSpan) judgeTimerSpan.textContent = remaining;
         if (remaining <= 0) {
           clearInterval(timerId);
           // Se ninguém votou, naoo acontece nada
@@ -634,6 +647,10 @@ async runTeamTurn(team, seconds) {
 
   if (team1Label && team2Label) {
     if (team === 'team1') {
+      if (endTurnBtn) {
+        endTurnBtn.classList.add('end-turn-pink');
+        endTurnBtn.classList.remove('end-turn-blue');
+      }
       team1Label.classList.add('active-turn-label');
       team2Label.classList.remove('active-turn-label');
       team1Label.classList.remove('inactive-turn-label');
@@ -653,6 +670,10 @@ async runTeamTurn(team, seconds) {
         if (heart) heart.classList.add('inactive');
       }
     } else {
+      if (endTurnBtn) {
+        endTurnBtn.classList.add('end-turn-blue');
+        endTurnBtn.classList.remove('end-turn-pink');
+      }
       team2Label.classList.add('active-turn-label');
       team1Label.classList.remove('active-turn-label');
       team2Label.classList.remove('inactive-turn-label');
