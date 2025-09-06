@@ -113,6 +113,15 @@ class VisualTimer {
     this.pauseStartTime = null;
     this.lastDeg = 0; 
     this.isFinished = false;
+    // Garante um <span> para mostrar números como no timer de fight
+    if (this.container) {
+      this.labelSpan = this.container.querySelector('span');
+      if (!this.labelSpan) {
+        this.labelSpan = document.createElement('span');
+        this.container.appendChild(this.labelSpan);
+      }
+      this.labelSpan.textContent = '';
+    }
   }
 
   start() {
@@ -136,11 +145,16 @@ class VisualTimer {
 
     this.container.style.background = `conic-gradient(#a5dfff ${deg}deg, #f69ac1 0deg)`;
     this.remainingTime = this.duration - elapsed;
+    if (this.labelSpan) {
+      const shown = Math.max(0, Math.ceil(this.remainingTime));
+      this.labelSpan.textContent = shown;
+    }
 
     if (elapsed >= this.duration) {
       this.isFinished = true; 
       clearInterval(this.interval);
       this.interval = null;
+      if (this.labelSpan) this.labelSpan.textContent = '0';
     }
   }
 
@@ -189,6 +203,9 @@ resume() {
     if (this.container) {
       this.container.style.background = `conic-gradient(#a5dfff 360deg, #f69ac1 0deg)`;
     }
+    if (this.labelSpan) {
+      this.labelSpan.textContent = '0';
+    }
   }
   reset() {
     clearInterval(this.interval);
@@ -196,6 +213,9 @@ resume() {
     this.isPaused = false;
     this.lastDeg = 0;
     this.container.style.background = `conic-gradient(#a5dfff 0deg, #f69ac1 0deg)`;
+    if (this.labelSpan) {
+      this.labelSpan.textContent = '';
+    }
   }
 }
 class JudgingScreen {
@@ -282,6 +302,29 @@ class JudgingScreen {
         }
         if (rafId) cancelAnimationFrame(rafId);
 
+        // Animar a perda de vida na própria tela de julgamento
+        try {
+          const maxLives = (gameInstance && gameInstance.maxLives) ? gameInstance.maxLives : 5;
+          const step = 100 / maxLives;
+          const l1 = document.getElementById('judging-life-team1');
+          const l2 = document.getElementById('judging-life-team2');
+          const targetEl = team === 'team1' ? l1 : l2;
+          if (targetEl) {
+            const styleWidth = (targetEl.style.width || '').replace('%','');
+            const currentPercent = styleWidth
+              ? parseFloat(styleWidth)
+              : (gameInstance && gameInstance.teamLives
+                  ? (gameInstance.teamLives[team] / maxLives) * 100
+                  : 100);
+            const nextPercent = Math.max(0, currentPercent - step);
+            // Aplicar a nova largura (CSS já tem transition: width 0.5s steps(8))
+            requestAnimationFrame(() => {
+              targetEl.style.width = nextPercent + '%';
+            });
+          }
+        } catch (_) {}
+
+        // Tempo para ver a animação da barra antes do fade-out
         setTimeout(() => {
           overlay.style.opacity = '0';
           setTimeout(() => {
@@ -407,7 +450,14 @@ delay(ms) {
 
     // Mostra o cronômetro global (visual-timer) só na tela da pergunta
     const visualTimer = document.getElementById('visual-timer');
-    if (visualTimer) visualTimer.style.display = '';
+    if (visualTimer) {
+      // Garantir que o timer volte a aparecer mesmo após skip anterior
+      visualTimer.classList.remove('fade-out-up');
+      visualTimer.style.visibility = '';
+      visualTimer.style.opacity = '';
+      visualTimer.style.transform = '';
+      visualTimer.style.display = '';
+    }
 
 
   const container = document.getElementById('questions-container');
@@ -477,14 +527,13 @@ delay(ms) {
 
     await this.runTeamTurn('team2', global.options.round);
 
-    // Esconde o FIGHT antes do julgamento
-    const fightOverlay = document.getElementById('fight-overlay');
-    if (fightOverlay) fightOverlay.style.display = 'none';
-
-    // Esconde o FIGHT e a linha dos turnos antes do julgamento
-    const turnsRow = document.querySelector('.turns-top-row');
-    if (turnsRow) turnsRow.style.display = 'none';
-    if (fightOverlay) fightOverlay.style.display = 'none';
+  // Esconde (sem reflow) o FIGHT, a linha dos turnos e as ações antes do julgamento
+  const fightOverlay = document.getElementById('fight-overlay');
+  const turnsRow = document.querySelector('.turns-top-row');
+  const turnActions = document.querySelector('.turn-actions');
+  if (turnsRow) turnsRow.style.visibility = 'hidden';
+  if (turnActions) turnActions.style.visibility = 'hidden';
+  if (fightOverlay) fightOverlay.style.visibility = 'hidden';
 
     // Mostra tela "judges will decide" antes da votação
     await this.showJudgesWillDecide();
