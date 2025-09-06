@@ -539,14 +539,21 @@ delay(ms) {
           <img src="../assets/images/game/fight.png" alt="FIGHT!" class="fight-img" />
         </div>
       </div>
+      <div class="turn-actions">
+        <button id="end-turn-btn" type="button">END TURN</button>
+      </div>
     `;
     this.updateLifeBars();
 
     // Transição de entrada suave
     const fightOverlay = document.getElementById('fight-overlay');
     const turnsRow = container.querySelector('.turns-top-row');
+    const turnActions = container.querySelector('.turn-actions');
     if (turnsRow) {
       turnsRow.classList.add('fade-in-up');
+    }
+    if (turnActions) {
+      turnActions.classList.add('fade-in-up');
     }
     if (fightOverlay) {
       // Garante um frame para aplicar a classe que revela
@@ -574,6 +581,7 @@ async runTeamTurn(team, seconds) {
   const team2Label = document.getElementById('turn-team2');
   const team1BarWrap = document.querySelector('.life-bar-wrapper.team1');
   const team2BarWrap = document.querySelector('.life-bar-wrapper.team2');
+  const endTurnBtn = document.getElementById('end-turn-btn');
 
   if (team1Label && team2Label) {
     if (team === 'team1') {
@@ -625,6 +633,7 @@ async runTeamTurn(team, seconds) {
   return new Promise(resolve => {
     const isTeam1 = team === 'team1';
     let intervalId = null;
+  let endedEarly = false;
     
     const updateTimer = () => {
       if (this.pauseSystem.isPaused) {
@@ -642,7 +651,8 @@ async runTeamTurn(team, seconds) {
 
       if (remaining <= 0) {
         if (intervalId) clearInterval(intervalId);
-        resolve();
+  cleanup();
+  resolve();
       }
     };
     
@@ -669,7 +679,25 @@ async runTeamTurn(team, seconds) {
     const cleanup = () => {
       if (intervalId) clearInterval(intervalId);
       document.removeEventListener('pauseStateChanged', pauseHandler);
+      if (endTurnBtn && onEndClick) {
+        endTurnBtn.removeEventListener('click', onEndClick);
+      }
+      if (endTurnBtn) endTurnBtn.disabled = true;
     };
+    
+    // Habilitar botão END TURN para encerrar este turno
+    let onEndClick = null;
+    if (endTurnBtn) {
+      endTurnBtn.disabled = false;
+      onEndClick = () => {
+        if (endedEarly) return;
+        endedEarly = true;
+        endTurnBtn.disabled = true;
+        cleanup();
+        resolve();
+      };
+      endTurnBtn.addEventListener('click', onEndClick);
+    }
     
     // Timeout de fallback
     setTimeout(() => {

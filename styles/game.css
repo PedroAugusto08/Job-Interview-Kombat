@@ -418,6 +418,45 @@
   margin-top: 0;
   margin-bottom: 32px;
 }
+
+/* Ações de turno (END TURN) */
+.turn-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8px 0 12px 0;
+  gap: 12px;
+}
+
+#end-turn-btn {
+  font-family: MortalKombat1Font, 'Press Start 2P', monospace;
+  font-size: clamp(0.9rem, 1.3vw, 1.2rem);
+  padding: 10px 18px;
+  color: #2a1747;
+  background: linear-gradient(180deg, #b6e1ff 0%, #3a87ad 100%);
+  border: 4px solid #000;
+  border-radius: 10px;
+  box-shadow: 4px 4px 0 #000;
+  cursor: pointer;
+  text-shadow: 1px 1px 0 #fff;
+  transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.12s ease, opacity 0.2s ease;
+}
+
+#end-turn-btn:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.02);
+  filter: brightness(1.05);
+  box-shadow: 8px 8px 0 #000;
+}
+
+#end-turn-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+#end-turn-btn:disabled {
+  opacity: 0.6;
+  filter: grayscale(0.3);
+  cursor: default;
+}
 /* Turnos fixos no topo estilo pixel art */
 .turns-top-row {
   display: flex;
