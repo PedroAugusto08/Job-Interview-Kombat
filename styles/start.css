@@ -1264,3 +1264,37 @@ footer span {
   transform: translate(-50%, -50%);
   opacity: 0.8;
 }
+
+.tutorial {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 999999;
+  animation: tutorial-show 1.5s 1 normal forwards;
+}
+
+@keyframes tutorial-show {
+  0% {
+    opacity: 0;
+  }
+
+  99% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.tutorial a {
+  text-decoration: none;
+  cursor: pointer;
+  display: flex;
+  transition: .2s ease;
+  transform: scale(0.9);
+}
+
+.tutorial a:hover {
+  transform: scale(1);
+}

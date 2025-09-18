@@ -218,7 +218,8 @@ resume() {
     }
   }
 }
-class JudgingScreen {
+
+export class JudgingScreen {
   static show(teamLives = {team1: 5, team2: 5}, gameInstance = null) {
     return new Promise(resolve => {
       // Remove overlay antigo se existir
@@ -381,7 +382,7 @@ class JudgingScreen {
 }
 
 
-class Game {
+export class Game {
   async showJudgesWillDecide() {
     return new Promise(resolve => {
       const container = document.getElementById('questions-container');
@@ -919,7 +920,7 @@ async runTeamTurn(team, seconds) {
 
 
 // Overlay dinâmico unificado para antecipação e contagem
-class GameOverlay {
+export class GameOverlay {
   constructor() {
     this.overlay = document.getElementById('game-overlay');
     this.content = document.getElementById('overlay-content');
@@ -1176,7 +1177,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============== GAME OVER ==============
-class GameOverHandler {
+export class GameOverHandler {
   constructor(gameInstance) {
     this.game = gameInstance;
     this.maxLives = gameInstance.maxLives || 5;
