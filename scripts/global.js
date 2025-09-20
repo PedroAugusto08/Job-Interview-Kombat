@@ -4,7 +4,13 @@ export const global = {
     think: 2 * 60,   // default: 2 min
     judge: 2 * 60,   // default: 2 min
     round: 2 * 60,   // default: 2 min
-    rounds: 9      // default: 9 rounds
+    rounds: 9,      // default: 9 rounds
+  },
+  tutorial: {
+    think: 15,   // default: 15 s
+    judge: 999,   // default: 999 s
+    round: 15,   // default: 15 s
+    rounds: 3,    
   }
 };
 
