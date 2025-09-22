@@ -290,6 +290,14 @@
   margin-right: -8px;
   margin-left: -8px;
 }
+.tutorial-frase-1 {
+  background-image: url('../assets/images/tutorial/Component\ 1.png');
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 5vw;
+  top: 5vh;
+}
 .judging-life-bar-fill.team1 {
   position: absolute;
   left: 0;

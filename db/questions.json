@@ -74,6 +74,8 @@
         {"question": "Tell me about a case where data analysis led to an unexpected insight."},
         {"question": "Have you ever worked with real-time data pipelines?"},
         {"question": "How do you communicate analysis results to non-technical people?"}
+    ],"tutorial": [
+        {"question": "Why did you quit your last job?"}
     ]
 
 
