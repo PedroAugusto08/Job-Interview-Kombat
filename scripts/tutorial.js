@@ -262,7 +262,7 @@ export class JudgingScreen {
             </div>
           </div>
           <div class="judging-strike-row diagonal-strike-row">
-            <button class="judging-strike-btn team1" id="voteTeam1">STRIKE!</button>
+            <button class="judging-strike-btn team1" id="voteTeam1" disabled style="opacity: 0.4; filter: grayscale(70%);">STRIKE!</button>
             <img src="../assets/images/game/joystick.png" alt="Joystick" class="judging-joystick" />
             <button class="judging-strike-btn team2" id="voteTeam2">STRIKE!</button>
           </div>
@@ -644,13 +644,15 @@ class Game {
     const team1BarWrap = document.querySelector('.life-bar-wrapper.team1');
     const team2BarWrap = document.querySelector('.life-bar-wrapper.team2');
     const endTurnBtn = document.getElementById('end-turn-btn');
+    const tutorialOverlay = document.querySelector('.tutorial-overlay');
 
-    const component1 = document.querySelector('.tutorial-frase-1'); //falta estilizar essa glr aq
-    const component2 = document.querySelector('.tutorial-frase-2'); 
-    const component3 = document.querySelector('.tutorial-frase-3'); 
-    const component4 = document.querySelector('.tutorial-frase-4'); 
-    const component5 = document.querySelector('.tutorial-frase-5'); 
-    const component6 = document.querySelector('.tutorial-frase-6'); 
+    const team1Speak = document.querySelector('.tutorial-frase-1'); //falta estilizar essa glr aq
+    const team2Speak = document.querySelector('.tutorial-frase-2');
+    const howToJudge1 = document.querySelector('.tutorial-frase-3');
+    const team1Tip = document.querySelector('.tutorial-frase-4');
+    const howToJudge2 = document.querySelector('.tutorial-frase-5');
+    const team2Tip = document.querySelector('.tutorial-frase-6');
+
 
     if (team1Label && team2Label) {
       if (team === 'team1') {
@@ -658,6 +660,37 @@ class Game {
           endTurnBtn.classList.add('end-turn-pink');
           endTurnBtn.classList.remove('end-turn-blue');
         }
+
+        setTimeout(() => {
+          tutorialOverlay.classList.add("active")
+          team1Speak.classList.add("active")
+
+          setTimeout(() => {
+            team1Speak.classList.remove("active")
+            team2Speak.classList.add("active")
+
+            setTimeout(() => {
+              team2Speak.classList.remove("active")
+              team1Tip.classList.add("active")
+              howToJudge1.classList.add("active")
+
+              setTimeout(() => {
+                team1Tip.classList.remove("active")
+                howToJudge1.classList.remove("active")
+
+                howToJudge2.classList.add("active")
+                team2Tip.classList.add("active")
+
+                setTimeout(() => {
+                  howToJudge2.classList.remove("active")
+                  team2Tip.classList.remove("active")
+                  tutorialOverlay.classList.remove("active")
+                }, 10000);
+              }, 10000);
+            }, 4000);
+          }, 4000);
+        }, 4000);
+
         team1Label.classList.add('active-turn-label');
         team2Label.classList.remove('active-turn-label');
         team1Label.classList.remove('inactive-turn-label');
@@ -787,7 +820,7 @@ class Game {
     this.job = job;
     this.selectedQuestions = [];
     this.currentQuestion = 0;
-    this.visualTimer = new VisualTimer('visual-timer', 10); 
+    this.visualTimer = new VisualTimer('visual-timer', 10);
     this.teamScores = { team1: 0, team2: 0 };
     this.maxPoints = 10;
     this.maxLives = 1;
