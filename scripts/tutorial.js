@@ -267,12 +267,37 @@ export class JudgingScreen {
             <button class="judging-strike-btn team2" id="voteTeam2">STRIKE!</button>
           </div>
         </div>
+        
+        <!-- Tutorial Overlay e frases -->
+        <div class="tutorial-overlay"></div>
+        <p class="tutorial-frase tutorial-frase-7"></p>
+        <p class="tutorial-frase tutorial-frase-8"></p>
       `;
       document.body.appendChild(overlay);
 
       // Fade-in
       setTimeout(() => { overlay.style.opacity = '1'; }, 10);
 
+      // Seleciona os elementos do tutorial
+      const tutorialOverlay = overlay.querySelector('.tutorial-overlay');
+      const howToVote1 = overlay.querySelector('.tutorial-frase-7');
+      const howToVote2 = overlay.querySelector('.tutorial-frase-8');
+
+      // Após 4 segundos, exibe o tutorial
+      setTimeout(() => {
+        if (tutorialOverlay) tutorialOverlay.classList.add("active");
+        if (howToVote1) howToVote1.classList.add("active");
+        if (howToVote2) howToVote2.classList.add("active");
+      }, 2000);
+
+      // Remove o tutorial após 0.5 segundos (totalizando 4.5 segundos)
+      setTimeout(() => {
+        if (howToVote1) howToVote1.classList.remove("active");
+        if (howToVote2) howToVote2.classList.remove("active");
+        tutorialOverlay.classList.remove("active");
+      }, 16000);
+
+      // Resto do código permanece igual...
       // Atualização em tempo real das barras de vida
       let rafId;
       function updateJudgingLifeBars() {
@@ -358,10 +383,9 @@ export class JudgingScreen {
         if (judgeTimerSpan) judgeTimerSpan.textContent = remaining;
         if (remaining <= 0) {
           clearInterval(timerId);
-          // Se ninguém votou, naoo acontece nada
+          // Se ninguém votou, não acontece nada
           if (!votedTeam) {
-            //  esquema pra votar em um time aleatorio. Acho que não faz sentido, mas pode ser util no futuro. Vou deixar só comentado ent.
-            //const randomTeam = Math.random() < 0.5 ? 'team1' : 'team2'; 
+            onVote('team2');
             voteTeam2Btn.classList.add('inactive');
             voteTeam1Btn.classList.add('inactive');
             if (rafId) cancelAnimationFrame(rafId);
@@ -372,15 +396,12 @@ export class JudgingScreen {
                 resolve(votedTeam);
               }, 500);
             }, 1000);
-
-
           }
         }
       }, 1000);
     });
   }
 }
-
 class Game {
   async showJudgesWillDecide() {
     return new Promise(resolve => {
@@ -399,6 +420,20 @@ class Game {
       img.className = 'judges-will-decide-img';
       judgesDiv.appendChild(img);
       document.body.appendChild(judgesDiv);
+
+      setTimeout(() => {
+        tutorialOverlay.classList.add("active")
+        howToVote1.classList.add("active")
+        howToVote2.classList.add("active")
+      }, 40000);
+
+      setTimeout(() => {
+        howToVote1.classList.remove("active")
+        howToVote2.classList.remove("active")
+      }, 45000);
+
+
+
       // Fade-in
       setTimeout(() => {
         judgesDiv.style.opacity = '1';
@@ -534,11 +569,11 @@ class Game {
 
     this.pauseSystem.resetPauseTime();
 
-    await this.runTeamTurn('team1', global.options.round);
+    await this.runTeamTurn('team1', 35);
 
     this.pauseSystem.resetPauseTime();
 
-    await this.runTeamTurn('team2', global.options.round);
+    await this.runTeamTurn('team2', 35);
 
     // Esconde (sem reflow) o FIGHT, a linha dos turnos e as ações antes do julgamento
     const fightOverlay = document.getElementById('fight-overlay');
@@ -653,6 +688,9 @@ class Game {
     const howToJudge2 = document.querySelector('.tutorial-frase-5');
     const team2Tip = document.querySelector('.tutorial-frase-6');
 
+    const howToVote1 = document.querySelector('.tutorial-frase-7');
+    const howToVote2 = document.querySelector('.tutorial-frase-8');
+
 
     if (team1Label && team2Label) {
       if (team === 'team1') {
@@ -664,32 +702,23 @@ class Game {
         setTimeout(() => {
           tutorialOverlay.classList.add("active")
           team1Speak.classList.add("active")
-
-          setTimeout(() => {
-            team1Speak.classList.remove("active")
-            team2Speak.classList.add("active")
-
-            setTimeout(() => {
-              team2Speak.classList.remove("active")
-              team1Tip.classList.add("active")
-              howToJudge1.classList.add("active")
-
-              setTimeout(() => {
-                team1Tip.classList.remove("active")
-                howToJudge1.classList.remove("active")
-
-                howToJudge2.classList.add("active")
-                team2Tip.classList.add("active")
-
-                setTimeout(() => {
-                  howToJudge2.classList.remove("active")
-                  team2Tip.classList.remove("active")
-                  tutorialOverlay.classList.remove("active")
-                }, 10000);
-              }, 10000);
-            }, 4000);
-          }, 4000);
         }, 4000);
+
+        setTimeout(() => {
+          howToJudge1.classList.add("active")
+
+        }, 12000);
+
+        setTimeout(() => {
+          team1Tip.classList.add("active")
+          team1Speak.classList.remove("active")
+        }, 16000);
+
+        setTimeout(() => {
+          howToJudge1.classList.remove("active")
+          team1Tip.classList.remove("active")
+          tutorialOverlay.classList.remove("active")
+        }, 24000);
 
         team1Label.classList.add('active-turn-label');
         team2Label.classList.remove('active-turn-label');
@@ -724,6 +753,27 @@ class Game {
           const heart = team2BarWrap.querySelector('.life-heart');
           if (bar) bar.classList.remove('inactive');
           if (heart) heart.classList.remove('inactive');
+
+          setTimeout(() => {
+            tutorialOverlay.classList.add("active")
+            team2Speak.classList.add("active")
+          }, 4000);
+
+          setTimeout(() => {
+            howToJudge2.classList.add("active")
+          }, 12000);
+          
+          setTimeout(() => {
+            team2Speak.classList.remove("active")
+            team2Tip.classList.add("active")
+          }, 16000);
+
+          setTimeout(() => {
+            howToJudge2.classList.remove("active")
+            team2Tip.classList.remove("active")
+            tutorialOverlay.classList.remove("active")
+          }, 24000);
+
         }
         if (team1BarWrap) {
           team1BarWrap.classList.add('inactive');
@@ -798,7 +848,13 @@ class Game {
       // Habilitar botão END TURN para encerrar este turno
       let onEndClick = null;
       if (endTurnBtn) {
-        endTurnBtn.disabled = false;
+        endTurnBtn.disabled = true;
+        
+        setTimeout(() => {
+          endTurnBtn.disabled = false;
+        }, 24000);
+
+
         onEndClick = () => {
           if (endedEarly) return;
           endedEarly = true;
@@ -815,6 +871,9 @@ class Game {
         resolve();
       }, seconds * 1000 + 2000);
     });
+
+
+    
   }
   constructor(job) {
     this.job = job;
@@ -1563,6 +1622,9 @@ class PauseSystem {
       font-size: 20px;
       color: white;
       transition: opacity 0.3s, transform 0.3s;
+      opacity: 0;
+      pointer-events: none;
+
     `;
 
     const isGamePage = window.location.pathname.endsWith('tutorial.html');

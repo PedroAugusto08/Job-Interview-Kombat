@@ -1596,6 +1596,28 @@ body {
   top: 5vh;
 }
 
+
+.tutorial-frase-7 {
+  background-image: url('../assets/images/tutorial/how-to-judge-3.png');
+  width: 650px;
+  height: 350px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  left: 65vw;
+  top: 2vh;
+}
+
+.tutorial-frase-8 {
+  background-image: url('../assets/images/tutorial/how-to-judge-4.png');
+  width: 650px;
+  height: 400px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  left: 5vw;
+  bottom: 2vh;
+}
 .tutorial-overlay {
   opacity: 0;
   transition: .5s ease-out;
@@ -1613,5 +1635,5 @@ body {
 
 .tutorial-overlay.active {
   opacity: 1;
-  pointer-events: auto;
+  pointer-events: none;
 }
