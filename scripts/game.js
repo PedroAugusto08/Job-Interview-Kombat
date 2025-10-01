@@ -1059,41 +1059,28 @@ export class MusicManager {
     this.currentLoop.start(0);
   }
 
-playGameMusic() {
-  this.synth = new Tone.PolySynth(Tone.Synth, {
-    oscillator: { type: "square" },
-    envelope: { attack: 0.001, decay: 0.2, sustain: 0.3, release: 0.8 }
-  }).toDestination();
+  playGameMusic() {
+    this.bass = new Tone.MonoSynth({
+      oscillator: { type: "square" },
+      envelope: { attack: 0.05, decay: 0.3, sustain: 0.4, release: 1 }
+    }).toDestination();
 
-  // Adiciona um pouco de reverb para espacialidade
-  this.reverb = new Tone.Reverb(1.5).toDestination();
-  this.synth.connect(this.reverb);
+    this.synth = new Tone.Synth({
+      oscillator: { type: "triangle" },
+      envelope: { attack: 0.1, decay: 0.2, sustain: 0.3, release: 0.8 }
+    }).toDestination();
 
-  const scale = ["C4", "D4", "E4", "G4", "A4", "C5"];
-  let patternIndex = 0;
-  
-  // Padrão melódico mais estruturado
-  const melodicPattern = [
-    [0, 2, 4],       // C, E, G - acorde C maior
-    [1, 3, 5],       // D, G, A - padrão ascendente
-    [2, 4, 3],       // E, A, G - movimento interessante
-    [0, 4, 2]        // C, A, E - variação
-  ];
+    const scale = ["C4", "D4", "E4", "G4", "A4"];
 
-  this.currentLoop = new Tone.Loop((time) => {
-    const pattern = melodicPattern[patternIndex % melodicPattern.length];
-    
-    // Toca acordes em vez de notas simples
-    pattern.forEach((noteIndex, i) => {
-      const note = scale[noteIndex];
-      // Notas mais curtas para ritmo animado
-      this.synth.triggerAttackRelease(note, i === 0 ? "4n" : "8n", time + i * 0.1);
-    });
-    patternIndex++;
-  }, "2n"); // Loop a cada 2 tempos
+    this.currentLoop = new Tone.Loop((time) => {
+      const note = scale[Math.floor(Math.random() * scale.length)];
+      // Corrige duração vazia que podia gerar sustain infinito (bip)
+      this.synth && this.synth.triggerAttackRelease(note, "8n", time);
+    }, "2n");
 
-  this.currentLoop.start(0);
-}
+    this.currentLoop.start(0);
+  }
+
   stop() {
     if (this.currentLoop) { try { this.currentLoop.stop(); } catch (_) { } this.currentLoop = null; }
     // Libera e garante silêncio
