@@ -783,7 +783,7 @@ class Game {
     this.visualTimer = new VisualTimer('visual-timer', global.options.think); // Criar aqui
     this.teamScores = { team1: 0, team2: 0 };
     this.maxPoints = 10;
-    this.maxLives = 5;
+    this.maxLives = global.options.rounds;
     this.teamLives = { team1: this.maxLives, team2: this.maxLives };
     this.isGameOver = false;
     this.gameOverHandler = new GameOverHandler(this);
