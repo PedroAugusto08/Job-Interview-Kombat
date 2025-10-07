@@ -4,6 +4,13 @@
 <p align="center">
 <img src="imgs/mainG.gif"></img>
 </p>
+
+## Link Para Acesso
+
+O site pode ser acessado através do link abaixo:
+
+[Job Interview Kombat](https://pedroaugusto08.github.io/Job-Interview-Kombat/)
+
 ## Sobre o Projeto
 
 O domínio da língua inglesa é uma habilidade essencial para estudantes da área de tecnologia que desejam se destacar em um mercado de trabalho globalizado. Seja para atuar em empresas multinacionais, entender documentações técnicas ou participar de processos seletivos, é crucial que esses estudantes saibam se comunicar com clareza, confiança e domínio técnico em inglês.
