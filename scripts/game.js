@@ -1,6 +1,6 @@
 import { global } from "./global.js";
 // Fade-in suave ao entrar no game.html
-window.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('DOMContentLoaded', function() {
   console.log(global.options);
   const fade = document.getElementById('game-fade-in');
   if (fade) {
@@ -75,14 +75,26 @@ class ArrayHelper {
 // ============== DATA LOADER ==============
 class QuestionLoader {
   static async loadQuestions(job) {
-    const response = await fetch('../db/questions.json');
+  const response = await fetch('../db/questions.json');
     if (!response.ok) throw new Error('Erro ao carregar o JSON');
 
     const data = await response.json();
-    return {
-      general: data.general?.map(q => q.question) || [],
-      jobSpecific: data[job]?.map(q => q.question) || []
+    // Normaliza job (slug) para chave do JSON
+    const jobKey = (job || '').toLowerCase();
+    const map = {
+      dev: 'developer',
+      designer: 'designer',
+      pm: 'project manager',
+      qa: 'quality assurance',
+      data: 'data analyst',
+      general: 'general'
     };
+    const jsonKey = map[jobKey] || jobKey; // fallback para permitir acessar diretamente se já vier correto
+
+    const general = data.general?.map(q => q.question) || [];
+    const jobSpecific = jsonKey === 'general' ? [] : (data[jsonKey]?.map(q => q.question) || []);
+
+    return { general, jobSpecific };
   }
 }
 
@@ -91,13 +103,21 @@ class QuestionSelector {
   static selectQuestions(generalQuestions, jobQuestions, maxQuestions = 10) {
     const totalAvailable = generalQuestions.length + jobQuestions.length;
     const totalQuestions = Math.min(maxQuestions, totalAvailable);
-    const half = Math.floor(totalQuestions / 2);
 
-    // Embaralha dentro de cada grupo
+    // Caso somente gerais (ex.: job = general)
+    if (jobQuestions.length === 0) {
+      return ArrayHelper.shuffle(generalQuestions).slice(0, totalQuestions);
+    }
+
+    // Caso somente específicas (fallback raro)
+    if (generalQuestions.length === 0) {
+      return ArrayHelper.shuffle(jobQuestions).slice(0, totalQuestions);
+    }
+
+    // Se há dos dois tipos: 50/50 (arredonda para cima para garantir variedade)
+    const half = Math.ceil(totalQuestions / 2);
     const selectedGeneral = ArrayHelper.shuffle(generalQuestions).slice(0, half);
-    const selectedJob = ArrayHelper.shuffle(jobQuestions).slice(0, totalQuestions - half);
-
-    // Junta: gerais primeiro, técnicas depois
+    const selectedJob = ArrayHelper.shuffle(jobQuestions).slice(0, totalQuestions - selectedGeneral.length);
     return [...selectedGeneral, ...selectedJob];
   }
 }
@@ -111,7 +131,7 @@ class VisualTimer {
     this.interval = null;
     this.isPaused = false;
     this.pauseStartTime = null;
-    this.lastDeg = 0;
+    this.lastDeg = 0; 
     this.isFinished = false;
     // Garante um <span> para mostrar números como no timer de fight
     if (this.container) {
@@ -128,8 +148,8 @@ class VisualTimer {
     this.startTime = Date.now();
     this.remainingTime = this.duration;
     this.isPaused = false;
-    this.lastDeg = 0;
-    this.isFinished = false;
+    this.lastDeg = 0; 
+    this.isFinished = false; 
 
     this.update();
     this.interval = setInterval(() => this.update(), 100);
@@ -137,11 +157,11 @@ class VisualTimer {
 
   update() {
     if (this.isPaused) return;
-
+    
     const elapsed = (Date.now() - this.startTime) / 1000;
     const percentage = Math.min((elapsed / this.duration) * 100, 100);
     const deg = (percentage / 100) * 360;
-    this.lastDeg = deg;
+    this.lastDeg = deg; 
 
     this.container.style.background = `conic-gradient(#a5dfff ${deg}deg, #f69ac1 0deg)`;
     this.remainingTime = this.duration - elapsed;
@@ -151,7 +171,7 @@ class VisualTimer {
     }
 
     if (elapsed >= this.duration) {
-      this.isFinished = true;
+      this.isFinished = true; 
       clearInterval(this.interval);
       this.interval = null;
       if (this.labelSpan) this.labelSpan.textContent = '0';
@@ -160,7 +180,7 @@ class VisualTimer {
 
   pause() {
     if (this.isPaused || !this.interval) return;
-
+    
     this.isPaused = true;
     this.pauseStartTime = Date.now();
     this.remainingTime = this.duration - ((this.pauseStartTime - this.startTime) / 1000);
@@ -168,29 +188,29 @@ class VisualTimer {
     this.interval = null;
   }
 
-  resume() {
-    if (!this.isPaused || this.remainingTime <= 0) return;
-
-    this.isPaused = false;
-
-    // Verificar se o tempo já esgotou durante a pausa
-    const currentTime = Date.now();
-    const elapsedDuringPause = (currentTime - this.pauseStartTime) / 1000;
-
-    if (this.remainingTime - elapsedDuringPause <= 0) {
-      this.isFinished = true; // ← Marcar como terminado se o tempo esgotou durante a pausa
-      this.container.style.background = `conic-gradient(#a5dfff 360deg, #f69ac1 0deg)`;
-      return;
-    }
-
-    // Restaurar o estado visual imediatamente
-    this.container.style.background = `conic-gradient(#a5dfff ${this.lastDeg}deg, #f69ac1 0deg)`;
-
-    this.startTime = Date.now() - ((this.duration - this.remainingTime) * 1000);
-    if (this.interval) clearInterval(this.interval);
-
-    this.interval = setInterval(() => this.update(), 100);
+resume() {
+  if (!this.isPaused || this.remainingTime <= 0) return;
+  
+  this.isPaused = false;
+  
+  // Verificar se o tempo já esgotou durante a pausa
+  const currentTime = Date.now();
+  const elapsedDuringPause = (currentTime - this.pauseStartTime) / 1000;
+  
+  if (this.remainingTime - elapsedDuringPause <= 0) {
+    this.isFinished = true; // ← Marcar como terminado se o tempo esgotou durante a pausa
+    this.container.style.background = `conic-gradient(#a5dfff 360deg, #f69ac1 0deg)`;
+    return;
   }
+  
+  // Restaurar o estado visual imediatamente
+  this.container.style.background = `conic-gradient(#a5dfff ${this.lastDeg}deg, #f69ac1 0deg)`;
+  
+  this.startTime = Date.now() - ((this.duration - this.remainingTime) * 1000);
+  if (this.interval) clearInterval(this.interval);
+
+  this.interval = setInterval(() => this.update(), 100);
+}
   finishNow() {
     // Finaliza imediatamente o timer visual
     this.isFinished = true;
@@ -218,9 +238,8 @@ class VisualTimer {
     }
   }
 }
-
-export class JudgingScreen {
-  static show(teamLives = { team1: 5, team2: 5 }, gameInstance = null) {
+class JudgingScreen {
+  static show(teamLives = {team1: 5, team2: 5}, gameInstance = null) {
     return new Promise(resolve => {
       // Remove overlay antigo se existir
       const old = document.getElementById('judging-time-overlay');
@@ -288,10 +307,10 @@ export class JudgingScreen {
 
       // Votação
       let votedTeam = null;
-      const voteTeam1Btn = overlay.querySelector('#voteTeam1');
-      const voteTeam2Btn = overlay.querySelector('#voteTeam2');
-      const judgeTimerEl = overlay.querySelector('#judge-timer');
-      const judgeTimerSpan = judgeTimerEl ? judgeTimerEl.querySelector('span') : null;
+  const voteTeam1Btn = overlay.querySelector('#voteTeam1');
+  const voteTeam2Btn = overlay.querySelector('#voteTeam2');
+  const judgeTimerEl = overlay.querySelector('#judge-timer');
+  const judgeTimerSpan = judgeTimerEl ? judgeTimerEl.querySelector('span') : null;
 
       function onVote(team) {
         if (votedTeam) return; // Evita votos duplos
@@ -316,19 +335,19 @@ export class JudgingScreen {
           const l2 = document.getElementById('judging-life-team2');
           const targetEl = team === 'team1' ? l1 : l2;
           if (targetEl) {
-            const styleWidth = (targetEl.style.width || '').replace('%', '');
+            const styleWidth = (targetEl.style.width || '').replace('%','');
             const currentPercent = styleWidth
               ? parseFloat(styleWidth)
               : (gameInstance && gameInstance.teamLives
-                ? (gameInstance.teamLives[team] / maxLives) * 100
-                : 100);
+                  ? (gameInstance.teamLives[team] / maxLives) * 100
+                  : 100);
             const nextPercent = Math.max(0, currentPercent - step);
             // Aplicar a nova largura (CSS já tem transition: width 0.5s steps(8))
             requestAnimationFrame(() => {
               targetEl.style.width = nextPercent + '%';
             });
           }
-        } catch (_) { }
+        } catch (_) {}
 
         // Tempo para ver a animação da barra antes do fade-out
         setTimeout(() => {
@@ -381,6 +400,7 @@ export class JudgingScreen {
   }
 }
 
+
 class Game {
   async showJudgesWillDecide() {
     return new Promise(resolve => {
@@ -418,36 +438,36 @@ class Game {
   stopQuestionsDisplay() {
     // Lógica para finalizar a exibiçao das perguntas pode ser adicionada aqui
   }
-  delay(ms) {
-    return new Promise(resolve => {
-      const start = Date.now();
-      let checkInterval = null;
-
-      const check = () => {
-        // Verificar se o timer visual terminou (mais robusto)
-        if (this.visualTimer.isFinished || this.visualTimer.remainingTime <= 0) {
-          if (checkInterval) clearInterval(checkInterval);
-          resolve();
-          return;
-        }
-
-        if (this.pauseSystem.isPaused) {
-          // Continua verificando a cada 100ms se estiver pausado
-          return;
-        }
-
-        const elapsed = Date.now() - start - this.pauseSystem.totalPauseTime;
-        if (elapsed >= ms) {
-          if (checkInterval) clearInterval(checkInterval);
-          resolve();
-        }
-      };
-
-      // Verificar a cada 50ms para ser mais responsivo
-      checkInterval = setInterval(check, 50);
-      check(); // Chamar imediatamente
-    });
-  }
+delay(ms) {
+  return new Promise(resolve => {
+    const start = Date.now();
+    let checkInterval = null;
+    
+    const check = () => {
+      // Verificar se o timer visual terminou (mais robusto)
+      if (this.visualTimer.isFinished || this.visualTimer.remainingTime <= 0) {
+        if (checkInterval) clearInterval(checkInterval);
+        resolve();
+        return;
+      }
+      
+      if (this.pauseSystem.isPaused) {
+        // Continua verificando a cada 100ms se estiver pausado
+        return;
+      }
+      
+      const elapsed = Date.now() - start - this.pauseSystem.totalPauseTime;
+      if (elapsed >= ms) {
+        if (checkInterval) clearInterval(checkInterval);
+        resolve();
+      }
+    };
+    
+    // Verificar a cada 50ms para ser mais responsivo
+    checkInterval = setInterval(check, 50);
+    check(); // Chamar imediatamente
+  });
+}
   startQuestionsDisplay() {
     // Inicia a exibição das perguntas
     this.currentQuestion = 0;
@@ -473,11 +493,11 @@ class Game {
     }
 
 
-    const container = document.getElementById('questions-container');
-    if (!container) return;
-    container.innerHTML = '';
+  const container = document.getElementById('questions-container');
+  if (!container) return;
+  container.innerHTML = '';
 
-    // Mostra a pergunta
+  // Mostra a pergunta
     const p = document.createElement('p');
     p.textContent = `${this.currentQuestion + 1}. ${this.selectedQuestions[this.currentQuestion]}`;
     container.appendChild(p);
@@ -498,7 +518,7 @@ class Game {
         actions.classList.add('fade-out-up');
         const vt = document.getElementById('visual-timer');
         if (vt) vt.classList.add('fade-out-up');
-      } catch (_) { }
+      } catch (_) {}
       // Guardar pequena janela para a animação concluir
       this.skipTransitionMS = 350;
       // Finaliza imediatamente o timer de pensar
@@ -518,11 +538,11 @@ class Game {
       await new Promise(res => setTimeout(res, this.skipTransitionMS));
       this.skipTransitionMS = 0;
     }
-
-    // Verificação extra para garantir que o timer seja resetado apenas se não tiver terminado
-    if (!this.visualTimer.isFinished && this.visualTimer.remainingTime > 0) {
-      this.visualTimer.reset();
-    }
+    
+// Verificação extra para garantir que o timer seja resetado apenas se não tiver terminado
+  if (!this.visualTimer.isFinished && this.visualTimer.remainingTime > 0) {
+    this.visualTimer.reset();
+  }
     // Esconde o visual-timer antes dos turnos
     if (visualTimer) visualTimer.style.display = 'none';
 
@@ -531,22 +551,22 @@ class Game {
 
     // Agora sim, inicia os turnos
     await this.showFightAndTurns();
-
+    
     this.pauseSystem.resetPauseTime();
 
     await this.runTeamTurn('team1', global.options.round);
-
+    
     this.pauseSystem.resetPauseTime();
 
     await this.runTeamTurn('team2', global.options.round);
 
-    // Esconde (sem reflow) o FIGHT, a linha dos turnos e as ações antes do julgamento
-    const fightOverlay = document.getElementById('fight-overlay');
-    const turnsRow = document.querySelector('.turns-top-row');
-    const turnActions = document.querySelector('.turn-actions');
-    if (turnsRow) turnsRow.style.visibility = 'hidden';
-    if (turnActions) turnActions.style.visibility = 'hidden';
-    if (fightOverlay) fightOverlay.style.visibility = 'hidden';
+  // Esconde (sem reflow) o FIGHT, a linha dos turnos e as ações antes do julgamento
+  const fightOverlay = document.getElementById('fight-overlay');
+  const turnsRow = document.querySelector('.turns-top-row');
+  const turnActions = document.querySelector('.turn-actions');
+  if (turnsRow) turnsRow.style.visibility = 'hidden';
+  if (turnActions) turnActions.style.visibility = 'hidden';
+  if (fightOverlay) fightOverlay.style.visibility = 'hidden';
 
     // Mostra tela "judges will decide" antes da votação
     await this.showJudgesWillDecide();
@@ -638,174 +658,170 @@ class Game {
     `;
   }
 
-  async runTeamTurn(team, seconds) {
-    const team1Label = document.getElementById('turn-team1');
-    const team2Label = document.getElementById('turn-team2');
-    const team1BarWrap = document.querySelector('.life-bar-wrapper.team1');
-    const team2BarWrap = document.querySelector('.life-bar-wrapper.team2');
-    const endTurnBtn = document.getElementById('end-turn-btn');
+async runTeamTurn(team, seconds) {
+  const team1Label = document.getElementById('turn-team1');
+  const team2Label = document.getElementById('turn-team2');
+  const team1BarWrap = document.querySelector('.life-bar-wrapper.team1');
+  const team2BarWrap = document.querySelector('.life-bar-wrapper.team2');
+  const endTurnBtn = document.getElementById('end-turn-btn');
 
-    if (team1Label && team2Label) {
-      if (team === 'team1') {
-        if (endTurnBtn) {
-          endTurnBtn.classList.add('end-turn-pink');
-          endTurnBtn.classList.remove('end-turn-blue');
-        }
-        team1Label.classList.add('active-turn-label');
-        team2Label.classList.remove('active-turn-label');
-        team1Label.classList.remove('inactive-turn-label');
-        team2Label.classList.add('inactive-turn-label');
-        if (team1BarWrap) {
-          team1BarWrap.classList.remove('inactive');
-          const bar = team1BarWrap.querySelector('.life-bar');
-          const heart = team1BarWrap.querySelector('.life-heart');
-          if (bar) bar.classList.remove('inactive');
-          if (heart) heart.classList.remove('inactive');
-        }
-        if (team2BarWrap) {
-          team2BarWrap.classList.add('inactive');
-          const bar = team2BarWrap.querySelector('.life-bar');
-          const heart = team2BarWrap.querySelector('.life-heart');
-          if (bar) bar.classList.add('inactive');
-          if (heart) heart.classList.add('inactive');
-        }
-      } else {
-        if (endTurnBtn) {
-          endTurnBtn.classList.add('end-turn-blue');
-          endTurnBtn.classList.remove('end-turn-pink');
-        }
-        team2Label.classList.add('active-turn-label');
-        team1Label.classList.remove('active-turn-label');
-        team2Label.classList.remove('inactive-turn-label');
-        team1Label.classList.add('inactive-turn-label');
-        if (team2BarWrap) {
-          team2BarWrap.classList.remove('inactive');
-          const bar = team2BarWrap.querySelector('.life-bar');
-          const heart = team2BarWrap.querySelector('.life-heart');
-          if (bar) bar.classList.remove('inactive');
-          if (heart) heart.classList.remove('inactive');
-        }
-        if (team1BarWrap) {
-          team1BarWrap.classList.add('inactive');
-          const bar = team1BarWrap.querySelector('.life-bar');
-          const heart = team1BarWrap.querySelector('.life-heart');
-          if (bar) bar.classList.add('inactive');
-          if (heart) heart.classList.add('inactive');
-        }
+  if (team1Label && team2Label) {
+    if (team === 'team1') {
+      if (endTurnBtn) {
+        endTurnBtn.classList.add('end-turn-pink');
+        endTurnBtn.classList.remove('end-turn-blue');
+      }
+      team1Label.classList.add('active-turn-label');
+      team2Label.classList.remove('active-turn-label');
+      team1Label.classList.remove('inactive-turn-label');
+      team2Label.classList.add('inactive-turn-label');
+      if (team1BarWrap) {
+        team1BarWrap.classList.remove('inactive');
+        const bar = team1BarWrap.querySelector('.life-bar');
+        const heart = team1BarWrap.querySelector('.life-heart');
+        if (bar) bar.classList.remove('inactive');
+        if (heart) heart.classList.remove('inactive');
+      }
+      if (team2BarWrap) {
+        team2BarWrap.classList.add('inactive');
+        const bar = team2BarWrap.querySelector('.life-bar');
+        const heart = team2BarWrap.querySelector('.life-heart');
+        if (bar) bar.classList.add('inactive');
+        if (heart) heart.classList.add('inactive');
+      }
+    } else {
+      if (endTurnBtn) {
+        endTurnBtn.classList.add('end-turn-blue');
+        endTurnBtn.classList.remove('end-turn-pink');
+      }
+      team2Label.classList.add('active-turn-label');
+      team1Label.classList.remove('active-turn-label');
+      team2Label.classList.remove('inactive-turn-label');
+      team1Label.classList.add('inactive-turn-label');
+      if (team2BarWrap) {
+        team2BarWrap.classList.remove('inactive');
+        const bar = team2BarWrap.querySelector('.life-bar');
+        const heart = team2BarWrap.querySelector('.life-heart');
+        if (bar) bar.classList.remove('inactive');
+        if (heart) heart.classList.remove('inactive');
+      }
+      if (team1BarWrap) {
+        team1BarWrap.classList.add('inactive');
+        const bar = team1BarWrap.querySelector('.life-bar');
+        const heart = team1BarWrap.querySelector('.life-heart');
+        if (bar) bar.classList.add('inactive');
+        if (heart) heart.classList.add('inactive');
       }
     }
-    //timer
-    const timerElement = document.getElementById('team-timer');
-    const timerSpan = timerElement.querySelector('span');
-    let startTime = Date.now();
-    let remaining = seconds;
+  }
+  //timer
+  const timerElement = document.getElementById('team-timer');
+  const timerSpan = timerElement.querySelector('span');
+  let startTime = Date.now();
+  let remaining = seconds;
 
-    return new Promise(resolve => {
-      const isTeam1 = team === 'team1';
-      let intervalId = null;
-      let endedEarly = false;
-
-      const updateTimer = () => {
-        if (this.pauseSystem.isPaused) {
-          return;
-        }
-
-        // Usar o totalPauseTime global (já resetado para este turno)
-        const elapsed = (Date.now() - startTime - this.pauseSystem.totalPauseTime) / 1000;
-        remaining = Math.max(seconds - elapsed, 0);
-        const percentage = (remaining / seconds) * 100;
-        const deg = (percentage / 100) * 360;
-
-        timerElement.style.background = `conic-gradient(${isTeam1 ? '#3a87ad' : '#e37ea3'} ${deg}deg, #eee 0deg)`;
-        timerSpan.textContent = Math.ceil(remaining);
-
-        if (remaining <= 0) {
-          if (intervalId) clearInterval(intervalId);
-          cleanup();
-          resolve();
-        }
-      };
-
-      // Listener simples - o PauseSystem já gerencia o acumulo
-      const pauseHandler = (e) => {
-        if (e.detail.paused) {
-          if (intervalId) {
-            clearInterval(intervalId);
-            intervalId = null;
-          }
-        } else {
-          if (!intervalId) {
-            intervalId = setInterval(updateTimer, 100);
-          }
-        }
-      };
-
-      document.addEventListener('pauseStateChanged', pauseHandler);
-
-      // Iniciar o timer
-      intervalId = setInterval(updateTimer, 100);
-
-      // Cleanup
-      const cleanup = () => {
-        if (intervalId) clearInterval(intervalId);
-        document.removeEventListener('pauseStateChanged', pauseHandler);
-        if (endTurnBtn && onEndClick) {
-          endTurnBtn.removeEventListener('click', onEndClick);
-        }
-        if (endTurnBtn) endTurnBtn.disabled = true;
-      };
-
-      // Habilitar botão END TURN para encerrar este turno
-      let onEndClick = null;
-      if (endTurnBtn) {
-        endTurnBtn.disabled = false;
-        onEndClick = () => {
-          if (endedEarly) return;
-          endedEarly = true;
-          endTurnBtn.disabled = true;
-          cleanup();
-          resolve();
-        };
-        endTurnBtn.addEventListener('click', onEndClick);
+  return new Promise(resolve => {
+    const isTeam1 = team === 'team1';
+    let intervalId = null;
+  let endedEarly = false;
+    
+    const updateTimer = () => {
+      if (this.pauseSystem.isPaused) {
+        return;
       }
+      
+          // Usar o totalPauseTime global (já resetado para este turno)
+      const elapsed = (Date.now() - startTime - this.pauseSystem.totalPauseTime) / 1000;
+      remaining = Math.max(seconds - elapsed, 0);
+      const percentage = (remaining / seconds) * 100;
+      const deg = (percentage / 100) * 360;
 
-      // Timeout de fallback
-      setTimeout(() => {
+      timerElement.style.background = `conic-gradient(${isTeam1 ? '#3a87ad' : '#e37ea3'} ${deg}deg, #eee 0deg)`;
+      timerSpan.textContent = Math.ceil(remaining);
+
+      if (remaining <= 0) {
+        if (intervalId) clearInterval(intervalId);
+  cleanup();
+  resolve();
+      }
+    };
+    
+    // Listener simples - o PauseSystem já gerencia o acumulo
+    const pauseHandler = (e) => {
+      if (e.detail.paused) {
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+      } else {
+        if (!intervalId) {
+          intervalId = setInterval(updateTimer, 100);
+        }
+      }
+    };
+    
+    document.addEventListener('pauseStateChanged', pauseHandler);
+    
+    // Iniciar o timer
+    intervalId = setInterval(updateTimer, 100);
+    
+    // Cleanup
+    const cleanup = () => {
+      if (intervalId) clearInterval(intervalId);
+      document.removeEventListener('pauseStateChanged', pauseHandler);
+      if (endTurnBtn && onEndClick) {
+        endTurnBtn.removeEventListener('click', onEndClick);
+      }
+      if (endTurnBtn) endTurnBtn.disabled = true;
+    };
+    
+    // Habilitar botão END TURN para encerrar este turno
+    let onEndClick = null;
+    if (endTurnBtn) {
+      endTurnBtn.disabled = false;
+      onEndClick = () => {
+        if (endedEarly) return;
+        endedEarly = true;
+        endTurnBtn.disabled = true;
         cleanup();
         resolve();
-      }, seconds * 1000 + 2000);
-    });
-  }
-  constructor(job) {
+      };
+      endTurnBtn.addEventListener('click', onEndClick);
+    }
+    
+    // Timeout de fallback
+    setTimeout(() => {
+      cleanup();
+      resolve();
+    }, seconds * 1000 + 2000);
+  });
+}
+    constructor(job) {
     this.job = job;
     this.selectedQuestions = [];
     this.currentQuestion = 0;
     this.visualTimer = new VisualTimer('visual-timer', global.options.think); // Criar aqui
     this.teamScores = { team1: 0, team2: 0 };
     this.maxPoints = 10;
-    this.maxLives = global.options.rounds;
+    this.maxLives = 5;
     this.teamLives = { team1: this.maxLives, team2: this.maxLives };
     this.isGameOver = false;
     this.gameOverHandler = new GameOverHandler(this);
     this.pauseSystem = new PauseSystem(this);
-    this.skipTransitionMS = 0;
+  this.skipTransitionMS = 0;
 
   }
 
   async initialize() {
     const { general, jobSpecific } = await QuestionLoader.loadQuestions(this.job);
-
-    if (!jobSpecific || jobSpecific.length === 0) {
-      throw new Error('Job inválido ou sem perguntas específicas');
-    }
-
+    // Para o job 'general', permitimos jobSpecific vazio e seguimos apenas com gerais
     this.selectedQuestions = QuestionSelector.selectQuestions(general, jobSpecific);
 
     this.gameOverHandler.startMonitoring();
 
     return this;
   }
-
+  
   createVisualTimer() {
     this.visualTimer = new VisualTimer('visual-timer', global.options.think);
   }
@@ -919,7 +935,7 @@ class Game {
 
 
 // Overlay dinâmico unificado para antecipação e contagem
-export class GameOverlay {
+class GameOverlay {
   constructor() {
     this.overlay = document.getElementById('game-overlay');
     this.content = document.getElementById('overlay-content');
@@ -947,10 +963,10 @@ export class GameOverlay {
     this.showBackground();
     void img.offsetWidth;
     img.classList.add('show');
-    // Faz a animação durar o tempo total do overlay
-    img.style.animationDuration = (duration / 1000) + 's';
-    img.style.setProperty('--anticipation-in', (duration / 1000) + 's');
-    img.style.setProperty('--anticipation-exit', (duration / 1000) + 's');
+  // Faz a animação durar o tempo total do overlay
+  img.style.animationDuration = (duration / 1000) + 's';
+  img.style.setProperty('--anticipation-in', (duration / 1000) + 's');
+  img.style.setProperty('--anticipation-exit', (duration / 1000) + 's');
     // Remove a imagem só após o tempo total
     await new Promise(res => setTimeout(res, duration));
     this.hide();
@@ -1023,8 +1039,8 @@ class Countdown {
 export class MusicManager {
   constructor() {
     this.currentLoop = null;
-    this.synth = null;
-    this.bass = null;
+  this.synth = null;
+  this.bass = null;
   }
 
   async play(menu = false) {
@@ -1032,10 +1048,10 @@ export class MusicManager {
     Tone.Transport.stop();
     Tone.Transport.cancel();
 
-    // Para e libera recursos anteriores
-    if (this.currentLoop) this.currentLoop.stop();
-    if (this.synth) { try { this.synth.dispose(); } catch (_) { } this.synth = null; }
-    if (this.bass) { try { this.bass.dispose(); } catch (_) { } this.bass = null; }
+  // Para e libera recursos anteriores
+  if (this.currentLoop) this.currentLoop.stop();
+  if (this.synth) { try { this.synth.dispose(); } catch(_){} this.synth = null; }
+  if (this.bass)  { try { this.bass.dispose(); } catch(_){} this.bass  = null; }
 
     if (menu) {
       this.playMenuMusic();
@@ -1076,17 +1092,21 @@ export class MusicManager {
       const note = scale[Math.floor(Math.random() * scale.length)];
       // Corrige duração vazia que podia gerar sustain infinito (bip)
       this.synth && this.synth.triggerAttackRelease(note, "8n", time);
-    }, "2n");
+
+      if (Math.random() > 0.7) {
+        this.bass && this.bass.triggerAttackRelease("C2", "2n", time);
+      }
+    }, "16n");
 
     this.currentLoop.start(0);
   }
 
   stop() {
-    if (this.currentLoop) { try { this.currentLoop.stop(); } catch (_) { } this.currentLoop = null; }
+    if (this.currentLoop) { try { this.currentLoop.stop(); } catch(_){} this.currentLoop = null; }
     // Libera e garante silêncio
-    if (this.synth) { try { this.synth.dispose(); } catch (_) { } this.synth = null; }
-    if (this.bass) { try { this.bass.dispose(); } catch (_) { } this.bass = null; }
-    try { Tone.Transport.stop(); Tone.Transport.cancel(); } catch (_) { }
+    if (this.synth) { try { this.synth.dispose(); } catch(_){} this.synth = null; }
+    if (this.bass)  { try { this.bass.dispose(); }  catch(_){} this.bass  = null; }
+    try { Tone.Transport.stop(); Tone.Transport.cancel(); } catch(_){}
   }
 }
 
@@ -1151,12 +1171,12 @@ class GameFlow {
 // ============== UI HELPER ==============
 class GameUI {
   static displayGame(job, questions) {
-    const jobTitle = document.getElementById('job-title');
-    if (jobTitle) jobTitle.textContent = `THEME: ${job.toUpperCase()}`;
-    const gameContainer = document.getElementById('game-container');
-    if (gameContainer) gameContainer.style.display = 'block';
-    const questionsContainer = document.getElementById('questions-container');
-    if (questionsContainer) questionsContainer.innerHTML = '';
+  const jobTitle = document.getElementById('job-title');
+  if (jobTitle) jobTitle.textContent = `THEME: ${job.toUpperCase()}`;
+  const gameContainer = document.getElementById('game-container');
+  if (gameContainer) gameContainer.style.display = 'block';
+  const questionsContainer = document.getElementById('questions-container');
+  if (questionsContainer) questionsContainer.innerHTML = '';
 
     // Você pode mostrar a lista das perguntas aqui se quiser (opcional)
   }
@@ -1172,7 +1192,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============== GAME OVER ==============
-export class GameOverHandler {
+class GameOverHandler {
   constructor(gameInstance) {
     this.game = gameInstance;
     this.maxLives = gameInstance.maxLives || 5;
@@ -1220,20 +1240,20 @@ export class GameOverHandler {
     if (this.game.visualTimer) {
       this.game.visualTimer.reset();
     }
-
+    
     // Cria um overlay preto para garantir que não haja cortes
     this.createBlackOverlay();
-
+    
     // Mostra as telas prelude primeiro com fade-in
     await this.showPreludeScreens();
-
+    
     // Depois mostra a tela de vitória com fade-in
     await this.showVictoryScreen(winningTeam);
-
+    
     //this.pauseSystem.pause();
 
     // Redireciona após um delay
-    // window.location.href = `victory.html?winner=${winningTeam}`;
+   // window.location.href = `victory.html?winner=${winningTeam}`;
   }
 
   createBlackOverlay() {
@@ -1267,11 +1287,11 @@ export class GameOverHandler {
         '../assets/images/winner/prelude-1.png',
         '../assets/images/winner/prelude-2.png'
       ];
-
+      
       for (let i = 0; i < preludes.length; i++) {
         await this.showPreludeScreen(preludes[i], 6000);
       }
-
+      
       resolve();
     });
   }
@@ -1295,7 +1315,7 @@ export class GameOverHandler {
         opacity: 0;
         transition: opacity 1.5s ease-in-out;
       `;
-
+      
       // Cria a imagem prelude
       const img = document.createElement('img');
       img.src = imageSrc;
@@ -1309,19 +1329,19 @@ export class GameOverHandler {
         left: 50%;
         transform: translate(-50%, -50%);
       `;
-
+      
       this.preludeScreen.appendChild(img);
       document.body.appendChild(this.preludeScreen);
-
+      
       // Fade-in
       setTimeout(() => {
         this.preludeScreen.style.opacity = '1';
       }, 10);
-
+      
       // Aguarda o tempo especificado, faz fade-out e remove a tela
       setTimeout(() => {
         this.preludeScreen.style.opacity = '0';
-
+        
         // Aguarda a transição de fade-out terminar antes de remover
         setTimeout(() => {
           if (this.preludeScreen && this.preludeScreen.parentNode) {
@@ -1337,13 +1357,13 @@ export class GameOverHandler {
   async showVictoryScreen(winningTeam) {
     return new Promise(resolve => {
       // Remove o overlay preto antes de mostrar a vitória
-
+      
       // Cria a tela de vitória
       this.victoryScreen = document.createElement('div');
       this.victoryScreen.className = 'victory';
       this.victoryScreen.style.opacity = '0';
       this.victoryScreen.style.transition = 'opacity 2s ease-in';
-
+      
       this.victoryScreen.innerHTML = `
         <div class="bgs-victory">
             <div class="bg-default"></div>
@@ -1366,8 +1386,8 @@ export class GameOverHandler {
         
         <div class="faixa">
             <div class="winTeam">
-                <img src="../assets/images/winner/${winningTeam.replace(" ", "")}_winner.png" 
-                     alt="${winningTeam.replace(" ", "").toUpperCase()} WINS!" 
+                <img src="../assets/images/winner/${winningTeam}_winner.png" 
+                     alt="${winningTeam.toUpperCase()} WINS!" 
                      class="win-team-img" />
             </div>
         </div>
@@ -1390,25 +1410,25 @@ export class GameOverHandler {
       `;
 
       document.body.appendChild(this.victoryScreen);
-
+      
       // Carrega os estilos da vitória
       this.loadVictoryStyles();
-
+      
       const restartBtn = this.victoryScreen.querySelector('.restart-btn');
       if (restartBtn) {
         // Inicialmente desabilita o botão
         restartBtn.style.pointerEvents = 'none';
         restartBtn.style.cursor = 'default';
-
+        
         restartBtn.addEventListener('click', () => {
           window.location.href = '../index.html';
         });
       }
-
+      
       // Mostra a tela com animação de fade-in
       setTimeout(() => {
         this.victoryScreen.style.opacity = '1';
-
+        
         // Habilita o botão após a transição de opacidade
         this.victoryScreen.addEventListener('transitionend', () => {
           if (this.victoryScreen.style.opacity === '1' && restartBtn) {
@@ -1417,7 +1437,7 @@ export class GameOverHandler {
           }
           resolve();
         }, { once: true });
-
+        
       }, 0);
     });
   }
@@ -1425,7 +1445,7 @@ export class GameOverHandler {
   loadVictoryStyles() {
     // Verificar se os estilos já foram carregados
     if (document.getElementById('victory-styles')) return;
-
+    
     const link = document.createElement('link');
     link.id = 'victory-styles';
     link.rel = 'stylesheet';
@@ -1464,7 +1484,7 @@ class PauseSystem {
           callback(...args);
         }
       }, delay);
-
+      
       this.activeIntervals.set(id, { callback, delay, args });
       return id;
     };
@@ -1475,11 +1495,11 @@ class PauseSystem {
           callback(...args);
         }
       }, delay);
-
-      this.activeTimeouts.set(id, {
-        callback,
-        delay,
-        args,
+      
+      this.activeTimeouts.set(id, { 
+        callback, 
+        delay, 
+        args, 
         startTime: Date.now(),
         originalDelay: delay, // Guardar o delay original
         remaining: delay, // Inicialmente o tempo restante é o delay completo
@@ -1545,7 +1565,7 @@ class PauseSystem {
     }
   }
 
-  pause() {
+pause() {
     if (this.isPaused || this.game.isGameOver) return;
 
     this.isPaused = true;
@@ -1556,14 +1576,14 @@ class PauseSystem {
       this.game.visualTimer.pause();
     }
 
-    for (const [id, timeout] of this.activeTimeouts) {
+     for (const [id, timeout] of this.activeTimeouts) {
       if (!timeout.paused) {
         const elapsed = Date.now() - timeout.startTime;
         timeout.remaining = Math.max(timeout.delay - elapsed, 0);
         timeout.paused = true;
         timeout.pauseDuration = 0; // Inicializar duração da pausa
         window.clearTimeout(id);
-
+        
         // Atualizar o delay para o tempo restante
         timeout.delay = timeout.remaining;
       }
@@ -1589,14 +1609,14 @@ class PauseSystem {
 
     this.isPaused = false;
     const resumeTime = Date.now();
-
+    
     // CORREÇÃO: Acumular tempo desta pausa ao total
     this.totalPauseTime += (resumeTime - this.pauseStartTime);
     const pauseDuration = resumeTime - this.pauseTime; // Calcular duração total da pausa
 
     // CORREÇÃO: Criar uma cópia dos timeouts para evitar problemas de iteração
     const timeoutsToRestore = Array.from(this.activeTimeouts.entries());
-
+    
     // Limpar o mapa primeiro
     this.activeTimeouts.clear();
 
@@ -1604,17 +1624,17 @@ class PauseSystem {
     for (const [oldId, timeout] of timeoutsToRestore) {
       if (timeout.paused && timeout.remaining > 0) {
         timeout.paused = false;
-
+        
         // CORREÇÃO CRÍTICA: Compensar o tempo de pausa, não resetar
         // O startTime original deve ser mantido, apenas adicionamos a duração da pausa
         timeout.pauseDuration = (timeout.pauseDuration || 0) + pauseDuration;
-
+        
         // Recriar o timeout com o tempo restante CORRETO
         const newId = window.setTimeout(timeout.callback, timeout.remaining, ...timeout.args);
-
+        
         // Atualizar as informações do timeout
         timeout.delay = timeout.remaining;
-
+        
         // Adicionar ao mapa com o novo ID
         this.activeTimeouts.set(newId, timeout);
       }
@@ -1642,10 +1662,10 @@ class PauseSystem {
   resetPauseTime() {
     this.totalPauseTime = 0;
   }
-  createPauseOverlay() {
+createPauseOverlay() {
     this.pauseOverlay = document.createElement('div');
     this.pauseOverlay.className = 'pause-overlay';
-
+    
     this.pauseOverlay.style.cssText = `
       position: fixed;
       top: 0;
@@ -1881,7 +1901,7 @@ class PauseSystem {
     `;
 
     document.body.appendChild(this.pauseOverlay);
-
+    
     // Adicionar event listeners IMEDIATAMENTE
     const exitYesBtn = this.pauseOverlay.querySelector('#exit-yes');
     const exitNoBtn = this.pauseOverlay.querySelector('#exit-no');
@@ -1932,7 +1952,7 @@ class PauseSystem {
       if (timeout.paused && timeout.remaining > 0) {
         timeout.paused = false;
         timeout.pauseDuration = (timeout.pauseDuration || 0) + pauseDuration;
-
+        
         const newId = window.setTimeout(timeout.callback, timeout.remaining, ...timeout.args);
         timeout.delay = timeout.remaining;
         this.activeTimeouts.set(newId, timeout);

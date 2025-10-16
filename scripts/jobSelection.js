@@ -14,6 +14,11 @@ const jobsInfo = {
         description: 'Codes the interfaces, applications and servers.\nTogether with your team, it is an essential part of creating the product!',
         hearts: 3
     },
+    'GENERAL': {
+        title: 'GENERAL',
+        description: 'A mix focused only on common interview questions.\nGreat to warm up before going specific!',
+        hearts: 1
+    },
     'DESIGNER': {
         title: 'DESIGNER',
         description: 'Create the games interfaces, animations, and art.\nCollaborate with the team to deliver an incredible experience!',
@@ -84,5 +89,5 @@ jobModalBack.addEventListener('click', closeJobModalSidebar);
 jobModalPlay.addEventListener('click', function () {
     closeJobModalSidebar();
     const job = jobModalTitle.textContent.trim().toLowerCase(); // ex: 'designer'
-    window.location.href = `pages/game.html?job=${job}`;
+    window.location.href = `pages/game.html?job=${encodeURIComponent(job)}`;
 });

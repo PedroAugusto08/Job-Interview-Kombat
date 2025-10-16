@@ -26,7 +26,7 @@
   justify-content: center;
   width: 100%;
   max-width: 900px;
-  margin: 0 auto;
+  margin: 50px auto;
   gap: 2.5rem;
   align-self: center;
 }
@@ -424,10 +424,10 @@
   content: "";
   position: absolute;
   left: 50%;
-  top: 70%;
+  top: 85%;
   transform: translate(-50%, -55%);
-  width: 180px;
-  height: 180px;
+  width: 160px;
+  height: 160px;
   background: url('../assets/images/jobs/estrela.png') no-repeat center center;
   background-size: contain;
   z-index: -1;
