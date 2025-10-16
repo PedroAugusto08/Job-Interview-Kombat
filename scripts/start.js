@@ -229,17 +229,11 @@ const resetMenus = () => {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  startMusic();
-  const jobCards = document.querySelectorAll(".choose-job-card");
-  jobCards.forEach(card => {
-    const jobNameEl = card.querySelector(".choose-job-name");
-    if (!jobNameEl) return;
-    const jobName = jobNameEl.textContent.trim().toUpperCase();
-
-    if (jobName !== "DEV") {
-      card.classList.add("locked");
-    }
-  });
+    startMusic();
+    const jobCards = document.querySelectorAll(".choose-job-card");
+    jobCards.forEach(card => {
+        try { card.classList.remove("locked"); } catch (e) { /* ignore */ }
+    });
 });
 const synth = new Tone.Synth().toDestination();
 
