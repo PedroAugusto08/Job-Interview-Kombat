@@ -12,7 +12,6 @@
     <script defer type="module" src="JobInterviewKombat/scripts/loading.js"></script>
     <script defer type="module" src="JobInterviewKombat/scripts/options.js"></script>
     <script defer type="module" src="JobInterviewKombat/scripts/jobSelection.js"></script>
-    <script type="module" src="JobInterviewKombat/scripts/exitOverlay.js"></script>
     <script type="module" src="JobInterviewKombat/scripts/victoryOverlay.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <!-- Favicon (paths relativos, compatíveis com GitHub Pages no subpath do projeto) -->
@@ -26,7 +25,6 @@
     <link rel="stylesheet" href="JobInterviewKombat/styles/start.css">
     <link rel="stylesheet" href="JobInterviewKombat/styles/exit.css">
     <link rel="stylesheet" href="JobInterviewKombat/styles/victory.css">
-
 </head>
 
 <body>
@@ -64,6 +62,17 @@
             </div>
         </div>
         <span class="loading-footer">@CEFET-MG</span>
+    </div>
+    <div id="start-screen">
+        <div class="start-bg">
+            <div class="start-clouds"></div>
+        </div>
+        <div class="start-content">
+            <img class="start-logo" src="JobInterviewKombat/assets/images/logo.png" alt="Logo Mortal Kombat" />
+            <h1 class="start-title">JOB INTERVIEW KOMBAT</h1>
+            <button id="start-button" class="start-btn">PRESS START</button>
+        </div>
+        <span class="start-footer">@CEFET-MG</span>
     </div>
     <header>
         <img class="logo" src="JobInterviewKombat/assets/images/logo.png"
@@ -253,12 +262,6 @@
             <img src="JobInterviewKombat/assets/images/star-hover.png" alt="Icone de estrela" class="star-hover">
             <span>PLAY</span>
         </button>
-
-        <!-- MUDAR AQUI -->
-        <a href="trainingMode/pages/trainingMode.html" class="option" id="menu-training-mode">
-            <img src="JobInterviewKombat/assets/images/star-hover.png" alt="Icone de estrela" class="star-hover">
-            <span> TRAINING MODE</span>
-        </a>
 
         <button class="option" id="menu-rules">
             <img src="JobInterviewKombat/assets/images/star-hover.png" alt="Icone de estrela" class="star-hover">
