@@ -91,7 +91,19 @@ let playingSoundsController = {
 }
 
 // Constrói URL absoluta correta considerando subpath do GitHub Pages
-const hoverUrl = new URL('assets/audio/hover.wav', window.location.href).toString();
+const introSoundURL = new URL('JobInterviewKombat/assets/audio/intro_sound.wav', window.location.href).toString();
+const introSound = new Howl({
+    src: [introSoundURL],
+    html5: true,
+    pool: 20, // aumenta ainda mais o número de instâncias simultâneas
+    preload: true
+});
+
+introSound.volume(0.3)
+
+
+// Constrói URL absoluta correta considerando subpath do GitHub Pages
+const hoverUrl = new URL('JobInterviewKombat/assets/audio/hover.wav', window.location.href).toString();
 const hoverSound = new Howl({
     src: [hoverUrl],
     html5: true,
@@ -99,7 +111,7 @@ const hoverSound = new Howl({
     preload: true
 });
 
-hoverSound.volume(0.4)
+hoverSound.volume(0.1)
 
 // Se der erro de carregamento, loga para diagnosticar caminho incorreto
 hoverSound.on('loaderror', (id, err) => {
@@ -130,6 +142,14 @@ const tryUnlockAudio = () => {
             Howler.mute(prevMute || false);
         });
     } catch (_) { }
+
+    // Garante que o som de introdução comece a tocar se foi bloqueado pelo autoplay do navegador
+    try {
+        if (introSound && !introSound.playing()) {
+            introSound.play();
+        }
+    } catch (_) { }
+
     // remove unlock listeners após sucesso
     ['pointerdown', 'click', 'touchstart', 'keydown'].forEach(evt => {
         try { window.removeEventListener(evt, tryUnlockAudio, true); } catch (_) { }
@@ -139,24 +159,24 @@ const tryUnlockAudio = () => {
     window.addEventListener(evt, tryUnlockAudio, { capture: true });
 });
 
-document.addEventListener("mouseover", (e) => {
-    const opt = e.target.closest('.option');
-    if (!opt) return;
-    if (playingSoundsController.hover == false) {
-        const id = hoverSound.play();
-        // Só marcar como ocupando após iniciar de fato
-        hoverSound.once('play', () => { playingSoundsController.hover = true; });
-        hoverSound.once('playerror', () => { playingSoundsController.hover = false; });
-        hoverSound.once('loaderror', () => { playingSoundsController.hover = false; });
-    }
-});
+// document.addEventListener("mouseover", (e) => {
+//     const opt = e.target.closest('.option');
+//     if (!opt) return;
+//     if (playingSoundsController.hover == false) {
+//         const id = hoverSound.play();
+//         // Só marcar como ocupando após iniciar de fato
+//         hoverSound.once('play', () => { playingSoundsController.hover = true; });
+//         hoverSound.once('playerror', () => { playingSoundsController.hover = false; });
+//         hoverSound.once('loaderror', () => { playingSoundsController.hover = false; });
+//     }
+// });
 
-hoverSound.on('end', () => {
-    playingSoundsController.hover = false
-})
-hoverSound.on('playerror', () => {
-    playingSoundsController.hover = false;
-})
+// hoverSound.on('end', () => {
+//     playingSoundsController.hover = false
+// })
+// hoverSound.on('playerror', () => {
+//     playingSoundsController.hover = false;
+// })
 
 // DIALOG
 
@@ -165,6 +185,8 @@ const dialogClose = document.querySelector(".dialog-close")
 
 // Exibe a tela de escolha de job ao clicar em PLAY
 document.addEventListener('DOMContentLoaded', function () {
+    introSound.play()
+
     const playBtn = document.getElementById('menu-play');
     const chooseJobScreen = document.querySelector('.choose-job-screen');
     const menuOptions = document.querySelector('.menu-options');
@@ -231,12 +253,30 @@ const resetMenus = () => {
     menuOptionsDialog.classList.remove("active")
 }
 
+
+
 document.addEventListener("DOMContentLoaded", () => {
     // startMusic();
     const jobCards = document.querySelectorAll(".choose-job-card");
     jobCards.forEach(card => {
         try { card.classList.remove("locked"); } catch (e) { /* ignore */ }
     });
+
+    // Configura a tela de start
+    const startScreen = document.getElementById('start-screen');
+    const startBtn = document.getElementById('start-button');
+    if (startBtn && startScreen) {
+        startBtn.addEventListener('click', () => {
+            // Força o desbloqueio do áudio
+            tryUnlockAudio();
+
+            // Pequena transição visual
+            startScreen.style.opacity = '0';
+            setTimeout(() => {
+                startScreen.style.display = 'none';
+            }, 500);
+        });
+    }
 });
 const synth = new Tone.Synth().toDestination();
 
