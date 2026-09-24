@@ -1,0 +1,633 @@
+/* ============================================================
+   resume.css — Resume Builder Modal & Floating Button
+   ============================================================ */
+
+/* --- Floating Action Button (FAB) --- */
+
+.resume-fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 500;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+
+    background: linear-gradient(135deg, #6c1fc9, #9b45e8);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-radius: 16px;
+    padding: 12px 18px;
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 24px rgba(108, 31, 201, 0.5),
+        0 0 0 0 rgba(155, 69, 232, 0.4);
+
+    transition:
+        transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.2s ease;
+
+    animation: fabPulse 2.8s ease-in-out infinite;
+}
+
+.resume-fab:hover {
+    transform: scale(1.12) translateY(-3px);
+    box-shadow:
+        0 8px 32px rgba(108, 31, 201, 0.7),
+        0 0 0 6px rgba(155, 69, 232, 0.2);
+    animation: none;
+}
+
+.resume-fab-icon {
+    font-size: 2rem;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+
+.resume-fab-label {
+    font-family: 'PixelOperatorFont', monospace;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1;
+}
+
+.resume-fab-badge {
+    font-family: 'PixelOperatorFont', monospace;
+    font-size: 0.7rem;
+    color: #fdd201;
+    letter-spacing: 0.05em;
+}
+
+@keyframes fabPulse {
+    0%, 100% { box-shadow: 0 4px 24px rgba(108, 31, 201, 0.5), 0 0 0 0 rgba(155, 69, 232, 0.4); }
+    50%       { box-shadow: 0 4px 24px rgba(108, 31, 201, 0.5), 0 0 0 8px rgba(155, 69, 232, 0); }
+}
+
+/* --- Overlay --- */
+
+.resume-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.resume-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* --- Modal --- */
+
+.resume-modal {
+    width: min(1140px, 96vw);
+    max-height: 90vh;
+
+    background: linear-gradient(160deg, #1a0e33 0%, #0d0820 100%);
+    border: 2px solid rgba(155, 69, 232, 0.45);
+    border-radius: 16px;
+    box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    transform: translateY(24px) scale(0.97);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.resume-overlay.active .resume-modal {
+    transform: translateY(0) scale(1);
+}
+
+/* --- Modal Header --- */
+
+.resume-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 28px;
+    border-bottom: 1px solid rgba(155, 69, 232, 0.25);
+    background: rgba(255, 255, 255, 0.03);
+    flex-shrink: 0;
+}
+
+.resume-header-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.resume-icon-doc {
+    font-size: 2rem;
+    filter: drop-shadow(0 0 8px rgba(253, 210, 1, 0.5));
+}
+
+.resume-modal-header h2 {
+    font-family: 'MortalKombat1Font', monospace;
+    font-size: 2rem;
+    color: #fdd201;
+    text-shadow: 2px 2px 0px #c93ed8;
+    letter-spacing: 0.08em;
+    margin: 0;
+}
+
+.resume-close-btn {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.resume-close-btn:hover {
+    background: rgba(239, 26, 90, 0.2);
+    color: #ff6b8a;
+    transform: scale(1.1);
+}
+
+/* --- Progress Bar --- */
+
+.resume-progress-wrap {
+    padding: 14px 28px;
+    border-bottom: 1px solid rgba(155, 69, 232, 0.15);
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.resume-progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'PixelOperatorFont', monospace;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+}
+
+.resume-progress-track {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.resume-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #6c1fc9, #fdd201);
+    border-radius: 999px;
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- Modal Body — two-column layout --- */
+
+.resume-modal-body {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    min-height: 0;
+}
+
+/* Left panel: form sections */
+
+.resume-form-panel {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border-right: 1px solid rgba(155, 69, 232, 0.2);
+}
+
+.resume-form-panel::-webkit-scrollbar { width: 5px; }
+.resume-form-panel::-webkit-scrollbar-track { background: transparent; }
+.resume-form-panel::-webkit-scrollbar-thumb {
+    background: rgba(155, 69, 232, 0.4);
+    border-radius: 999px;
+}
+
+/* Right panel: document preview */
+
+.resume-preview-panel {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    padding: 16px 20px;
+    background: rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.resume-preview-panel::-webkit-scrollbar { width: 5px; }
+.resume-preview-panel::-webkit-scrollbar-track { background: transparent; }
+.resume-preview-panel::-webkit-scrollbar-thumb {
+    background: rgba(155, 69, 232, 0.3);
+    border-radius: 999px;
+}
+
+.resume-preview-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'PixelOperatorFont', monospace;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0 2px 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    flex-shrink: 0;
+}
+
+.resume-preview-hint {
+    font-size: 0.68rem;
+    color: rgba(155, 69, 232, 0.6);
+    letter-spacing: 0.04em;
+}
+
+/* --- Resume Section --- */
+
+.resume-section {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: border-color 0.2s ease;
+}
+
+.resume-section.unlocked {
+    border-color: rgba(65, 213, 124, 0.3);
+}
+
+.resume-section.locked {
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Section Header */
+
+.resume-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.resume-section-header.locked-header {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.resume-section-title {
+    font-family: 'PixelOperatorFont', monospace;
+    font-size: 1.1rem;
+    color: white;
+    letter-spacing: 0.04em;
+}
+
+.resume-unlocked-badge {
+    font-family: 'PixelOperatorFont', monospace;
+    font-size: 0.75rem;
+    color: #41D57C;
+    letter-spacing: 0.04em;
+    background: rgba(65, 213, 124, 0.12);
+    border: 1px solid rgba(65, 213, 124, 0.3);
+    border-radius: 999px;
+    padding: 2px 10px;
+}
+
+.resume-lock-badge {
+    font-family: 'PixelOperatorFont', monospace;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 0.04em;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    padding: 2px 10px;
+}
+
+/* Locked hint */
+
+.resume-locked-hint {
+    padding: 14px 18px;
+    font-family: 'PixelOperatorFont', monospace;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.3);
+    line-height: 1.6;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 6px,
+        rgba(255, 255, 255, 0.015) 6px,
+        rgba(255, 255, 255, 0.015) 12px
+    );
+}
+
+.resume-missing-modes {
+    color: rgba(253, 210, 1, 0.5);
+    font-size: 0.8rem;
+}
+
+/* Fields */
+
+.resume-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 18px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.resume-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.resume-field-label {
+    font-family: 'PixelOperatorFont', monospace;
+    font-size: 0.8rem;
+    color: rgba(155, 69, 232, 0.9);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.resume-field-input {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'PixelOperatorFont', monospace;
+    font-size: 1rem;
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+    resize: none;
+}
+
+.resume-field-input::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+    font-style: italic;
+}
+
+.resume-field-input:focus {
+    border-color: rgba(155, 69, 232, 0.7);
+    background: rgba(255, 255, 255, 0.09);
+    box-shadow: 0 0 0 3px rgba(155, 69, 232, 0.15);
+}
+
+.resume-textarea {
+    min-height: 80px;
+    line-height: 1.5;
+}
+
+/* --- Modal Footer --- */
+
+.resume-modal-footer {
+    padding: 12px 28px;
+    border-top: 1px solid rgba(155, 69, 232, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.resume-save-hint {
+    font-family: 'PixelOperatorFont', monospace;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.04em;
+}
+
+/* ============================================================
+   RESUME DOCUMENT PREVIEW (.rdoc)
+   Paper-like design rendered inside the preview panel
+   ============================================================ */
+
+.rdoc {
+    background: #fdfcf8;
+    color: #1c1c2e;
+    border-radius: 6px;
+    padding: 28px 26px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    box-shadow:
+        0 4px 24px rgba(0, 0, 0, 0.5),
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
+    flex-shrink: 0;
+}
+
+/* --- Personal Header --- */
+
+.rdoc-personal-header {
+    text-align: center;
+    padding-bottom: 14px;
+    border-bottom: 2px solid #1c1c2e;
+    margin-bottom: 14px;
+}
+
+.rdoc-name {
+    font-family: 'Georgia', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #1c1c2e;
+    line-height: 1.2;
+    margin-bottom: 6px;
+}
+
+.rdoc-contact {
+    font-size: 0.78rem;
+    color: #4a4a6a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.rdoc-sep {
+    color: #9b45e8;
+    font-weight: 700;
+    opacity: 0.6;
+}
+
+/* --- Sections --- */
+
+.rdoc-section {
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(28, 28, 46, 0.12);
+}
+
+.rdoc-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.rdoc-section-title {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6c1fc9;
+    border-bottom: 1.5px solid #6c1fc9;
+    padding-bottom: 3px;
+    margin-bottom: 8px;
+}
+
+.rdoc-text {
+    font-size: 0.8rem;
+    color: #2a2a40;
+    line-height: 1.55;
+    margin: 0;
+}
+
+.rdoc-mt {
+    margin-top: 6px;
+}
+
+.rdoc-quote {
+    font-style: italic;
+    color: #4a4a6a;
+    margin-top: 6px;
+    padding-left: 10px;
+    border-left: 2px solid rgba(108, 31, 201, 0.3);
+}
+
+/* --- Experience row --- */
+
+.rdoc-exp-header {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+    color: #2a2a40;
+}
+
+.rdoc-exp-title {
+    font-weight: 700;
+}
+
+.rdoc-exp-period {
+    margin-left: auto;
+    font-size: 0.73rem;
+    color: #6a6a8a;
+    font-style: italic;
+}
+
+/* --- Skills row --- */
+
+.rdoc-skills-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+    color: #2a2a40;
+}
+
+/* --- Q&A blocks --- */
+
+.rdoc-qa-block {
+    margin-bottom: 8px;
+}
+
+.rdoc-qa-block:last-child {
+    margin-bottom: 0;
+}
+
+.rdoc-q {
+    font-family: 'Arial', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #1c1c2e;
+    display: block;
+    margin-bottom: 2px;
+}
+
+/* --- Salary --- */
+
+.rdoc-salary-range {
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+/* --- Filled value --- */
+
+.rdoc-filled {
+    color: #1c1c2e;
+    font-weight: inherit;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* --- Placeholder: empty (unlocked but not filled) --- */
+
+.rdoc-ph {
+    display: inline;
+    font-family: 'Arial', sans-serif;
+    font-size: 0.75rem;
+    font-style: italic;
+    border-radius: 3px;
+    padding: 0 4px;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.rdoc-ph--empty {
+    color: #9b45e8;
+    background: rgba(155, 69, 232, 0.08);
+    border: 1px dashed rgba(155, 69, 232, 0.4);
+}
+
+/* --- Placeholder: locked (topic not unlocked) --- */
+
+.rdoc-ph--locked {
+    color: rgba(28, 28, 46, 0.3);
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(28, 28, 46, 0.04),
+        rgba(28, 28, 46, 0.04) 3px,
+        rgba(28, 28, 46, 0.08) 3px,
+        rgba(28, 28, 46, 0.08) 6px
+    );
+    border: 1px solid rgba(28, 28, 46, 0.15);
+    cursor: default;
+}
+

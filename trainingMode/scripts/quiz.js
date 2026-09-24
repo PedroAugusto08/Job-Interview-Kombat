@@ -1,3 +1,15 @@
+// ---------------------------------------------------------------------------
+// RESUME INTEGRATION — detecta topicId e subModeId da URL
+// ---------------------------------------------------------------------------
+
+function getQuizSubModeId() {
+    const params = new URLSearchParams(window.location.search);
+    const topic = params.get('topic');
+    const mode  = params.get('mode');
+    if (!topic) return null;
+    return topic + (mode === 'interview' ? '_interview' : '_quiz');
+}
+
 function pickRandom(arr, count) {
     return [...arr]
         .sort(() => Math.random() - 0.5)
@@ -173,6 +185,12 @@ function showVictoryModal() {
     document.querySelector("#victory-result-percent").innerText = `${percent}%`;
 
     modalOverlay.classList.add('active');
+
+    // Resume Builder: registra vitória neste sub-modo
+    const subModeId = getQuizSubModeId();
+    if (subModeId && typeof window.markSubModeWon === 'function') {
+        window.markSubModeWon(subModeId);
+    }
 }
 
 

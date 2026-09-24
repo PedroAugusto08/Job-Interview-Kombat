@@ -1,3 +1,13 @@
+// ---------------------------------------------------------------------------
+// RESUME INTEGRATION — detecta topicId da URL
+// ---------------------------------------------------------------------------
+
+function getAudioQuizSubModeId() {
+    const params = new URLSearchParams(window.location.search);
+    const topic = params.get('topic');
+    return topic ? topic + '_audio' : null;
+}
+
 const game = {
     session: null,
     hp: null,
@@ -118,6 +128,12 @@ function showVictoryModal() {
     document.getElementById('victory-result-percent').innerText = `${percent}%`;
 
     overlay.classList.add('active');
+
+    // Resume Builder: registra vitória neste sub-modo
+    const subModeId = getAudioQuizSubModeId();
+    if (subModeId && typeof window.markSubModeWon === 'function') {
+        window.markSubModeWon(subModeId);
+    }
 }
 
 function showDefeatModal() {

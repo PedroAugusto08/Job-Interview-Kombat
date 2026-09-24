@@ -1,3 +1,13 @@
+// ---------------------------------------------------------------------------
+// RESUME INTEGRATION — detecta topicId da URL
+// ---------------------------------------------------------------------------
+
+function getVocabSubModeId() {
+    const params = new URLSearchParams(window.location.search);
+    const topic = params.get('topic');
+    return topic ? topic + '_vocab' : null;
+}
+
 const descriptionGoButton = document.querySelector("#description-go")
 const descriptionMenu = document.querySelector(".mode-description")
 const descriptionMenuTimer = document.querySelector("#description-time")
@@ -152,6 +162,14 @@ const setupResultScreen = (correctWords, wrongWords) => {
 
     gameContainer.classList.remove("active")
     resultsContainer.classList.add("active")
+
+    // Resume Builder: registra vitória se score positivo
+    if (game.score > 0) {
+        const subModeId = getVocabSubModeId();
+        if (subModeId && typeof window.markSubModeWon === 'function') {
+            window.markSubModeWon(subModeId);
+        }
+    }
 
     document.querySelector(".finish-button").addEventListener("click", () => {
         document.location.href = "../pages/trainingMode.html"
